@@ -18,6 +18,77 @@ st.markdown("""
 
 st.title("🌍 Dasbor Kalender Taqwim")
 
+# ==========================================
+# DATABASE KOTA DUNIA (Untuk Autocomplete)
+# ==========================================
+WORLD_CITIES = {
+    "Indonesia": ["Jakarta", "Surabaya", "Bandung", "Medan", "Semarang", "Makassar", "Palembang", "Tangerang", "Depok", "Bekasi", "Padang", "Malang", "Denpasar", "Samarinda", "Banjarmasin", "Pontianak", "Manado", "Balikpapan", "Jambi", "Solo", "Yogyakarta", "Pekanbaru", "Bogor", "Batam", "Bandar Lampung", "Cirebon", "Mataram", "Kupang", "Ambon", "Jayapura", "Palu", "Kendari", "Ternate", "Sorong", "Bengkulu", "Pangkal Pinang", "Tanjung Pinang", "Gorontalo", "Mamuju", "Banda Aceh", "Dumai"],
+    "Saudi Arabia": ["Makkah", "Madinah", "Riyadh", "Jeddah", "Dammam", "Khobar", "Taif", "Buraidah", "Khamis Mushait", "Najran", "Tabuk", "Hail", "Jubail", "Abha", "Yanbu"],
+    "Malaysia": ["Kuala Lumpur", "George Town", "Johor Bahru", "Kota Kinabalu", "Kuching", "Shah Alam", "Petaling Jaya", "Ipoh", "Malacca", "Kuantan", "Kota Bharu", "Alor Setar", "Kuala Terengganu", "Seremban"],
+    "Singapore": ["Singapore"],
+    "Brunei": ["Bandar Seri Begawan"],
+    "Thailand": ["Bangkok", "Chiang Mai", "Phuket", "Pattaya", "Hat Yai", "Nakhon Ratchasima", "Khon Kaen", "Udon Thani", "Narathiwat", "Yala", "Pattani"],
+    "United Arab Emirates": ["Dubai", "Abu Dhabi", "Sharjah", "Al Ain", "Ajman", "Ras Al Khaimah", "Fujairah"],
+    "Qatar": ["Doha", "Al Rayyan", "Al Wakrah", "Al Khor"],
+    "Kuwait": ["Kuwait City", "Al Ahmadi", "Hawalli", "Salmiya"],
+    "Bahrain": ["Manama", "Riffa", "Muharraq", "Isa Town"],
+    "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa", "Sur", "Ibri"],
+    "Egypt": ["Cairo", "Alexandria", "Giza", "Luxor", "Aswan", "Port Said", "Suez", "Ismailia", "Tanta", "Mansoura"],
+    "Turkey": ["Istanbul", "Ankara", "Izmir", "Bursa", "Antalya", "Adana", "Gaziantep", "Konya", "Mersin", "Diyarbakir"],
+    "Pakistan": ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad", "Multan", "Peshawar", "Quetta", "Sialkot", "Gujranwala"],
+    "India": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow", "Srinagar"],
+    "Bangladesh": ["Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna", "Barisal", "Rangpur"],
+    "Iran": ["Tehran", "Mashhad", "Isfahan", "Shiraz", "Tabriz", "Qom", "Ahvaz", "Kermanshah", "Yazd"],
+    "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil", "Najaf", "Karbala", "Sulaymaniyah", "Kirkuk"],
+    "Jordan": ["Amman", "Zarqa", "Irbid", "Aqaba", "Salt", "Mafraq"],
+    "Lebanon": ["Beirut", "Tripoli", "Sidon", "Tyre", "Nabatieh", "Zahle"],
+    "Syria": ["Damascus", "Aleppo", "Homs", "Latakia", "Hama", "Deir ez-Zor"],
+    "Yemen": ["Sanaa", "Aden", "Taiz", "Al Hudaydah", "Mukalla", "Ibb"],
+    "Morocco": ["Casablanca", "Rabat", "Marrakech", "Fez", "Tangier", "Agadir", "Meknes"],
+    "Algeria": ["Algiers", "Oran", "Constantine", "Annaba", "Blida", "Batna"],
+    "Tunisia": ["Tunis", "Sfax", "Sousse", "Kairouan", "Bizerte", "Gabes"],
+    "Libya": ["Tripoli", "Benghazi", "Misrata", "Bayda", "Zawiya", "Tobruk"],
+    "Sudan": ["Khartoum", "Omdurman", "Port Sudan", "Kassala", "Nyala", "El Obeid"],
+    "Nigeria": ["Lagos", "Abuja", "Kano", "Ibadan", "Port Harcourt", "Kaduna", "Maiduguri"],
+    "South Africa": ["Johannesburg", "Cape Town", "Durban", "Pretoria", "Port Elizabeth", "Bloemfontein"],
+    "Kenya": ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Malindi"],
+    "China": ["Beijing", "Shanghai", "Guangzhou", "Shenzhen", "Chengdu", "Hangzhou", "Wuhan", "Xi'an", "Nanjing", "Tianjin", "Urumqi", "Kashgar"],
+    "Japan": ["Tokyo", "Osaka", "Kyoto", "Yokohama", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Hiroshima", "Sendai"],
+    "South Korea": ["Seoul", "Busan", "Incheon", "Daegu", "Daejeon", "Gwangju", "Ulsan", "Suwon"],
+    "Philippines": ["Manila", "Quezon City", "Davao", "Cebu City", "Zamboanga", "Makati", "Pasig", "Marawi"],
+    "Vietnam": ["Ho Chi Minh City", "Hanoi", "Da Nang", "Hai Phong", "Can Tho", "Nha Trang", "Hue"],
+    "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Canberra", "Gold Coast", "Darwin"],
+    "New Zealand": ["Auckland", "Wellington", "Christchurch", "Hamilton", "Dunedin", "Tauranga"],
+    "United Kingdom": ["London", "Manchester", "Birmingham", "Glasgow", "Liverpool", "Leeds", "Edinburgh", "Bristol", "Cardiff", "Belfast"],
+    "France": ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Bordeaux", "Lille"],
+    "Germany": ["Berlin", "Munich", "Hamburg", "Frankfurt", "Cologne", "Stuttgart", "Dusseldorf", "Leipzig", "Dortmund"],
+    "Netherlands": ["Amsterdam", "Rotterdam", "The Hague", "Utrecht", "Eindhoven", "Groningen", "Tilburg"],
+    "Belgium": ["Brussels", "Antwerp", "Ghent", "Bruges", "Liege", "Namur"],
+    "Switzerland": ["Zurich", "Geneva", "Basel", "Bern", "Lausanne", "Lucerne", "Lugano"],
+    "Austria": ["Vienna", "Salzburg", "Innsbruck", "Graz", "Linz", "Klagenfurt"],
+    "Italy": ["Rome", "Milan", "Naples", "Turin", "Florence", "Bologna", "Venice", "Verona", "Palermo"],
+    "Spain": ["Madrid", "Barcelona", "Valencia", "Seville", "Bilbao", "Malaga", "Zaragoza", "Murcia", "Granada"],
+    "Portugal": ["Lisbon", "Porto", "Faro", "Coimbra", "Braga", "Funchal"],
+    "Greece": ["Athens", "Thessaloniki", "Patras", "Heraklion", "Larissa", "Rhodes"],
+    "Russia": ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan", "Nizhny Novgorod", "Chelyabinsk", "Ufa"],
+    "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Francisco", "Washington", "Boston", "Seattle", "Miami", "Detroit", "Minneapolis", "Denver", "Atlanta"],
+    "Canada": ["Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Winnipeg", "Quebec City", "Halifax"],
+    "Mexico": ["Mexico City", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "Leon", "Juarez", "Cancun"],
+    "Brazil": ["Sao Paulo", "Rio de Janeiro", "Brasilia", "Salvador", "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba", "Recife"],
+    "Argentina": ["Buenos Aires", "Cordoba", "Rosario", "Mendoza", "La Plata", "San Miguel de Tucuman", "Mar del Plata"],
+    "Chile": ["Santiago", "Valparaiso", "Concepcion", "La Serena", "Antofagasta", "Temuco", "Rancagua"]
+}
+
+# Buat daftar gabungan "Kota, Negara" untuk dropdown
+ALL_CITIES = []
+for country_name, cities in WORLD_CITIES.items():
+    for city_name in cities:
+        ALL_CITIES.append(f"{city_name}, {country_name}")
+ALL_CITIES.sort()
+
+# ==========================================
+# SIDEBAR PENGATURAN
+# ==========================================
 if 'view_year' not in st.session_state:
     st.session_state.view_year = datetime.now().year
 if 'view_month' not in st.session_state:
@@ -34,8 +105,17 @@ calendar_type = st.sidebar.radio(
     index=0
 )
 
-city = st.sidebar.text_input("Kota", "Jakarta")
-country = st.sidebar.text_input("Negara", "Indonesia")
+# GANTI: Input teks biasa menjadi Dropdown dengan fitur ketik/cari (autocomplete)
+default_idx = ALL_CITIES.index("Jakarta, Indonesia") if "Jakarta, Indonesia" in ALL_CITIES else 0
+selected_location = st.sidebar.selectbox(
+    "🌍 Cari & Pilih Kota",
+    options=ALL_CITIES,
+    index=default_idx
+)
+
+# Pisahkan kembali menjadi variabel city dan country agar API tetap berjalan normal
+city = selected_location.split(", ")[0]
+country = selected_location.split(", ")[1]
 
 method = st.sidebar.selectbox("Metode Perhitungan Sholat", [
     (20, "Kemenag RI (Indonesia)"),
@@ -45,6 +125,9 @@ method = st.sidebar.selectbox("Metode Perhitungan Sholat", [
 
 today = datetime.now()
 
+# ==========================================
+# FUNGSI-FUNGSI
+# ==========================================
 def prev_month():
     if st.session_state.view_month == 1:
         st.session_state.view_month = 12
@@ -150,7 +233,7 @@ def display_calendar(year, month, month_names, highlight_day=None):
             st.rerun()
     
     with col_nav2:
-        st.markdown(f"<h2 style='text-align: center;'> {month_names[month-1]} {year}</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center;'>📆 {month_names[month-1]} {year}</h2>", unsafe_allow_html=True)
     
     with col_nav3:
         if st.button("Bulan Berikutnya ▶️", key="next_month"):
