@@ -138,8 +138,8 @@ st.sidebar.header("⚙️ Pengaturan")
 calendar_type = st.sidebar.radio(
     "Pilih Kalender:",
     ["Kalender Masehi (Gregorian)", 
-     "Kalender Hijriah Global Tunggal Qomariah",
-     "Kalender Hijrah Global Tunggal Syamsiah",
+     "Kalender Hijriah Qomariah/Bulan",
+     "Kalender Hijrah Syamsiah/Matahari",
      "Kalender Jawa (Saka)",
      "Kalender Cina (Imlek)"],
     index=0
