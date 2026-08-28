@@ -323,7 +323,6 @@ if calendar_type == "Kalender Masehi (Gregorian)":
 # ============================================
 elif calendar_type == "Kalender Hijriah Global Tunggal Qomariah":
     st.header("🌙 Kalender Hijriah Global Tunggal Qomariah")
-    st.markdown("*Sistem Bulan (Lunar)*")
     
     try:
         url = f"http://api.aladhan.com/v1/gToH/{today.strftime('%d-%m-%Y')}"
