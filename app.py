@@ -8,39 +8,46 @@ st.set_page_config(page_title="Dasbor Kalender Taqwim", layout="wide")
 # CSS untuk membuat header sticky/fixed
 st.markdown("""
 <style>
-/* Fix header agar tidak scroll */
-[data-testid="stHeading"] {
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 999;
-    padding: 1rem 0;
-    margin: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* Sticky Header untuk judul utama */
+h1 {
+    position: sticky !important;
+    top: 0 !important;
+    background-color: white !important;
+    z-index: 9999 !important;
+    padding: 20px 10px !important;
+    margin: 0 !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+    border-bottom: 2px solid #f0f0f0 !important;
 }
 
-/* Atau target elemen h1 langsung */
-h1 {
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 999;
-    padding: 1rem 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* Sticky untuk sub-header (h2) */
+h2 {
+    position: sticky !important;
+    top: 80px !important;
+    background-color: white !important;
+    z-index: 9998 !important;
+    padding: 15px 10px !important;
+    margin: 10px 0 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
 }
 
 /* Pastikan sidebar juga fixed */
 [data-testid="stSidebar"] {
-    position: fixed;
-    top: 0;
-    height: 100vh;
-    z-index: 1000;
-    overflow-y: auto;
+    position: fixed !important;
+    top: 0 !important;
+    height: 100vh !important;
+    z-index: 10000 !important;
+    overflow-y: auto !important;
 }
 
 /* Beri padding pada konten utama agar tidak tertutup header */
-.main > div {
-    padding-top: 100px;
+.main .block-container {
+    padding-top: 100px !important;
+}
+
+/* Hilangkan scroll horizontal */
+body {
+    overflow-x: hidden !important;
 }
 </style>
 """, unsafe_allow_html=True)
