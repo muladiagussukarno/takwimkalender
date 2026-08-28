@@ -394,8 +394,7 @@ elif calendar_type == "Kalender Hijriah Global Tunggal Qomariah":
 # ============================================
 elif calendar_type == "Kalender Hijrah Global Tunggal Syamsiah":
     st.header("☀️ Kalender Hijrah Global Tunggal Syamsiah")
-    st.markdown("*Sistem Matahari (Solar)*")
-    
+       
     p_year, p_month, p_day = gregorian_to_persian(today.year, today.month, today.day)
     
     col1, col2, col3 = st.columns(3)
