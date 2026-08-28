@@ -137,7 +137,7 @@ if 'view_month' not in st.session_state:
 st.sidebar.header("⚙️ Pengaturan")
 calendar_type = st.sidebar.radio(
     "Pilih Kalender:",
-    ["Kalender Masehi (Gregorian)", 
+    ["Kalender Masehi", 
      "Kalender Hijriah Qomariah/Bulan",
      "Kalender Hijrah Syamsiah/Matahari",
      "Kalender Jawa (Saka)",
