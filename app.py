@@ -362,7 +362,7 @@ if calendar_type == "Kalender Masehi (Gregorian)":
 # KALENDER 2: HIJRIAH QOMARIAH
 # ============================================
 elif calendar_type == "Kalender Hijriah Global Tunggal Qomariah":
-    st.header("🌙 Kalender Hijriah Global Tunggal Qomariah")
+    st.header("🌙 Kalender Hijriah Qomariah/Bulan")
     
     try:
         url = f"http://api.aladhan.com/v1/gToH/{today.strftime('%d-%m-%Y')}"
@@ -393,7 +393,7 @@ elif calendar_type == "Kalender Hijriah Global Tunggal Qomariah":
 # KALENDER 3: HIJRIAH SYAMSIYAH
 # ============================================
 elif calendar_type == "Kalender Hijrah Global Tunggal Syamsiah":
-    st.header("☀️ Kalender Hijrah Global Tunggal Syamsiah")
+    st.header("☀️ Kalender Hijrah Syamsiah/Matahari")
        
     p_year, p_month, p_day = gregorian_to_persian(today.year, today.month, today.day)
     
