@@ -786,3 +786,20 @@ if st.button("🔍 Tampilkan Jadwal Sholat"):
 
 st.markdown("---")
 st.markdown("Dibuat dengan ❤️ menggunakan Streamlit")
+
+# Force sticky header dengan JavaScript
+st.markdown("""
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var headers = document.querySelectorAll('h1, h2');
+    headers.forEach(function(header) {
+        header.style.position = 'sticky';
+        header.style.top = '0';
+        header.style.backgroundColor = 'white';
+        header.style.zIndex = '9999';
+        header.style.padding = '20px 10px';
+        header.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+    });
+});
+</script>
+""", unsafe_allow_html=True)
