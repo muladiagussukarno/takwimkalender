@@ -62,61 +62,354 @@ st.title("🌍 Dasbor Kalender Taqwim")
 # DATABASE KOTA DUNIA (Untuk Autocomplete)
 # ==========================================
 WORLD_CITIES = {
-    "Indonesia": ["Jakarta", "Surabaya", "Bandung", "Medan", "Semarang", "Makassar", "Palembang", "Tangerang", "Depok", "Bekasi", "Padang", "Malang", "Denpasar", "Samarinda", "Banjarmasin", "Pontianak", "Manado", "Balikpapan", "Jambi", "Solo", "Yogyakarta", "Pekanbaru", "Bogor", "Batam", "Bandar Lampung", "Cirebon", "Mataram", "Kupang", "Ambon", "Jayapura", "Palu", "Kendari", "Ternate", "Sorong", "Bengkulu", "Pangkal Pinang", "Tanjung Pinang", "Gorontalo", "Mamuju", "Banda Aceh", "Dumai"],
-    "Saudi Arabia": ["Makkah", "Madinah", "Riyadh", "Jeddah", "Dammam", "Khobar", "Taif", "Buraidah", "Khamis Mushait", "Najran", "Tabuk", "Hail", "Jubail", "Abha", "Yanbu"],
-    "Malaysia": ["Kuala Lumpur", "George Town", "Johor Bahru", "Kota Kinabalu", "Kuching", "Shah Alam", "Petaling Jaya", "Ipoh", "Malacca", "Kuantan", "Kota Bharu", "Alor Setar", "Kuala Terengganu", "Seremban"],
-    "Singapore": ["Singapore"],
-    "Brunei": ["Bandar Seri Begawan"],
-    "Thailand": ["Bangkok", "Chiang Mai", "Phuket", "Pattaya", "Hat Yai", "Nakhon Ratchasima", "Khon Kaen", "Udon Thani", "Narathiwat", "Yala", "Pattani"],
-    "United Arab Emirates": ["Dubai", "Abu Dhabi", "Sharjah", "Al Ain", "Ajman", "Ras Al Khaimah", "Fujairah"],
-    "Qatar": ["Doha", "Al Rayyan", "Al Wakrah", "Al Khor"],
-    "Kuwait": ["Kuwait City", "Al Ahmadi", "Hawalli", "Salmiya"],
-    "Bahrain": ["Manama", "Riffa", "Muharraq", "Isa Town"],
-    "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa", "Sur", "Ibri"],
-    "Egypt": ["Cairo", "Alexandria", "Giza", "Luxor", "Aswan", "Port Said", "Suez", "Ismailia", "Tanta", "Mansoura"],
-    "Turkey": ["Istanbul", "Ankara", "Izmir", "Bursa", "Antalya", "Adana", "Gaziantep", "Konya", "Mersin", "Diyarbakir"],
-    "Pakistan": ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad", "Multan", "Peshawar", "Quetta", "Sialkot", "Gujranwala"],
-    "India": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow", "Srinagar"],
-    "Bangladesh": ["Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna", "Barisal", "Rangpur"],
-    "Iran": ["Tehran", "Mashhad", "Isfahan", "Shiraz", "Tabriz", "Qom", "Ahvaz", "Kermanshah", "Yazd"],
-    "Iraq": ["Baghdad", "Basra", "Mosul", "Erbil", "Najaf", "Karbala", "Sulaymaniyah", "Kirkuk"],
-    "Jordan": ["Amman", "Zarqa", "Irbid", "Aqaba", "Salt", "Mafraq"],
-    "Lebanon": ["Beirut", "Tripoli", "Sidon", "Tyre", "Nabatieh", "Zahle"],
-    "Syria": ["Damascus", "Aleppo", "Homs", "Latakia", "Hama", "Deir ez-Zor"],
-    "Yemen": ["Sanaa", "Aden", "Taiz", "Al Hudaydah", "Mukalla", "Ibb"],
+    # INDONESIA (LENGKAP DENGAN KABUPATEN/KOTA)
+    "Indonesia": [
+        # Sumatera
+        "Banda Aceh", "Sabang", "Lhokseumawe", "Langsa", "Subulussalam", 
+        "Medan", "Binjai", "Pematang Siantar", "Tebing Tinggi", "Tanjung Balai", 
+        "Sibolga", "Padang Sidempuan", "Gunungsitoli", "Bukittinggi", "Padang", 
+        "Pariaman", "Payakumbuh", "Sawahlunto", "Solok", "Padang Panjang", 
+        "Pekanbaru", "Dumai", "Bengkalis", "Bagansiapiapi", "Ujung Tanjung",
+        "Jambi", "Sungai Penuh", "Muara Bungo", "Kuala Tungkal", "Bangko",
+        "Palembang", "Prabumulih", "Pagar Alam", "Lubuk Linggau", "Baturaja",
+        "Pangkal Pinang", "Sungai Liat", "Manggar", "Toboali", "Koba",
+        "Tanjung Pinang", "Batam", "Bintan", "Karimun", "Natuna", "Lingga",
+        "Bandar Lampung", "Metro", "Kotabumi", "Liwa", "Pringsewu", "Kalianda",
+        
+        # Jawa
+        "Jakarta Pusat", "Jakarta Utara", "Jakarta Barat", "Jakarta Selatan", "Jakarta Timur",
+        "Bogor", "Depok", "Bekasi", "Cikarang", "Karawang", "Purwakarta", "Subang",
+        "Bandung", "Cimahi", "Banjar", "Garut", "Tasikmalaya", "Ciamis", "Kuningan", 
+        "Majalengka", "Sumedang", "Indramayu", "Cirebon", "Sukabumi", "Pangandaran",
+        "Semarang", "Salatiga", "Pekalongan", "Tegal", "Demak", "Kendal", "Temanggung",
+        "Magelang", "Purworejo", "Kebumen", "Cilacap", "Banjarnegara", "Purbalingga",
+        "Yogyakarta", "Sleman", "Bantul", "Kulon Progo", "Gunung Kidul", "Wonosari",
+        "Surabaya", "Malang", "Batu", "Blitar", "Kediri", "Mojokerto", "Madiun", 
+        "Probolinggo", "Pasuruan", "Jember", "Banyuwangi", "Bondowoso", "Situbondo",
+        "Lamongan", "Gresik", "Sidoarjo", "Tuban", "Bojonegoro", "Ngawi", "Magetan",
+        "Ponorogo", "Pacitan", "Trenggalek", "Tulungagung", "Lumajang",
+        "Serang", "Cilegon", "Tangerang", "Tangerang Selatan", "Pandeglang", "Lebak", "Rangkasbitung",
+        "Palangka Raya", "Banjarmasin", "Banjarbaru", "Martapura", "Barabai", "Kandangan",
+        "Samarinda", "Balikpapan", "Bontang", "Sangatta", "Tenggarong", "Penajam",
+        "Palu", "Donggala", "Toli-Toli", "Luwuk", "Poso", "Parigi", "Buol",
+        "Manado", "Bitung", "Tomohon", "Kotamobagu", "Tondano", "Airmadidi",
+        "Gorontalo", "Limboto", "Marisa", "Tilamuta", "Kwandang",
+        "Ambon", "Tual", "Masohi", "Namlea", "Saumlaki", "Dobo",
+        "Ternate", "Tidore", "Sofifi", "Tobelo", "Jailolo", "Labuha",
+        "Sorong", "Manokwari", "Fakfak", "Kaimana", "Bintuni", "Merdey",
+        "Jayapura", "Timika", "Merauke", "Nabire", "Biak", "Serui", "Wamena",
+        
+        # Bali & Nusa Tenggara
+        "Denpasar", "Singaraja", "Tabanan", "Gianyar", "Klungkung", "Bangli", "Karangasem",
+        "Mataram", "Bima", "Dompu", "Sumbawa Besar", "Taliwang", "Praya", "Selong",
+        "Kupang", "Atambua", "Kefamenanu", "Soe", "Ende", "Maumere", "Ruteng",
+        
+        # Kalimantan & Sulawesi
+        "Pontianak", "Singkawang", "Mempawah", "Sambas", "Ketapang", "Sanggau", "Ngabang",
+        "Banjarmasin", "Banjarbaru", "Marabahan", "Rantau", "Pelaihari", "Kandangan",
+        "Palangka Raya", "Sampit", "Pangkalan Bun", "Muara Teweh", "Kuala Kapuas",
+        "Tanjung Selor", "Tarakan", "Malinau", "Nunukan", "Tanjung Redeb",
+        "Makassar", "Parepare", "Palopo", "Bulukumba", "Bantaeng", "Jeneponto", "Takalar",
+        "Gowa", "Maros", "Pangkajene", "Barru", "Soppeng", "Wajo", "Bone", "Sinjai",
+        "Kendari", "Bau-Bau", "Kolaka", "Pomala", "Raha", "Lasusua",
+        "Palu", "Luwuk", "Toli-Toli", "Donggala", "Parigi Moutong", "Buol", "Tolitoli",
+        
+        # Maluku & Papua
+        "Ambon", "Tual", "Masohi", "Namlea", "Saumlaki",
+        "Ternate", "Tidore", "Sofifi", "Tobelo", "Jailolo",
+        "Jayapura", "Timika", "Merauke", "Nabire", "Biak", "Wamena", "Sorong", "Manokwari"
+    ],
+    
+    # MALAYSIA
+    "Malaysia": [
+        "Kuala Lumpur", "Petaling Jaya", "Shah Alam", "Subang Jaya", "Klang", 
+        "George Town", "Butterworth", "Bukit Mertajam", "Tanjung Bungah",
+        "Johor Bahru", "Skudai", "Pasir Gudang", "Batu Pahat", "Muar", "Kluang",
+        "Ipoh", "Taiping", "Lumut", "Teluk Intan", "Kuala Kangsar",
+        "Kota Kinabalu", "Sandakan", "Tawau", "Lahad Datu", "Keningau",
+        "Kuching", "Sibu", "Miri", "Bintulu", "Sarikei",
+        "Alor Setar", "Sungai Petani", "Kulim", "Langkawi",
+        "Kota Bharu", "Kuala Terengganu", "Dungun", "Kemaman",
+        "Kuantan", "Temerloh", "Bentong", "Raub",
+        "Seremban", "Port Dickson", "Tampin", "Rembau",
+        "Melaka", "Alor Gajah", "Jasin", "Masjid Tanah",
+        "Kuala Lumpur", "Putrajaya", "Cyberjaya", "Dengkil", "Sepang"
+    ],
+    
+    # SINGAPORE
+    "Singapore": [
+        "Singapore", "Jurong", "Woodlands", "Tampines", "Bedok", 
+        "Ang Mo Kio", "Yishun", "Sengkang", "Punggol"
+    ],
+    
+    # BRUNEI
+    "Brunei": [
+        "Bandar Seri Begawan", "Kuala Belait", "Seria", "Tutong", 
+        "Bangar", "Muara", "Lumapas"
+    ],
+    
+    # THAILAND
+    "Thailand": [
+        "Bangkok", "Nonthaburi", "Pak Kret", "Hat Yai", "Chiang Mai",
+        "Nakhon Ratchasima", "Khon Kaen", "Udon Thani", "Surat Thani",
+        "Chiang Rai", "Phuket", "Pattaya", "Rayong", "Chonburi",
+        "Nakhon Si Thammarat", "Ubon Ratchathani", "Nakhon Sawan",
+        "Songkhla", "Krabi", "Phitsanulok", "Yala", "Narathiwat", "Pattani"
+    ],
+    
+    # VIETNAM
+    "Vietnam": [
+        "Ho Chi Minh City", "Hanoi", "Da Nang", "Hai Phong", "Can Tho",
+        "Bien Hoa", "Nha Trang", "Hue", "Vung Tau", "Quy Nhon",
+        "Buon Ma Thuot", "My Tho", "Rach Gia", "Long Xuyen", "Thai Nguyen",
+        "Thanh Hoa", "Nam Dinh", "Hai Duong", "Vinh", "Da Lat"
+    ],
+    
+    # PHILIPPINES
+    "Philippines": [
+        "Manila", "Quezon City", "Davao City", "Caloocan", "Cebu City",
+        "Zamboanga City", "Taguig", "Antipolo", "Pasig", "Cagayan de Oro",
+        "Makati", "Bacolod", "General Santos", "Iloilo City", "Paranaque",
+        "Valenzuela", "Las Pinas", "Marikina", "Muntinlupa", "Angeles",
+        "Butuan", "Iligan", "Cotabato City", "Tacloban", "Baguio"
+    ],
+    
+    # MYANMAR (BURMA)
+    "Myanmar": [
+        "Yangon", "Mandalay", "Naypyidaw", "Mawlamyine", "Bago",
+        "Pathein", "Monywa", "Sittwe", "Meiktila", "Myitkyina",
+        "Taunggyi", "Dawei", "Hpa-An", "Lashio", "Pyay"
+    ],
+    
+    # CAMBODIA
+    "Cambodia": [
+        "Phnom Penh", "Siem Reap", "Battambang", "Sihanoukville", 
+        "Kampong Cham", "Prey Veng", "Ta Khmau", "Pursat",
+        "Kampot", "Kratie", "Stung Treng", "Mondulkiri"
+    ],
+    
+    # LAOS
+    "Laos": [
+        "Vientiane", "Luang Prabang", "Pakse", "Savannakhet", 
+        "Thakhek", "Xam Neua", "Phongsali", "Luang Namtha"
+    ],
+    
+    # TIMOR-LESTE (EAST TIMOR)
+    "Timor-Leste": [
+        "Dili", "Baucau", "Maliana", "Suai", "Lospalos",
+        "Aileu", "Ainaro", "Liquica", "Same", "Viqueque"
+    ],
+    
+    # ASIA TIMUR & TENGAH (Tambahan)
+    "China": [
+        "Beijing", "Shanghai", "Guangzhou", "Shenzhen", "Chengdu",
+        "Hangzhou", "Wuhan", "Xi'an", "Nanjing", "Tianjin",
+        "Chongqing", "Suzhou", "Zhengzhou", "Changsha", "Qingdao"
+    ],
+    
+    "Japan": [
+        "Tokyo", "Yokohama", "Osaka", "Nagoya", "Sapporo",
+        "Fukuoka", "Kobe", "Kyoto", "Kawasaki", "Saitama",
+        "Hiroshima", "Sendai", "Chiba", "Kitakyushu", "Sakai"
+    ],
+    
+    "South Korea": [
+        "Seoul", "Busan", "Incheon", "Daegu", "Daejeon",
+        "Gwangju", "Suwon", "Ulsan", "Changwon", "Goyang"
+    ],
+    
+    # TIMUR TENGAH
+    "Saudi Arabia": [
+        "Makkah", "Madinah", "Riyadh", "Jeddah", "Dammam",
+        "Khobar", "Taif", "Buraidah", "Khamis Mushait", "Najran",
+        "Tabuk", "Hail", "Jubail", "Abha", "Yanbu", "Dhahran"
+    ],
+    
+    "United Arab Emirates": [
+        "Dubai", "Abu Dhabi", "Sharjah", "Al Ain", "Ajman",
+        "Ras Al Khaimah", "Fujairah", "Umm Al Quwain", "Khor Fakkan"
+    ],
+    
+    "Qatar": ["Doha", "Al Rayyan", "Al Wakrah", "Al Khor", "Dukhan"],
+    
+    "Kuwait": ["Kuwait City", "Al Ahmadi", "Hawalli", "Salmiya", "Sabah Al Salem"],
+    
+    "Bahrain": ["Manama", "Riffa", "Muharraq", "Isa Town", "Sitra"],
+    
+    "Oman": ["Muscat", "Salalah", "Sohar", "Nizwa", "Sur", "Ibri", "Barka"],
+    
+    "Egypt": [
+        "Cairo", "Alexandria", "Giza", "Luxor", "Aswan",
+        "Port Said", "Suez", "Ismailia", "Tanta", "Mansoura",
+        "Assiut", "Zagazig", "Damietta", "Minya", "Beni Suef"
+    ],
+    
+    "Turkey": [
+        "Istanbul", "Ankara", "Izmir", "Bursa", "Antalya",
+        "Adana", "Gaziantep", "Konya", "Mersin", "Diyarbakir",
+        "Kayseri", "Eskisehir", "Samsun", "Denizli", "Trabzon"
+    ],
+    
+    # ASIA SELATAN
+    "Pakistan": [
+        "Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad",
+        "Multan", "Peshawar", "Quetta", "Sialkot", "Gujranwala",
+        "Hyderabad", "Sargodha", "Bahawalpur", "Sukkur", "Larkana"
+    ],
+    
+    "India": [
+        "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai",
+        "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow",
+        "Surat", "Nagpur", "Indore", "Thane", "Bhopal",
+        "Visakhapatnam", "Patna", "Vadodara", "Ghaziabad", "Ludhiana"
+    ],
+    
+    "Bangladesh": [
+        "Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna",
+        "Barisal", "Rangpur", "Comilla", "Mymensingh", "Narayanganj"
+    ],
+    
+    "Iran": [
+        "Tehran", "Mashhad", "Isfahan", "Shiraz", "Tabriz",
+        "Qom", "Ahvaz", "Kermanshah", "Yazd", "Rasht",
+        "Zahedan", "Hamadan", "Kerman", "Ardabil", "Urmia"
+    ],
+    
+    "Iraq": [
+        "Baghdad", "Basra", "Mosul", "Erbil", "Najaf",
+        "Karbala", "Sulaymaniyah", "Kirkuk", "Nasiriyah", "Amarah"
+    ],
+    
+    "Jordan": ["Amman", "Zarqa", "Irbid", "Aqaba", "Salt", "Mafraq", "Karak"],
+    
+    "Lebanon": ["Beirut", "Tripoli", "Sidon", "Tyre", "Nabatieh", "Zahle", "Jounieh"],
+    
+    "Syria": ["Damascus", "Aleppo", "Homs", "Latakia", "Hama", "Deir ez-Zor", "Raqqa"],
+    
+    "Yemen": ["Sanaa", "Aden", "Taiz", "Al Hudaydah", "Mukalla", "Ibb", "Dhamar"],
+    
+    # AFRIKA
     "Morocco": ["Casablanca", "Rabat", "Marrakech", "Fez", "Tangier", "Agadir", "Meknes"],
-    "Algeria": ["Algiers", "Oran", "Constantine", "Annaba", "Blida", "Batna"],
-    "Tunisia": ["Tunis", "Sfax", "Sousse", "Kairouan", "Bizerte", "Gabes"],
-    "Libya": ["Tripoli", "Benghazi", "Misrata", "Bayda", "Zawiya", "Tobruk"],
+    "Algeria": ["Algiers", "Oran", "Constantine", "Annaba", "Blida", "Batna", "Wahran"],
+    "Tunisia": ["Tunis", "Sfax", "Sousse", "Kairouan", "Bizerte", "Gabes", "Ariana"],
+    "Libya": ["Tripoli", "Benghazi", "Misrata", "Bayda", "Zawiya", "Tobruk", "Ajdabiya"],
     "Sudan": ["Khartoum", "Omdurman", "Port Sudan", "Kassala", "Nyala", "El Obeid"],
+    
     "Nigeria": ["Lagos", "Abuja", "Kano", "Ibadan", "Port Harcourt", "Kaduna", "Maiduguri"],
     "South Africa": ["Johannesburg", "Cape Town", "Durban", "Pretoria", "Port Elizabeth", "Bloemfontein"],
-    "Kenya": ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Malindi"],
-    "China": ["Beijing", "Shanghai", "Guangzhou", "Shenzhen", "Chengdu", "Hangzhou", "Wuhan", "Xi'an", "Nanjing", "Tianjin", "Urumqi", "Kashgar"],
-    "Japan": ["Tokyo", "Osaka", "Kyoto", "Yokohama", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Hiroshima", "Sendai"],
-    "South Korea": ["Seoul", "Busan", "Incheon", "Daegu", "Daejeon", "Gwangju", "Ulsan", "Suwon"],
-    "Philippines": ["Manila", "Quezon City", "Davao", "Cebu City", "Zamboanga", "Makati", "Pasig", "Marawi"],
-    "Vietnam": ["Ho Chi Minh City", "Hanoi", "Da Nang", "Hai Phong", "Can Tho", "Nha Trang", "Hue"],
-    "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Canberra", "Gold Coast", "Darwin"],
-    "New Zealand": ["Auckland", "Wellington", "Christchurch", "Hamilton", "Dunedin", "Tauranga"],
-    "United Kingdom": ["London", "Manchester", "Birmingham", "Glasgow", "Liverpool", "Leeds", "Edinburgh", "Bristol", "Cardiff", "Belfast"],
-    "France": ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Bordeaux", "Lille"],
-    "Germany": ["Berlin", "Munich", "Hamburg", "Frankfurt", "Cologne", "Stuttgart", "Dusseldorf", "Leipzig", "Dortmund"],
-    "Netherlands": ["Amsterdam", "Rotterdam", "The Hague", "Utrecht", "Eindhoven", "Groningen", "Tilburg"],
-    "Belgium": ["Brussels", "Antwerp", "Ghent", "Bruges", "Liege", "Namur"],
-    "Switzerland": ["Zurich", "Geneva", "Basel", "Bern", "Lausanne", "Lucerne", "Lugano"],
-    "Austria": ["Vienna", "Salzburg", "Innsbruck", "Graz", "Linz", "Klagenfurt"],
-    "Italy": ["Rome", "Milan", "Naples", "Turin", "Florence", "Bologna", "Venice", "Verona", "Palermo"],
-    "Spain": ["Madrid", "Barcelona", "Valencia", "Seville", "Bilbao", "Malaga", "Zaragoza", "Murcia", "Granada"],
-    "Portugal": ["Lisbon", "Porto", "Faro", "Coimbra", "Braga", "Funchal"],
-    "Greece": ["Athens", "Thessaloniki", "Patras", "Heraklion", "Larissa", "Rhodes"],
-    "Russia": ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan", "Nizhny Novgorod", "Chelyabinsk", "Ufa"],
-    "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Francisco", "Washington", "Boston", "Seattle", "Miami", "Detroit", "Minneapolis", "Denver", "Atlanta"],
-    "Canada": ["Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Winnipeg", "Quebec City", "Halifax"],
-    "Mexico": ["Mexico City", "Guadalajara", "Monterrey", "Puebla", "Tijuana", "Leon", "Juarez", "Cancun"],
-    "Brazil": ["Sao Paulo", "Rio de Janeiro", "Brasilia", "Salvador", "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba", "Recife"],
-    "Argentina": ["Buenos Aires", "Cordoba", "Rosario", "Mendoza", "La Plata", "San Miguel de Tucuman", "Mar del Plata"],
-    "Chile": ["Santiago", "Valparaiso", "Concepcion", "La Serena", "Antofagasta", "Temuco", "Rancagua"]
+    "Kenya": ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret", "Malindi", "Thika"],
+    
+    # EROPA
+    "United Kingdom": [
+        "London", "Manchester", "Birmingham", "Glasgow", "Liverpool",
+        "Leeds", "Edinburgh", "Bristol", "Cardiff", "Belfast",
+        "Sheffield", "Newcastle", "Nottingham", "Southampton", "Leicester"
+    ],
+    
+    "France": [
+        "Paris", "Marseille", "Lyon", "Toulouse", "Nice",
+        "Nantes", "Strasbourg", "Bordeaux", "Lille", "Rennes",
+        "Reims", "Saint-Etienne", "Toulon", "Grenoble", "Dijon"
+    ],
+    
+    "Germany": [
+        "Berlin", "Munich", "Hamburg", "Frankfurt", "Cologne",
+        "Stuttgart", "Dusseldorf", "Leipzig", "Dortmund", "Essen",
+        "Bremen", "Dresden", "Hanover", "Nuremberg", "Duisburg"
+    ],
+    
+    "Netherlands": [
+        "Amsterdam", "Rotterdam", "The Hague", "Utrecht", "Eindhoven",
+        "Groningen", "Tilburg", "Almere", "Breda", "Nijmegen"
+    ],
+    
+    "Belgium": ["Brussels", "Antwerp", "Ghent", "Bruges", "Liege", "Namur", "Leuven"],
+    
+    "Switzerland": [
+        "Zurich", "Geneva", "Basel", "Bern", "Lausanne",
+        "Lucerne", "Lugano", "St. Gallen", "Winterthur", "Thun"
+    ],
+    
+    "Austria": ["Vienna", "Salzburg", "Innsbruck", "Graz", "Linz", "Klagenfurt", "Villach"],
+    
+    "Italy": [
+        "Rome", "Milan", "Naples", "Turin", "Florence",
+        "Bologna", "Venice", "Verona", "Palermo", "Genoa",
+        "Bari", "Catania", "Padua", "Parma", "Brescia"
+    ],
+    
+    "Spain": [
+        "Madrid", "Barcelona", "Valencia", "Seville", "Bilbao",
+        "Malaga", "Zaragoza", "Murcia", "Granada", "Palma",
+        "Las Palmas", "Alicante", "Cordoba", "Valladolid", "Vigo"
+    ],
+    
+    "Portugal": ["Lisbon", "Porto", "Faro", "Coimbra", "Braga", "Funchal", "Aveiro"],
+    
+    "Greece": ["Athens", "Thessaloniki", "Patras", "Heraklion", "Larissa", "Rhodes", "Volos"],
+    
+    "Russia": [
+        "Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg", "Kazan",
+        "Nizhny Novgorod", "Chelyabinsk", "Ufa", "Samara", "Rostov-on-Don"
+    ],
+    
+    # AMERIKA UTARA
+    "United States": [
+        "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+        "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Francisco",
+        "Washington", "Boston", "Seattle", "Miami", "Denver",
+        "Detroit", "Minneapolis", "Atlanta", "Portland", "Las Vegas"
+    ],
+    
+    "Canada": [
+        "Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton",
+        "Ottawa", "Winnipeg", "Quebec City", "Halifax", "Victoria",
+        "Saskatoon", "Regina", "St. John's", "Kitchener", "London"
+    ],
+    
+    "Mexico": [
+        "Mexico City", "Guadalajara", "Monterrey", "Puebla", "Tijuana",
+        "Leon", "Juarez", "Cancun", "Merida", "Acapulco"
+    ],
+    
+    # AMERIKA SELATAN
+    "Brazil": [
+        "Sao Paulo", "Rio de Janeiro", "Brasilia", "Salvador", "Fortaleza",
+        "Belo Horizonte", "Manaus", "Curitiba", "Recife", "Porto Alegre",
+        "Goiania", "Belem", "Guarulhos", "Campinas", "Sao Luis"
+    ],
+    
+    "Argentina": [
+        "Buenos Aires", "Cordoba", "Rosario", "Mendoza", "La Plata",
+        "San Miguel de Tucuman", "Mar del Plata", "Salta", "Santa Fe", "San Juan"
+    ],
+    
+    "Chile": [
+        "Santiago", "Valparaiso", "Concepcion", "La Serena", "Antofagasta",
+        "Temuco", "Rancagua", "Talca", "Arica", "Chillan"
+    ],
+    
+    "Colombia": [
+        "Bogota", "Medellin", "Cali", "Barranquilla", "Cartagena",
+        "Cucuta", "Bucaramanga", "Pereira", "Santa Marta", "Ibague"
+    ],
+    
+    "Peru": [
+        "Lima", "Arequipa", "Trujillo", "Chiclayo", "Piura",
+        "Cusco", "Iquitos", "Huancayo", "Tacna", "Juliaca"
+    ],
+    
+    # OSEANIA
+    "Australia": [
+        "Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide",
+        "Canberra", "Gold Coast", "Newcastle", "Wollongong", "Darwin",
+        "Hobart", "Cairns", "Toowoomba", "Ballarat", "Bendigo"
+    ],
+    
+    "New Zealand": [
+        "Auckland", "Wellington", "Christchurch", "Hamilton", "Dunedin",
+        "Tauranga", "Palmerston North", "Napier", "Rotorua", "New Plymouth"
+    ]
 }
 
 # Buat daftar gabungan "Kota, Negara" untuk dropdown
