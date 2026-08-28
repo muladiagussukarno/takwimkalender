@@ -5,6 +5,46 @@ import calendar
 
 st.set_page_config(page_title="Dasbor Kalender Taqwim", layout="wide")
 
+# CSS untuk membuat header sticky/fixed
+st.markdown("""
+<style>
+/* Fix header agar tidak scroll */
+[data-testid="stHeading"] {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 999;
+    padding: 1rem 0;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Atau target elemen h1 langsung */
+h1 {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 999;
+    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Pastikan sidebar juga fixed */
+[data-testid="stSidebar"] {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+/* Beri padding pada konten utama agar tidak tertutup header */
+.main > div {
+    padding-top: 100px;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Anti Google Translate
 st.markdown("""
 <meta name="google" content="notranslate">
