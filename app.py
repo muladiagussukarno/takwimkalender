@@ -196,48 +196,48 @@ for country_name, cities in WORLD_CITIES.items():
 ALL_CITIES.sort()
 
 # ==========================================
-# SIDEBAR PENGATURAN
+# PENGATURAN (Expander di Main Content)
 # ==========================================
-if 'view_year' not in st.session_state:
-    st.session_state.view_year = datetime.now().year
-if 'view_month' not in st.session_state:
-    st.session_state.view_month = datetime.now().month
+with st.expander("⚙️ Pengaturan Kalender", expanded=False):
+    if 'view_year' not in st.session_state:
+        st.session_state.view_year = datetime.now().year
+    if 'view_month' not in st.session_state:
+        st.session_state.view_month = datetime.now().month
 
-st.sidebar.header("⚙️ Pengaturan")
-calendar_type = st.sidebar.radio(
-    "Pilih Kalender:",
-    ["Kalender Masehi", 
-     "Kalender Hijriah Qomariah/Bulan",
-     "Kalender Hijrah Syamsiah/Matahari",
-     "Kalender Jawa (Saka)",
-     "Kalender Cina (Imlek)"],
-    index=0
-)
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        calendar_type = st.radio(
+            "Pilih Kalender:",
+            ["Kalender Masehi", 
+             "Kalender Hijriah Qomariah/Bulan",
+             "Kalender Hijrah Syamsiah/Matahari",
+             "Kalender Jawa (Saka)",
+             "Kalender Cina (Imlek)"],
+            index=0
+        )
+    
+    with col2:
+        default_city = "Jakarta, Indonesia"
+        if default_city in ALL_CITIES:
+            default_idx = ALL_CITIES.index(default_city)
+        else:
+            default_idx = 0
 
-# Dropdown kota dengan autocomplete - versi yang lebih aman
-default_city = "Jakarta, Indonesia"
-if default_city in ALL_CITIES:
-    default_idx = ALL_CITIES.index(default_city)
-else:
-    default_idx = 0  # Fallback jika Jakarta tidak ada
-
-selected_location = st.sidebar.selectbox(
-    "🌍 Cari & Pilih Kota",
-    options=ALL_CITIES,
-    index=default_idx
-)
-
-# Pisahkan kota dan negara
-city = selected_location.split(", ")[0]
-country = selected_location.split(", ")[1]
-
-method = st.sidebar.selectbox("Metode Perhitungan Sholat", [
-    (20, "Kemenag RI (Indonesia)"),
-    (2, "Muslim World League"),
-    (4, "Umm Al-Qura University, Makkah"),
-], format_func=lambda x: x[1])
-
-today = datetime.now()
+        selected_location = st.selectbox(
+            "🌍 Cari & Pilih Kota",
+            options=ALL_CITIES,
+            index=default_idx
+        )
+        city = selected_location.split(", ")[0]
+        country = selected_location.split(", ")[1]
+    
+    with col3:
+        method = st.selectbox("Metode Perhitungan Sholat", [
+            (20, "Kemenag RI (Indonesia)"),
+            (2, "Muslim World League"),
+            (4, "Umm Al-Qura University, Makkah"),
+        ], format_func=lambda x: x[1])
 
 # ==========================================
 # FUNGSI-FUNGSI
