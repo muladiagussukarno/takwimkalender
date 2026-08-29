@@ -5,65 +5,63 @@ import calendar
 
 st.set_page_config(page_title="Dasbor Kalender Taqwim", layout="wide")
 
-# CSS untuk membuat header sticky/fixed
+import streamlit as st
+import requests
+from datetime import datetime
+import calendar
+
+st.set_page_config(page_title="Dasbor Kalender Taqwim", layout="wide", page_icon="")
+
+# CSS untuk membuat header sticky dan selalu terlihat
 st.markdown("""
 <style>
-/* Sticky Header untuk judul utama */
-h1 {
-    position: sticky !important;
-    top: 0 !important;
-    background-color: white !important;
-    z-index: 9999 !important;
-    padding: 20px 10px !important;
-    margin: 0 !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
-    border-bottom: 2px solid #f0f0f0 !important;
-}
-
-/* Sticky untuk sub-header (h2) */
-h2 {
-    position: sticky !important;
-    top: 80px !important;
-    background-color: white !important;
-    z-index: 9998 !important;
-    padding: 15px 10px !important;
-    margin: 10px 0 !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
-}
-
-/* Pastikan sidebar juga fixed */
-[data-testid="stSidebar"] {
+/* Sticky Header Utama */
+.main-header {
     position: fixed !important;
     top: 0 !important;
-    height: 100vh !important;
-    z-index: 10000 !important;
-    overflow-y: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    padding: 20px !important;
+    z-index: 99999 !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+    text-align: center !important;
 }
 
-/* Beri padding pada konten utama agar tidak tertutup header */
-.main .block-container {
-    padding-top: 100px !important;
+.main-header h1 {
+    margin: 0 !important;
+    font-size: 2.5rem !important;
+    font-weight: bold !important;
 }
 
-/* Hilangkan scroll horizontal */
-body {
-    overflow-x: hidden !important;
+/* Sidebar fixed */
+[data-testid="stSidebar"] {
+    position: fixed !important;
+    top: 100px !important;
+    height: calc(100vh - 100px) !important;
+    z-index: 99998 !important;
+}
+
+/* Konten utama diberi padding agar tidak tertutup header */
+.main > div {
+    padding-top: 120px !important;
+}
+
+/* Kalender table tetap rapi */
+.calendar-table {
+    margin-top: 20px !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Anti Google Translate
+# Header yang akan sticky/fixed
 st.markdown("""
-<meta name="google" content="notranslate">
-<meta name="translate" content="no">
-<style>
-.notranslate {
-    translate: no;
-}
-</style>
+<div class="main-header">
+    <h1>🌍 Dasbor Kalender Taqwim</h1>
+    <p style="margin: 5px 0; font-size: 1rem;">Standar Internasional ISO | Terverifikasi Indonesia</p>
+</div>
 """, unsafe_allow_html=True)
-
-st.title("🌍 Dasbor Kalender Taqwim")
 
 # ==========================================
 # DATABASE KOTA DUNIA (Untuk Autocomplete)
