@@ -187,23 +187,25 @@ WORLD_CITIES = {
 }
 
 # ==========================================
-# INI YANG SEBELUMNYA HILANG (PENTING!)
+# INISIALISASI DEFAULT VALUES (PENTING!)
 # ==========================================
-ALL_CITIES = []
-for country_name, cities in WORLD_CITIES.items():
-    for city_name in cities:
-        ALL_CITIES.append(f"{city_name}, {country_name}")
-ALL_CITIES.sort()
+if 'view_year' not in st.session_state:
+    st.session_state.view_year = datetime.now().year
+if 'view_month' not in st.session_state:
+    st.session_state.view_month = datetime.now().month
+
+# Default values - akan diupdate jika user mengubah di expander
+default_calendar = "Kalender Masehi"
+default_city = "Jakarta"
+default_country = "Indonesia"
+default_method = (20, "Kemenag RI (Indonesia)")
 
 # ==========================================
 # PENGATURAN (Expander di Main Content)
 # ==========================================
-with st.expander("⚙️ Pengaturan Kalender", expanded=False):
-    if 'view_year' not in st.session_state:
-        st.session_state.view_year = datetime.now().year
-    if 'view_month' not in st.session_state:
-        st.session_state.view_month = datetime.now().month
-
+with st.expander("️ Pengaturan Kalender", expanded=False):
+    st.markdown("### Pilih pengaturan di bawah ini:")
+    
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -214,20 +216,17 @@ with st.expander("⚙️ Pengaturan Kalender", expanded=False):
              "Kalender Hijrah Syamsiah/Matahari",
              "Kalender Jawa (Saka)",
              "Kalender Cina (Imlek)"],
-            index=0
+            index=0,
+            key="calendar_type"
         )
     
     with col2:
-        default_city = "Jakarta, Indonesia"
-        if default_city in ALL_CITIES:
-            default_idx = ALL_CITIES.index(default_city)
-        else:
-            default_idx = 0
-
+        default_city_idx = ALL_CITIES.index("Jakarta, Indonesia") if "Jakarta, Indonesia" in ALL_CITIES else 0
         selected_location = st.selectbox(
             "🌍 Cari & Pilih Kota",
             options=ALL_CITIES,
-            index=default_idx
+            index=default_city_idx,
+            key="city_select"
         )
         city = selected_location.split(", ")[0]
         country = selected_location.split(", ")[1]
@@ -237,7 +236,32 @@ with st.expander("⚙️ Pengaturan Kalender", expanded=False):
             (20, "Kemenag RI (Indonesia)"),
             (2, "Muslim World League"),
             (4, "Umm Al-Qura University, Makkah"),
-        ], format_func=lambda x: x[1])
+        ], format_func=lambda x: x[1], key="method_select")
+    
+    st.success("✅ Pengaturan tersimpan. Tutup panel ini untuk melihat hasil.")
+
+# ==========================================
+# AMBIL NILAI DARI SESSION STATE (FALLBACK)
+# ==========================================
+# Jika expander belum pernah dibuka, gunakan default values
+try:
+    calendar_type = st.session_state.get("calendar_type", default_calendar)
+except:
+    calendar_type = default_calendar
+
+try:
+    city = selected_location.split(", ")[0] if 'selected_location' in dir() else default_city
+    country = selected_location.split(", ")[1] if 'selected_location' in dir() else default_country
+except:
+    city = default_city
+    country = default_country
+
+try:
+    method = st.session_state.get("method_select", default_method)
+except:
+    method = default_method
+
+today = datetime.now()
 
 # ==========================================
 # FUNGSI-FUNGSI
