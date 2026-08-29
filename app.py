@@ -23,34 +23,55 @@ st.markdown("""
     right: 0 !important;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
-    padding: 20px !important;
+    padding: 25px 20px !important;
     z-index: 99999 !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
     text-align: center !important;
+    height: auto !important;
+    min-height: 100px !important;
 }
 
 .main-header h1 {
     margin: 0 !important;
-    font-size: 2.5rem !important;
+    font-size: 2.2rem !important;
     font-weight: bold !important;
+    color: white !important;
+    line-height: 1.2 !important;
 }
 
-/* Sidebar fixed */
+.main-header p {
+    margin: 8px 0 0 0 !important;
+    font-size: 0.95rem !important;
+    color: rgba(255,255,255,0.9) !important;
+}
+
+/* Sidebar fixed di bawah header */
 [data-testid="stSidebar"] {
     position: fixed !important;
     top: 100px !important;
     height: calc(100vh - 100px) !important;
     z-index: 99998 !important;
+    overflow-y: auto !important;
 }
 
-/* Konten utama diberi padding agar tidak tertutup header */
-.main > div {
-    padding-top: 120px !important;
+/* Konten utama diberi padding yang cukup agar tidak tertutup header */
+.main > div:first-child {
+    padding-top: 140px !important;
+}
+
+/* Pastikan semua konten tidak tertutup */
+.block-container {
+    padding-top: 140px !important;
 }
 
 /* Kalender table tetap rapi */
 .calendar-table {
     margin-top: 20px !important;
+}
+
+/* Hilangkan scroll horizontal */
+body {
+    overflow-x: hidden !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -59,7 +80,7 @@ st.markdown("""
 st.markdown("""
 <div class="main-header">
     <h1>🌍 Dasbor Kalender Taqwim</h1>
-    <p style="margin: 5px 0; font-size: 1rem;">Standar Internasional ISO | Terverifikasi Indonesia</p>
+    <p>Standar Internasional ISO | Terverifikasi Indonesia</p>
 </div>
 """, unsafe_allow_html=True)
 
