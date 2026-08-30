@@ -415,7 +415,7 @@ def display_calendar(year, month, month_names, highlight_day=None):
 # KALENDER 1: MASEHI
 # ============================================
 if calendar_type == "Kalender Masehi":
-    st.header("📅 Kalender Masehi")
+    st.header("Kalender Masehi")
     
     col1, col2, col3 = st.columns(3)
     with col1:
