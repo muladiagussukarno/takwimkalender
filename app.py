@@ -202,6 +202,7 @@ default_calendar = "Kalender Masehi"
 default_city = "Jakarta"
 default_country = "Indonesia"
 default_method = (20, "Kemenag RI (Indonesia)")
+today = datetime.now()
 
 # ==========================================
 # PENGATURAN (Expander di Main Content)
