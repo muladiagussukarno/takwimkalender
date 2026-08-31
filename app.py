@@ -296,31 +296,44 @@ with st.expander("⚙️ Pengaturan Kalender", expanded=False):
         ]
         current_cal_idx = calendar_options.index(st.session_state.calendar_type) if st.session_state.calendar_type in calendar_options else 0
         
-        calendar_type = st.radio("Pilih Kalender:", calendar_options, index=current_cal_idx, key="calendar_type_input")
-        st.session_state.calendar_type = calendar_type
+        selected_cal = st.radio("Pilih Kalender:", calendar_options, index=current_cal_idx, key="cal_radio")
     
     with col2:
         current_location = f"{st.session_state.city}, {st.session_state.country}"
         default_city_idx = ALL_CITIES.index(current_location) if current_location in ALL_CITIES else 0
         
-        selected_location = st.selectbox("🌍 Cari & Pilih Kota", options=ALL_CITIES, index=default_city_idx, key="location_input")
-        st.session_state.city = selected_location.split(", ")[0]
-        st.session_state.country = selected_location.split(", ")[1]
+        selected_loc = st.selectbox("🌍 Cari & Pilih Kota", options=ALL_CITIES, index=default_city_idx, key="city_select")
     
     with col3:
         method_options = [(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")]
         current_method_idx = next((i for i, x in enumerate(method_options) if x == st.session_state.method), 0)
         
-        method = st.selectbox("Metode Perhitungan Sholat", method_options, index=current_method_idx, format_func=lambda x: x[1], key="method_input")
-        st.session_state.method = method
+        selected_method = st.selectbox("Metode Perhitungan Sholat", method_options, index=current_method_idx, format_func=lambda x: x[1], key="method_select")
+    
+    # Update session state hanya sekali di akhir
+    if 'prev_cal' not in st.session_state:
+        st.session_state.prev_cal = selected_cal
+    if 'prev_loc' not in st.session_state:
+        st.session_state.prev_loc = selected_loc
+    if 'prev_method' not in st.session_state:
+        st.session_state.prev_method = selected_method
+    
+    if (st.session_state.prev_cal != selected_cal or 
+        st.session_state.prev_loc != selected_loc or 
+        st.session_state.prev_method != selected_method):
+        
+        st.session_state.calendar_type = selected_cal
+        st.session_state.city = selected_loc.split(", ")[0]
+        st.session_state.country = selected_loc.split(", ")[1]
+        st.session_state.method = selected_method
+        
+        st.session_state.prev_cal = selected_cal
+        st.session_state.prev_loc = selected_loc
+        st.session_state.prev_method = selected_method
+        
+        st.rerun()
     
     st.success("✅ Pengaturan tersimpan. Tutup panel ini untuk melihat hasil.")
-
-# Ambil nilai dari session state untuk digunakan di bagian kalender di bawah
-calendar_type = st.session_state.calendar_type
-city = st.session_state.city
-country = st.session_state.country
-method = st.session_state.method
 
 # ==========================================
 # FUNGSI-FUNGSI
