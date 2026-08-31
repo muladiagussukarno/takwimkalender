@@ -714,36 +714,58 @@ elif calendar_type == "Kalender Cina (Imlek)":
     st.success(f"**Tahun {chinese['shio']} - {chinese['elemen']} ({chinese['yin_yang']})**")
 
 # ============================================
-# JADWAL SHOLAT
+# JADWAL SHOLAT (OTOMATIS MUNCUL)
 # ============================================
 st.divider()
 st.subheader("🕌 Jadwal Sholat Hari Ini")
 
-if st.button("🔍 Tampilkan Jadwal Sholat"):
-    with st.spinner("Mengambil data..."):
-        try:
-            url = f"http://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method={method[0]}"
-            response = requests.get(url)
-            data = response.json()
+# Info lokasi
+st.info(f"📍 **Lokasi:** {city.title()}, {country.title()} | **Metode:** {method[1]}")
+
+with st.spinner("⏳ Mengambil jadwal sholat..."):
+    try:
+        url = f"http://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method={method[0]}"
+        response = requests.get(url, timeout=10)
+        data = response.json()
+        
+        if data['code'] == 200:
+            timings = data['data']['timings']
+            date_info = data['data']['date']
             
-            if data['code'] == 200:
-                timings = data['data']['timings']
-                st.write(f"**Lokasi:** {city.title()}, {country.title()}")
-                
-                cols = st.columns(5)
-                prayers = [
-                    ("Subuh", timings["Fajr"]),
-                    ("Dzuhur", timings["Dhuhr"]),
-                    ("Ashar", timings["Asr"]),
-                    ("Maghrib", timings["Maghrib"]),
-                    ("Isya", timings["Isha"])
-                ]
-                for i, (name, time) in enumerate(prayers):
-                    cols[i].metric(name, time)
-            else:
-                st.error("Kota tidak ditemukan")
-        except Exception as e:
-            st.error(f"❌ Error: {e}")
+            # Tampilkan tanggal
+            st.write(f"**📅 Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
+            
+            st.divider()
+            
+            # Jadwal sholat dengan format yang lebih baik
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                st.metric("🌅 Subuh (Fajr)", timings["Fajr"])
+                st.metric("☀️ Dzuhur (Dhuhr)", timings["Dhuhr"])
+                st.metric("🌤️ Ashar (Asr)", timings["Asr"])
+            
+            with col2:
+                st.metric(" Maghrib", timings["Maghrib"])
+                st.metric("🌙 Isya (Isha)", timings["Isha"])
+                st.metric("🌄 Terbit (Sunrise)", timings["Sunrise"])
+            
+            with col3:
+                st.info("**⏰ Waktu Lainnya:**")
+                st.write(f"- Imsak: {timings.get('Imsak', '-')}")
+                st.write(f"- Midnight: {timings.get('Midnight', '-')}")
+                st.write(f"- First Third: {timings.get('Firstthird', '-')}")
+                st.write(f"- Last Third: {timings.get('Lastthird', '-')}")
+        else:
+            st.error("❌ Kota tidak ditemukan di database API.")
+            st.warning("💡 Coba pilih kota lain atau periksa koneksi internet.")
+            
+    except requests.exceptions.Timeout:
+        st.error("⏱️ Request timeout. Koneksi internet lambat.")
+    except requests.exceptions.ConnectionError:
+        st.error("🔌 Koneksi internet terputus. Periksa koneksi Anda.")
+    except Exception as e:
+        st.error(f" Terjadi kesalahan: {str(e)}")
 
 st.markdown("---")
 st.markdown("Dibuat dengan ❤️ menggunakan Streamlit")
