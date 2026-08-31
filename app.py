@@ -86,57 +86,190 @@ st.markdown("""
 # ==========================================
 WORLD_CITIES = {
     "Indonesia": [
-    # Sumatera
-    "Banda Aceh", "Sabang", "Lhokseumawe", "Langsa", "Subulussalam",
-    "Medan", "Binjai", "Pematang Siantar", "Tebing Tinggi", "Tanjung Balai", "Sibolga",
-    "Padang Sidempuan", "Gunungsitoli", "Bukittinggi", "Padang", "Pariaman",
-    "Payakumbuh", "Sawahlunto", "Solok", "Padang Panjang",
-    "Pekanbaru", "Dumai", "Bengkalis", "Bagansiapiapi",
-    "Jambi", "Sungai Penuh", "Muara Bungo", "Kuala Tungkal",
-    "Palembang", "Prabumulih", "Pagar Alam", "Lubuk Linggau", "Baturaja",
-    "Pangkal Pinang", "Sungai Liat", "Manggar", "Toboali",
-    "Tanjung Pinang", "Batam", "Bintan", "Karimun", "Natuna",
-    "Bandar Lampung", "Metro", "Kotabumi", "Liwa", "Pringsewu", "Kalianda",
+    # ACEH
+    "Simeulue", "Aceh Singkil", "Aceh Selatan", "Aceh Tenggara", "Aceh Timur", 
+    "Aceh Tengah", "Aceh Barat", "Aceh Besar", "Pidie", "Bireuen", "Aceh Utara", 
+    "Aceh Barat Daya", "Gayo Lues", "Aceh Tamiang", "Nagan Raya", "Aceh Jaya", 
+    "Bener Meriah", "Pidie Jaya", "Banda Aceh", "Sabang", "Langsa", "Lhokseumawe", "Subulussalam",
     
-    # Jawa
-    "Jakarta Pusat", "Jakarta Utara", "Jakarta Barat", "Jakarta Selatan", "Jakarta Timur",
-    "Bogor", "Depok", "Bekasi", "Cikarang", "Karawang", "Purwakarta", "Subang",
-    "Bandung", "Cimahi", "Banjar", "Garut", "Tasikmalaya", "Ciamis", "Kuningan",
-    "Majalengka", "Sumedang", "Indramayu", "Cirebon", "Sukabumi", "Pangandaran",
-    "Semarang", "Salatiga", "Pekalongan", "Tegal", "Demak", "Kendal", "Temanggung",
-    "Magelang", "Purworejo", "Kebumen", "Cilacap", "Banjarnegara", "Purbalingga",
-    "Yogyakarta", "Sleman", "Bantul", "Kulon Progo", "Gunung Kidul", "Wonosari",
-    "Surabaya", "Malang", "Batu", "Blitar", "Kediri", "Mojokerto", "Madiun",
-    "Probolinggo", "Pasuruan", "Jember", "Banyuwangi", "Bondowoso", "Situbondo",
-    "Lamongan", "Gresik", "Sidoarjo", "Tuban", "Bojonegoro", "Ngawi", "Magetan",
-    "Ponorogo", "Pacitan", "Trenggalek", "Tulungagung", "Lumajang",
-    "Serang", "Cilegon", "Tangerang", "Tangerang Selatan", "Pandeglang", "Lebak", "Rangkasbitung",
+    # SUMATERA UTARA
+    "Nias", "Mandailing Natal", "Tapanuli Selatan", "Tapanuli Tengah", "Tapanuli Utara", 
+    "Toba", "Labuhanbatu", "Asahan", "Simalungun", "Dairi", "Karo", "Deli Serdang", 
+    "Langkat", "Nias Selatan", "Humbang Hasundutan", "Pakpak Bharat", "Samosir", 
+    "Serdang Bedagai", "Batu Bara", "Padang Lawas Utara", "Padang Lawas", 
+    "Labuhanbatu Selatan", "Labuhanbatu Utara", "Nias Utara", "Nias Barat", 
+    "Sibolga", "Tanjungbalai", "Pematangsiantar", "Tebing Tinggi", "Medan", 
+    "Binjai", "Padangsidimpuan", "Gunungsitoli",
     
-    # Bali & Nusa Tenggara
-    "Denpasar", "Singaraja", "Tabanan", "Gianyar", "Klungkung", "Bangli", "Karangasem",
-    "Mataram", "Bima", "Dompu", "Sumbawa Besar", "Taliwang", "Praya", "Selong",
-    "Kupang", "Atambua", "Kefamenanu", "Soe", "Ende", "Maumere", "Ruteng",
+    # SUMATERA BARAT
+    "Kepulauan Mentawai", "Pesisir Selatan", "Solok", "Sijunjung", "Tanah Datar", 
+    "Padang Pariaman", "Agam", "Lima Puluh Kota", "Pasaman", "Dharmasraya", 
+    "Solok Selatan", "Pasaman Barat", "Padang", "Solok", "Sawahlunto", 
+    "Padang Panjang", "Bukittinggi", "Payakumbuh", "Pariaman",
     
-    # Kalimantan
-    "Pontianak", "Singkawang", "Mempawah", "Sambas", "Ketapang", "Sanggau", "Ngabang",
-    "Banjarmasin", "Banjarbaru", "Marabahan", "Rantau", "Pelaihari", "Kandangan",
-    "Palangka Raya", "Sampit", "Pangkalan Bun", "Muara Teweh", "Kuala Kapuas",
-    "Tanjung Selor", "Tarakan", "Malinau", "Nunukan", "Tanjung Redeb",
-    "Samarinda", "Balikpapan", "Bontang", "Sangatta", "Tenggarong", "Penajam",
+    # RIAU
+    "Kuantan Singingi", "Indragiri Hulu", "Indragiri Hilir", "Pelalawan", "Siak", 
+    "Kampar", "Rokan Hulu", "Bengkalis", "Rokan Hilir", "Kepulauan Meranti", 
+    "Pekanbaru", "Dumai",
     
-    # Sulawesi
-    "Makassar", "Parepare", "Palopo", "Bulukumba", "Bantaeng", "Jeneponto", "Takalar",
-    "Gowa", "Maros", "Pangkajene", "Barru", "Soppeng", "Wajo", "Bone", "Sinjai",
-    "Kendari", "Bau-Bau", "Kolaka", "Pomala", "Raha", "Lasusua",
-    "Palu", "Donggala", "Toli-Toli", "Luwuk", "Poso", "Parigi", "Buol",
-    "Manado", "Bitung", "Tomohon", "Kotamobagu", "Tondano", "Airmadidi",
-    "Gorontalo", "Limboto", "Marisa", "Tilamuta", "Kwandang",
+    # JAMBI
+    "Kerinci", "Merangin", "Sarolangun", "Batanghari", "Muaro Jambi", 
+    "Tanjung Jabung Timur", "Tanjung Jabung Barat", "Tebo", "Bungo", 
+    "Jambi", "Sungai Penuh",
     
-    # Maluku & Papua
-    "Ambon", "Tual", "Masohi", "Namlea", "Saumlaki", "Dobo",
-    "Ternate", "Tidore", "Sofifi", "Tobelo", "Jailolo", "Labuha",
-    "Sorong", "Manokwari", "Fakfak", "Kaimana", "Bintuni", "Merdey",
-    "Jayapura", "Timika", "Merauke", "Nabire", "Biak", "Serui", "Wamena"
+    # SUMATERA SELATAN
+    "Ogan Komering Ulu", "Ogan Komering Ilir", "Muara Enim", "Lahat", "Musi Rawas", 
+    "Musi Banyuasin", "Banyuasin", "Ogan Komering Ulu Selatan", "Ogan Komering Ulu Timur", 
+    "Ogan Ilir", "Empat Lawang", "Penukal Abab Lematang Ilir", "Musi Rawas Utara", 
+    "Palembang", "Prabumulih", "Pagar Alam", "Lubuklinggau",
+    
+    # BENGKULU
+    "Bengkulu Selatan", "Rejang Lebong", "Bengkulu Utara", "Kaur", "Seluma", 
+    "Mukomuko", "Lebong", "Kepahiang", "Bengkulu Tengah", "Bengkulu",
+    
+    # LAMPUNG
+    "Lampung Barat", "Tanggamus", "Lampung Selatan", "Lampung Timur", "Lampung Tengah", 
+    "Lampung Utara", "Way Kanan", "Tulang Bawang", "Pesawaran", "Pringsewu", 
+    "Mesuji", "Tulang Bawang Barat", "Pesisir Barat", "Bandar Lampung", "Metro",
+    
+    # KEPULAUAN BANGKA BELITUNG
+    "Bangka", "Belitung", "Bangka Barat", "Bangka Tengah", "Bangka Selatan", 
+    "Belitung Timur", "Pangkalpinang",
+    
+    # KEPULAUAN RIAU
+    "Karimun", "Bintan", "Natuna", "Lingga", "Kepulauan Anambas", "Batam", "Tanjungpinang",
+    
+    # DKI JAKARTA
+    "Kepulauan Seribu", "Jakarta Selatan", "Jakarta Timur", "Jakarta Pusat", 
+    "Jakarta Barat", "Jakarta Utara",
+    
+    # JAWA BARAT
+    "Bogor", "Sukabumi", "Cianjur", "Bandung", "Garut", "Tasikmalaya", "Ciamis", 
+    "Kuningan", "Cirebon", "Majalengka", "Sumedang", "Indramayu", "Subang", 
+    "Purwakarta", "Karawang", "Bekasi", "Bandung Barat", "Pangandaran", 
+    "Bogor", "Sukabumi", "Bandung", "Cirebon", "Bekasi", "Depok", "Cimahi", 
+    "Tasikmalaya", "Banjar",
+    
+    # JAWA TENGAH
+    "Cilacap", "Banyumas", "Purbalingga", "Banjarnegara", "Kebumen", "Purworejo", 
+    "Wonosobo", "Magelang", "Boyolali", "Klaten", "Sukoharjo", "Wonogiri", 
+    "Karanganyar", "Sragen", "Grobogan", "Blora", "Rembang", "Pati", "Kudus", 
+    "Jepara", "Demak", "Semarang", "Temanggung", "Kendal", "Batang", "Pekalongan", 
+    "Pemalang", "Tegal", "Brebes", "Magelang", "Surakarta", "Salatiga", "Semarang", 
+    "Pekalongan", "Tegal",
+    
+    # DI YOGYAKARTA
+    "Kulon Progo", "Bantul", "Gunungkidul", "Sleman", "Yogyakarta",
+    
+    # JAWA TIMUR
+    "Pacitan", "Ponorogo", "Trenggalek", "Tulungagung", "Blitar", "Kediri", 
+    "Malang", "Lumajang", "Jember", "Banyuwangi", "Bondowoso", "Situbondo", 
+    "Probolinggo", "Pasuruan", "Sidoarjo", "Mojokerto", "Jombang", "Nganjuk", 
+    "Madiun", "Magetan", "Ngawi", "Bojonegoro", "Tuban", "Lamongan", "Gresik", 
+    "Bangkalan", "Sampang", "Pamekasan", "Sumenep", "Kediri", "Blitar", "Malang", 
+    "Probolinggo", "Pasuruan", "Mojokerto", "Madiun", "Surabaya", "Batu",
+    
+    # BANTEN
+    "Pandeglang", "Lebak", "Tangerang", "Serang", "Tangerang", "Cilegon", 
+    "Serang", "Tangerang Selatan",
+    
+    # BALI
+    "Jembrana", "Tabanan", "Badung", "Gianyar", "Klungkung", "Bangli", 
+    "Karangasem", "Buleleng", "Denpasar",
+    
+    # NUSA TENGGARA BARAT
+    "Lombok Barat", "Lombok Tengah", "Lombok Timur", "Sumbawa", "Dompu", 
+    "Bima", "Sumbawa Barat", "Lombok Utara", "Mataram", "Bima",
+    
+    # NUSA TENGGARA TIMUR
+    "Sumba Barat", "Sumba Timur", "Kupang", "Timor Tengah Selatan", 
+    "Timor Tengah Utara", "Belu", "Alor", "Lembata", "Flores Timur", "Sikka", 
+    "Ende", "Ngada", "Manggarai", "Rote Ndao", "Manggarai Barat", "Sumba Tengah", 
+    "Sumba Barat Daya", "Nagekeo", "Manggarai Timur", "Sabu Raijua", "Malaka", "Kupang",
+    
+    # KALIMANTAN BARAT
+    "Sambas", "Bengkayang", "Landak", "Sintang", "Kapuas Hulu", "Sanggau", 
+    "Ketapang", "Landak", "Sekadau", "Melawi", "Kayong Utara", "Kubu Raya", 
+    "Pontianak", "Singkawang",
+    
+    # KALIMANTAN TENGAH
+    "Kotawaringin Barat", "Kotawaringin Timur", "Kapuas", "Barito Selatan", 
+    "Barito Utara", "Sukamara", "Lamandau", "Seruyan", "Katingan", "Pulang Pisau", 
+    "Gunung Mas", "Barito Timur", "Murung Raya", "Palangka Raya",
+    
+    # KALIMANTAN SELATAN
+    "Tanah Laut", "Kota Baru", "Banjar", "Barito Kuala", "Tapin", 
+    "Hulu Sungai Selatan", "Hulu Sungai Tengah", "Hulu Sungai Utara", "Tabalong", 
+    "Tanah Bumbu", "Balangan", "Banjarmasin", "Banjarbaru",
+    
+    # KALIMANTAN TIMUR
+    "Paser", "Kutai Barat", "Kutai Kartanegara", "Kutai Timur", "Berau", 
+    "Penajam Paser Utara", "Mahakam Ulu", "Balikpapan", "Samarinda", "Bontang",
+    
+    # KALIMANTAN UTARA
+    "Malinau", "Bulungan", "Tana Tidung", "Nunukan", "Tarakan",
+    
+    # SULAWESI UTARA
+    "Bolaang Mongondow", "Minahasa", "Kepulauan Sangihe", "Kepulauan Talaud", 
+    "Minahasa Selatan", "Minahasa Utara", "Bolaang Mongondow Utara", 
+    "Siau Tagulandang Biaro", "Minahasa Tenggara", "Bolaang Mongondow Selatan", 
+    "Bolaang Mongondow Timur", "Manado", "Bitung", "Tomohon", "Kotamobagu",
+    
+    # SULAWESI TENGAH
+    "Banggai Kepulauan", "Banggai", "Morowali", "Poso", "Donggala", "Toli-Toli", 
+    "Buol", "Parigi Moutong", "Tojo Una-Una", "Sigi", "Banggai Laut", 
+    "Morowali Utara", "Palu",
+    
+    # SULAWESI SELATAN
+    "Kepulauan Selayar", "Bulukumba", "Bantaeng", "Jeneponto", "Takalar", 
+    "Gowa", "Sinjai", "Maros", "Pangkajene Dan Kepulauan", "Barru", "Bone", 
+    "Soppeng", "Wajo", "Sidenreng Rappang", "Pinrang", "Enrekang", "Luwu", 
+    "Tana Toraja", "Luwu Utara", "Luwu Timur", "Toraja Utara", "Makassar", 
+    "Parepare", "Palopo",
+    
+    # SULAWESI TENGGARA
+    "Buton", "Muna", "Kendari", "Kolaka", "Konawe", "Konawe Selatan", "Bombana", 
+    "Wakatobi", "Kolaka Utara", "North Buton", "Konawe Utara", "Kolaka Timur", 
+    "Konawe Kepulauan", "Muna Barat", "Buton Tengah", "Buton Selatan", 
+    "Kendari", "Baubau",
+    
+    # GORONTALO
+    "Gorontalo", "Boalemo", "Bone Bolango", "Pohuwato", "Gorontalo Utara", "Gorontalo",
+    
+    # SULAWESI BARAT
+    "Majene", "Polewali Mandar", "Mamasa", "Mamuju", "Pasangkayu", "Mamuju Tengah",
+    
+    # MALUKU
+    "Kepulauan Tanimbar", "Maluku Tenggara", "Maluku Tengah", "Buru", 
+    "Kepulauan Aru", "Seram Bagian Barat", "Seram Bagian Timur", 
+    "Maluku Barat Daya", "Buru Selatan", "Ambon", "Tual",
+    
+    # MALUKU UTARA
+    "Halmahera Barat", "Halmahera Tengah", "Kepulauan Sula", "Halmahera Selatan", 
+    "Halmahera Utara", "Halmahera Timur", "Pulau Morotai", "Pulau Taliabu", 
+    "Ternate", "Tidore Kepulauan",
+    
+    # PAPUA
+    "Jayapura", "Kepulauan Yapen", "Biak Numfor", "Sarmi", "Keerom", "Waropen", 
+    "Supiori", "Mamberamo Raya", "Jayapura",
+    
+    # PAPUA BARAT
+    "Manokwari", "Fakfak", "Teluk Bintuni", "Teluk Wondama", "Kaimana", 
+    "Manokwari Selatan", "Pegunungan Arfak",
+    
+    # PAPUA SELATAN
+    "Merauke", "Boven Digoel", "Mappi", "Asmat",
+    
+    # PAPUA TENGAH
+    "Nabire", "Puncak Jaya", "Paniai", "Mimika", "Puncak", "Dogiyai", 
+    "Intan Jaya", "Deiyai",
+    
+    # PAPUA PEGUNUNGAN
+    "Jayawijaya", "Pegunungan Bintang", "Yahukimo", "Tolikara", "Lanny Jaya", 
+    "Mamberamo Tengah", "Nduga", "Yalimo",
+    
+    # PAPUA BARAT DAYA
+    "Sorong", "Raja Ampat", "South Sorong", "Maybrat", "Tambrauw", "Sorong"
 ],
     "Malaysia": ["Kuala Lumpur", "George Town", "Johor Bahru", "Kota Kinabalu", "Kuching", "Ipoh", "Shah Alam", "Petaling Jaya"],
     "Singapore": ["Singapore"],
