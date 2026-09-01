@@ -34,13 +34,6 @@ header {visibility: hidden !important;}
     font-size: 0.9rem !important;
     color: rgba(255,255,255,0.95) !important;
 }
-[data-testid="stSidebar"] {
-    position: fixed !important;
-    top: 140px !important;
-    height: calc(100vh - 140px) !important;
-    z-index: 99998 !important;
-    overflow-y: auto !important;
-}
 .main > div:first-child {
     padding-top: 220px !important;
 }
@@ -221,8 +214,6 @@ if 'view_year' not in st.session_state:
     st.session_state.view_year = datetime.now().year
 if 'view_month' not in st.session_state:
     st.session_state.view_month = datetime.now().month
-
-# Default values untuk Jadwal Sholat & Kalender
 if 'city' not in st.session_state:
     st.session_state.city = "Jakarta"
 if 'country' not in st.session_state:
@@ -296,44 +287,34 @@ with st.expander("⚙️ Pengaturan Kalender", expanded=False):
         ]
         current_cal_idx = calendar_options.index(st.session_state.calendar_type) if st.session_state.calendar_type in calendar_options else 0
         
-        selected_cal = st.radio("Pilih Kalender:", calendar_options, index=current_cal_idx, key="cal_radio")
+        # Langsung update session state saat user memilih
+        st.session_state.calendar_type = st.radio("Pilih Kalender:", calendar_options, index=current_cal_idx, key="cal_radio")
     
     with col2:
         current_location = f"{st.session_state.city}, {st.session_state.country}"
         default_city_idx = ALL_CITIES.index(current_location) if current_location in ALL_CITIES else 0
         
         selected_loc = st.selectbox("🌍 Cari & Pilih Kota", options=ALL_CITIES, index=default_city_idx, key="city_select")
+        # Langsung update session state saat user memilih
+        st.session_state.city = selected_loc.split(", ")[0]
+        st.session_state.country = selected_loc.split(", ")[1]
     
     with col3:
         method_options = [(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")]
         current_method_idx = next((i for i, x in enumerate(method_options) if x == st.session_state.method), 0)
         
-        selected_method = st.selectbox("Metode Perhitungan Sholat", method_options, index=current_method_idx, format_func=lambda x: x[1], key="method_select")
-    
-    # Update session state hanya sekali di akhir
-    if 'prev_cal' not in st.session_state:
-        st.session_state.prev_cal = selected_cal
-    if 'prev_loc' not in st.session_state:
-        st.session_state.prev_loc = selected_loc
-    if 'prev_method' not in st.session_state:
-        st.session_state.prev_method = selected_method
-    
-    if (st.session_state.prev_cal != selected_cal or 
-        st.session_state.prev_loc != selected_loc or 
-        st.session_state.prev_method != selected_method):
-        
-        calendar_type = st.session_state.get('calendar_type', 'Kalender Masehi')
-        city = st.session_state.get('city', 'Jakarta')
-        country = st.session_state.get('country', 'Indonesia')
-        method = st.session_state.get('method', (20, "Kemenag RI (Indonesia)"))
-        
-        st.session_state.prev_cal = selected_cal
-        st.session_state.prev_loc = selected_loc
-        st.session_state.prev_method = selected_method
-        
-        st.rerun()
+        # Langsung update session state saat user memilih
+        st.session_state.method = st.selectbox("Metode Perhitungan Sholat", method_options, index=current_method_idx, format_func=lambda x: x[1], key="method_select")
     
     st.success("✅ Pengaturan tersimpan. Tutup panel ini untuk melihat hasil.")
+
+# ==========================================
+# AMBIL NILAI DARI SESSION STATE (PASTI ADA!)
+# ==========================================
+calendar_type = st.session_state.calendar_type
+city = st.session_state.city
+country = st.session_state.country
+method = st.session_state.method
 
 # ==========================================
 # FUNGSI-FUNGSI
