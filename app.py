@@ -21,6 +21,10 @@ header {visibility: hidden !important;}
     z-index: 99999 !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
     text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
 }
 
 .main > div:first-child {
@@ -35,6 +39,7 @@ header {visibility: hidden !important;}
     padding-top: 120px !important; /* ← UBAH INI */
 }
 .main-header h1 {
+    margin-top: -5px !important;
     margin: 0 !important;
     font-size: 2rem !important;
     font-weight: bold !important;
