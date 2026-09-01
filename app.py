@@ -397,7 +397,7 @@ def display_calendar(year, month, month_names, highlight_day=None):
             prev_month()
             st.rerun()
     with col_nav2:
-        st.markdown(f"<h2 style='text-align: center;'>📆 {month_names[month-1]} {year}</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center;'> {month_names[month-1]} {year}</h2>", unsafe_allow_html=True)
     with col_nav3:
         if st.button("Bulan Berikutnya ▶️", key="next_month"):
             next_month()
