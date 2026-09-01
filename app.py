@@ -17,7 +17,7 @@ header {visibility: hidden !important;}
     right: 0 !important;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
-    padding: 100px 20px 20px 20px !important;
+    padding: 50px 20px 20px 20px !important;
     z-index: 99999 !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
     text-align: center !important;
