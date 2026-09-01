@@ -35,10 +35,10 @@ header {visibility: hidden !important;}
     color: rgba(255,255,255,0.95) !important;
 }
 .main > div:first-child {
-    padding-top: 40px !important;
+    padding-top: 70px !important;
 }
 .block-container {
-    padding-top: 40px !important;
+    padding-top: 70px !important;
 }
 .stApp > header {
     display: none !important;
