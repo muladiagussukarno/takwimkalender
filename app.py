@@ -39,6 +39,7 @@ header {visibility: hidden !important;}
     padding-top: 120px !important; /* ← UBAH INI */
 }
 .main-header h1 {
+    margin-top: -8px !important;
     margin-top: -5px !important;
     margin: 0 !important;
     font-size: 2rem !important;
