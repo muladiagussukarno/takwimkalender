@@ -322,10 +322,10 @@ with st.expander("⚙️ Pengaturan Kalender", expanded=False):
         st.session_state.prev_loc != selected_loc or 
         st.session_state.prev_method != selected_method):
         
-        st.session_state.calendar_type = selected_cal
-        st.session_state.city = selected_loc.split(", ")[0]
-        st.session_state.country = selected_loc.split(", ")[1]
-        st.session_state.method = selected_method
+        calendar_type = st.session_state.get('calendar_type', 'Kalender Masehi')
+        city = st.session_state.get('city', 'Jakarta')
+        country = st.session_state.get('country', 'Indonesia')
+        method = st.session_state.get('method', (20, "Kemenag RI (Indonesia)"))
         
         st.session_state.prev_cal = selected_cal
         st.session_state.prev_loc = selected_loc
