@@ -242,7 +242,7 @@ try:
         timings = data['data']['timings']
         date_info = data['data']['date']
         
-        st.write(f"**📅 Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
+        st.write(f"**Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
         st.divider()
         
         col1, col2, col3 = st.columns(3)
