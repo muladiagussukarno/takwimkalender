@@ -56,7 +56,6 @@ body {
 st.markdown("""
 <div class="main-header">
     <h1>🌍 Dasbor Kalender Taqwim</h1>
-    <p>Standar Internasional ISO | Terverifikasi Indonesia</p>
 </div>
 """, unsafe_allow_html=True)
 
