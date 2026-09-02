@@ -17,56 +17,92 @@ header {visibility: hidden !important;}
     right: 0 !important;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     color: white !important;
-    padding: 50px 20px 15px 20px !important; /* ← UBAH INI */
+    padding: 15px 20px 10px 20px !important;
     z-index: 99999 !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
     text-align: center !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    align-items: center !important;
-}
-
-.main > div:first-child {
-    padding-top: 120px !important; /* ← UBAH INI */
-}
-
-.block-container {
-    padding-top: 120px !important; /* ← UBAH INI */
-}
-
-.block-container {
-    padding-top: 120px !important; /* ← UBAH INI */
 }
 .main-header h1 {
-    margin-top: -8px !important;
-    margin-top: -5px !important;
     margin: 0 !important;
-    font-size: 2rem !important;
+    font-size: 1.8rem !important;
     font-weight: bold !important;
     color: white !important;
     line-height: 1.2 !important;
 }
-.main-header p {
-    margin: 8px 0 0 0 !important;
-    font-size: 0.9rem !important;
-    color: rgba(255,255,255,0.95) !important;
-}
 .main > div:first-child {
-    padding-top: 70px !important;
+    padding-top: 80px !important;
 }
 .block-container {
-    padding-top: 70px !important;
+    padding-top: 80px !important;
 }
 .stApp > header {
     display: none !important;
 }
-.calendar-table {
-    margin-top: 20px !important;
-}
 body {
     overflow-x: hidden !important;
 }
+
+/* === TAMBAHKAN CSS JADWAL DI SINI === */
+.jadwal-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+.jadwal-grid {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(80px, 1fr));
+    gap: 8px;
+    min-width: 900px;
+}
+.jadwal-item {
+    background: linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%);
+    border-radius: 12px;
+    padding: 12px 6px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e0e0e0;
+    transition: transform 0.2s;
+}
+.jadwal-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.jadwal-icon {
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    margin-bottom: 4px;
+}
+.jadwal-label {
+    font-size: clamp(0.55rem, 1.2vw, 0.85rem);
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.jadwal-time {
+    font-size: clamp(0.9rem, 2vw, 1.5rem);
+    font-weight: bold;
+    color: #1a1a2e;
+    font-family: 'Courier New', monospace;
+}
+.jadwal-item.highlight {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+.jadwal-item.highlight .jadwal-label {
+    color: rgba(255,255,255,0.95);
+}
+.jadwal-item.highlight .jadwal-time {
+    color: white;
+}
+@media (max-width: 768px) {
+    .jadwal-grid {
+        grid-template-columns: repeat(5, minmax(70px, 1fr));
+        min-width: 450px;
+    }
+}
+/* === AKHIR CSS JADWAL === */
 </style>
 """, unsafe_allow_html=True)
 
@@ -262,73 +298,7 @@ try:
         st.write(f"**📅 Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
         st.divider()
         
-        # === CSS DIPISAH (render pertama) ===
-        css_jadwal = """
-        <style>
-        .jadwal-container {
-            width: 100%;
-            overflow-x: auto;
-            padding: 10px 0;
-        }
-        .jadwal-grid {
-            display: grid;
-            grid-template-columns: repeat(10, minmax(80px, 1fr));
-            gap: 8px;
-            min-width: 900px;
-        }
-        .jadwal-item {
-            background: linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%);
-            border-radius: 12px;
-            padding: 12px 6px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 1px solid #e0e0e0;
-            transition: transform 0.2s;
-        }
-        .jadwal-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .jadwal-icon {
-            font-size: clamp(1rem, 2.5vw, 1.8rem);
-            margin-bottom: 4px;
-        }
-        .jadwal-label {
-            font-size: clamp(0.55rem, 1.2vw, 0.85rem);
-            color: #555;
-            font-weight: 600;
-            margin-bottom: 6px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .jadwal-time {
-            font-size: clamp(0.9rem, 2vw, 1.5rem);
-            font-weight: bold;
-            color: #1a1a2e;
-            font-family: 'Courier New', monospace;
-        }
-        .jadwal-item.highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        .jadwal-item.highlight .jadwal-label {
-            color: rgba(255,255,255,0.95);
-        }
-        .jadwal-item.highlight .jadwal-time {
-            color: white;
-        }
-        @media (max-width: 768px) {
-            .jadwal-grid {
-                grid-template-columns: repeat(5, minmax(70px, 1fr));
-                min-width: 450px;
-            }
-        }
-        </style>
-        """
-        st.markdown(css_jadwal, unsafe_allow_html=True)
-        
-        # === DATA JADWAL ===
+        # Data jadwal sholat
         jadwal_data = [
             ("Imsak", "🌑", timings.get("Imsak", "-")),
             ("Subuh", "🌅", timings.get("Fajr", "-")),
@@ -336,34 +306,35 @@ try:
             ("Dzuhur", "☀️", timings.get("Dhuhr", "-")),
             ("Ashar", "🌤️", timings.get("Asr", "-")),
             ("Maghrib", "🌇", timings.get("Maghrib", "-")),
-            ("Isya", "", timings.get("Isha", "-")),
-            ("1/3 Malam", "🌌", timings.get("Firstthird", "-")),
+            ("Isya", "🌙", timings.get("Isha", "-")),
+            ("1/3 Malam", "", timings.get("Firstthird", "-")),
             ("Tengah Malam", "🕛", timings.get("Midnight", "-")),
             ("Akhir Malam", "✨", timings.get("Lastthird", "-")),
         ]
         
         highlight_names = ["Subuh", "Dzuhur", "Ashar", "Maghrib", "Isya"]
         
-        # === HTML DIPISAH (render kedua) ===
+        # Build HTML (hanya struktur, tanpa CSS)
         html_items = []
         for nama, icon, waktu in jadwal_data:
             is_highlight = "highlight" if nama in highlight_names else ""
-            html_items.append(f"""
+            html_items.append(f'''
             <div class="jadwal-item {is_highlight}">
                 <div class="jadwal-icon">{icon}</div>
                 <div class="jadwal-label">{nama}</div>
                 <div class="jadwal-time">{waktu}</div>
             </div>
-            """)
+            ''')
         
-        html_jadwal = f"""
+        html_jadwal = f'''
         <div class="jadwal-container">
             <div class="jadwal-grid">
                 {''.join(html_items)}
             </div>
         </div>
-        """
+        '''
         
+        # Render HTML
         st.markdown(html_jadwal, unsafe_allow_html=True)
     else:
         st.error("❌ Kota tidak ditemukan di database API.")
