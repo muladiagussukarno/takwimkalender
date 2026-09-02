@@ -728,23 +728,105 @@ elif calendar_type == "Kalender Hijrah Syamsiah/Matahari":
     st.caption("Angka besar = tanggal Hijrah Syamsiah | Angka kecil = tanggal Masehi | Hijau = hari ini")
 
 # ============================================
-# KALENDER 4: JAWA
+# KALENDER 4: JAWA (SAKA)
 # ============================================
 elif calendar_type == "Kalender Jawa (Saka)":
-    st.header(" Kalender Jawa (Saka)")
+    st.header("📜 Kalender Jawa (Saka)")
     st.markdown("*Kalender Tradisional Indonesia*")
-    javanese = get_javanese_date(today.year, today.month, today.day)
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tanggal Jawa</p><p style="font-size: 48px; font-weight: bold;">' + str(javanese['saka_day']) + '</p></div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Bulan</p><p style="font-size: 48px; font-weight: bold;">' + javanese['saka_month'] + '</p></div>', unsafe_allow_html=True)
-    with col3:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tahun Saka</p><p style="font-size: 48px; font-weight: bold;">' + str(javanese['saka_year']) + '</p></div>', unsafe_allow_html=True)
-    with col4:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tahun Windu</p><p style="font-size: 48px; font-weight: bold;">' + javanese['windu'] + '</p></div>', unsafe_allow_html=True)
+    
+    bulan_jawa = ["Sura", "Sapar", "Mulud", "Bakda Mulud", "Jumadilawal", "Jumadilakhir", "Rejeb", "Ruwah", "Pasa", "Sawal", "Dulkaidah", "Besar"]
+    neptu_hari = {"Senin": 4, "Selasa": 3, "Rabu": 7, "Kamis": 8, "Jumat": 6, "Sabtu": 9, "Minggu": 5}
+    neptu_pasaran = {"Legi": 5, "Pahing": 9, "Pon": 7, "Wage": 4, "Kliwon": 8}
+    
+    j_today = get_javanese_date(today.year, today.month, today.day)
+    neptu = neptu_hari[j_today['hari']] + neptu_pasaran[j_today['pasaran']]
+    
+    st.info(f"**Hari ini:** {j_today['weton']} (Neptu {neptu}) | {j_today['saka_day']} {j_today['saka_month']} {j_today['saka_year']} | Windu: {j_today['windu']}")
+    
+    # Inisialisasi navigasi bulan Jawa
+    if 'jawa_view_year' not in st.session_state:
+        st.session_state.jawa_view_year = j_today['saka_year']
+    if 'jawa_view_month' not in st.session_state:
+        st.session_state.jawa_view_month = bulan_jawa.index(j_today['saka_month']) + 1
+    
+    # Navigasi bulan
+    col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+    with col_nav1:
+        if st.button("◀️ Bulan Sebelumnya", key="jawa_prev"):
+            if st.session_state.jawa_view_month == 1:
+                st.session_state.jawa_view_month = 12
+                st.session_state.jawa_view_year -= 1
+            else:
+                st.session_state.jawa_view_month -= 1
+            st.rerun()
+    with col_nav2:
+        st.markdown(f"<h2 style='text-align: center;'>📜 {bulan_jawa[st.session_state.jawa_view_month-1]} {st.session_state.jawa_view_year} Saka</h2>", unsafe_allow_html=True)
+    with col_nav3:
+        if st.button("Bulan Berikutnya ▶️", key="jawa_next"):
+            if st.session_state.jawa_view_month == 12:
+                st.session_state.jawa_view_month = 1
+                st.session_state.jawa_view_year += 1
+            else:
+                st.session_state.jawa_view_month += 1
+            st.rerun()
+    
     st.divider()
-    st.success(f"**Hari: {javanese['hari']} {javanese['pasaran']}**\n\n**Weton: {javanese['weton']}**")
+    
+    # Kumpulkan hari pada bulan Jawa yang ditampilkan
+    v_year = st.session_state.jawa_view_year
+    v_month = st.session_state.jawa_view_month
+    
+    ref_date = datetime(2024, 7, 17)
+    months_from_ref = (v_year - 1956) * 12 + (v_month - 1)
+    approx_days = int(months_from_ref * 29.5)
+    mulai = ref_date + timedelta(days=approx_days - 2)
+    
+    hari_bulan = []
+    for i in range(40):
+        d = mulai + timedelta(days=i)
+        j = get_javanese_date(d.year, d.month, d.day)
+        if j['saka_year'] == v_year and j['saka_month'] == bulan_jawa[v_month-1]:
+            hari_bulan.append((d, j['saka_day'], j['pasaran']))
+        elif hari_bulan:
+            break
+    
+    # Susun grid minggu (mulai Senin)
+    weeks = []
+    week = [None] * 7
+    if hari_bulan:
+        for i in range(hari_bulan[0][0].weekday()):
+            week[i] = None
+        for d, s_day, pasaran in hari_bulan:
+            wd = d.weekday()
+            is_today = (d.date() == today.date())
+            week[wd] = (s_day, pasaran, d.strftime('%d/%m'), is_today)
+            if wd == 6:
+                weeks.append(week)
+                week = [None] * 7
+        if any(x is not None for x in week):
+            weeks.append(week)
+    
+    # Render tabel
+    table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
+    html_table = table_css + "<table class='calendar-table'><thead><tr>"
+    for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
+        html_table += f"<th>{day}</th>"
+    html_table += "</tr></thead><tbody>"
+    for w in weeks:
+        html_table += "<tr>"
+        for cell in w:
+            if cell is None:
+                html_table += "<td class='empty'></td>"
+            else:
+                s_day, pasaran, g_short, is_today = cell
+                if is_today:
+                    html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'><div style='font-size:20px;'>{s_day}</div><div style='font-size:12px;font-weight:600;'>{pasaran}</div><div style='font-size:10px;opacity:0.9;'>{g_short}</div></td>"
+                else:
+                    html_table += f"<td><div style='font-size:20px;font-weight:600;'>{s_day}</div><div style='font-size:12px;color:#764ba2;font-weight:600;'>{pasaran}</div><div style='font-size:10px;color:#888;'>{g_short}</div></td>"
+        html_table += "</tr>"
+    html_table += "</tbody></table>"
+    st.markdown(html_table, unsafe_allow_html=True)
+    st.caption("Angka besar = tanggal Jawa | Ungu = Pasaran | Angka kecil = tanggal Masehi | Hijau = hari ini")
 
 # ============================================
 # KALENDER 5: CINA
