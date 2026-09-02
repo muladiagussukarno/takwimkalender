@@ -276,6 +276,18 @@ if 'method' not in st.session_state:
 if 'calendar_type' not in st.session_state:
     st.session_state.calendar_type = "Kalender Masehi"
 
+# === SINKRONISASI OTOMATIS: bagian atas langsung ikut pengaturan terbaru ===
+if 'city_select' in st.session_state:
+    _loc = st.session_state.city_select
+    st.session_state.city = _loc.split(", ")[0]
+    st.session_state.country = _loc.split(", ")[1]
+
+if 'method_select' in st.session_state:
+    st.session_state.method = st.session_state.method_select
+
+if 'cal_radio' in st.session_state:
+    st.session_state.calendar_type = st.session_state.cal_radio
+
 today = datetime.now()
 
 # ============================================
