@@ -375,7 +375,6 @@ except requests.exceptions.ConnectionError:
 except Exception as e:
     st.error(f"❌ Terjadi kesalahan: {str(e)}")
 
-
 # ==========================================
 # PENGATURAN (Expander di Main Content)
 # ==========================================
