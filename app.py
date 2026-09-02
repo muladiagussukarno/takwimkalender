@@ -313,25 +313,25 @@ try:
 </style>"""
         st.markdown(css_jadwal, unsafe_allow_html=True)
 
-        # === DATA 10 WAKTU ===
+                # === DATA 10 WAKTU + WARNA PENCAHAYAAN ALAMI KHATULISTIWA ===
+        # Format: (Nama, Icon, Waktu, WarnaAtas, WarnaBawah, WarnaTeks)
         jadwal_data = [
-            ("Imsak", "🌑", timings.get("Imsak", "-"), False),
-            ("Subuh", "🌅", timings.get("Fajr", "-"), True),
-            ("Terbit", "🌄", timings.get("Sunrise", "-"), False),
-            ("Dzuhur", "☀️", timings.get("Dhuhr", "-"), True),
-            ("Ashar", "🌤️", timings.get("Asr", "-"), True),
-            ("Maghrib", "🌇", timings.get("Maghrib", "-"), True),
-            ("Isya", "🌙", timings.get("Isha", "-"), True),
-            ("1/3 Malam", "🌌", timings.get("Firstthird", "-"), False),
-            ("Tengah Malam", "🕛", timings.get("Midnight", "-"), False),
-            ("Akhir Malam", "✨", timings.get("Lastthird", "-"), False),
+            ("Imsak", "🌑", timings.get("Imsak", "-"), "#0f2027", "#2c5364", "#ffffff"),
+            ("Subuh", "🌅", timings.get("Fajr", "-"), "#2b5876", "#4e4376", "#ffffff"),
+            ("Terbit", "🌄", timings.get("Sunrise", "-"), "#f7971e", "#ffd200", "#1a1a2e"),
+            ("Dzuhur", "☀️", timings.get("Dhuhr", "-"), "#2193b0", "#6dd5ed", "#ffffff"),
+            ("Ashar", "🌤️", timings.get("Asr", "-"), "#f2994a", "#f2c94c", "#1a1a2e"),
+            ("Maghrib", "🌇", timings.get("Maghrib", "-"), "#c33764", "#1d2671", "#ffffff"),
+            ("Isya", "🌙", timings.get("Isha", "-"), "#141e30", "#243b55", "#ffffff"),
+            ("1/3 Malam", "🌌", timings.get("Firstthird", "-"), "#0f0c29", "#302b63", "#ffffff"),
+            ("Tengah Malam", "🕛", timings.get("Midnight", "-"), "#000000", "#434343", "#ffffff"),
+            ("Akhir Malam", "✨", timings.get("Lastthird", "-"), "#232526", "#414345", "#ffffff"),
         ]
 
-        # === HTML KARTU SATU BARIS (wajib tanpa enter/menjorok!) ===
+        # === HTML KARTU SATU BARIS (inline style warna alami) ===
         html_jadwal = '<div class="jadwal-wrapper"><div class="jadwal-row">'
-        for nama, icon, waktu, is_highlight in jadwal_data:
-            card_class = "highlight" if is_highlight else "regular"
-            html_jadwal += '<div class="jadwal-card ' + card_class + '"><div class="jadwal-icon">' + icon + '</div><div class="jadwal-label">' + nama + '</div><div class="jadwal-time">' + waktu + '</div></div>'
+        for nama, icon, waktu, c1, c2, tcolor in jadwal_data:
+            html_jadwal += '<div style="flex:1;min-width:90px;height:140px;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:space-between;align-items:center;box-shadow:0 3px 10px rgba(0,0,0,0.2);background:linear-gradient(135deg,' + c1 + ' 0%,' + c2 + ' 100%);"><div style="font-size:1.8rem;line-height:1;">' + icon + '</div><div style="font-size:18px;font-weight:600;margin:4px 0;white-space:nowrap;color:' + tcolor + ';">' + nama + '</div><div style="font-size:1.1rem;font-weight:bold;font-family:monospace;color:' + tcolor + ';">' + waktu + '</div></div>'
         html_jadwal += '</div></div>'
 
         st.markdown(html_jadwal, unsafe_allow_html=True)
