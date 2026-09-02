@@ -246,7 +246,7 @@ today = datetime.now()
 # JADWAL SHOLAT (HORIZONTAL RESPONSIVE)
 # ============================================
 st.divider()
-st.subheader(" Jadwal Sholat Hari Ini")
+st.subheader("🕌 Jadwal Sholat Hari Ini")
 
 st.info(f"📍 **Lokasi:** {st.session_state.city.title()}, {st.session_state.country.title()} | **Metode:** {st.session_state.method[1]}")
 
@@ -259,11 +259,11 @@ try:
         timings = data['data']['timings']
         date_info = data['data']['date']
         
-        st.write(f"** Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
+        st.write(f"**📅 Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
         st.divider()
         
-        # CSS untuk jadwal horizontal responsive (dipisah dari HTML)
-        st.markdown("""
+        # === CSS DIPISAH (render pertama) ===
+        css_jadwal = """
         <style>
         .jadwal-container {
             width: 100%;
@@ -324,16 +324,11 @@ try:
                 min-width: 450px;
             }
         }
-        @media (max-width: 480px) {
-            .jadwal-grid {
-                grid-template-columns: repeat(10, minmax(65px, 1fr));
-                min-width: 700px;
-            }
-        }
         </style>
-        """, unsafe_allow_html=True)
+        """
+        st.markdown(css_jadwal, unsafe_allow_html=True)
         
-        # Data jadwal sholat
+        # === DATA JADWAL ===
         jadwal_data = [
             ("Imsak", "🌑", timings.get("Imsak", "-")),
             ("Subuh", "🌅", timings.get("Fajr", "-")),
@@ -341,29 +336,34 @@ try:
             ("Dzuhur", "☀️", timings.get("Dhuhr", "-")),
             ("Ashar", "🌤️", timings.get("Asr", "-")),
             ("Maghrib", "🌇", timings.get("Maghrib", "-")),
-            ("Isya", "🌙", timings.get("Isha", "-")),
-            ("1/3 Malam", "", timings.get("Firstthird", "-")),
-            ("Tengah Malam", "", timings.get("Midnight", "-")),
+            ("Isya", "", timings.get("Isha", "-")),
+            ("1/3 Malam", "🌌", timings.get("Firstthird", "-")),
+            ("Tengah Malam", "🕛", timings.get("Midnight", "-")),
             ("Akhir Malam", "✨", timings.get("Lastthird", "-")),
         ]
         
-        # Highlight waktu sholat utama (Subuh, Dzuhur, Ashar, Maghrib, Isya)
         highlight_names = ["Subuh", "Dzuhur", "Ashar", "Maghrib", "Isya"]
         
-        # Build HTML
-        html_jadwal = '<div class="jadwal-container"><div class="jadwal-grid">'
+        # === HTML DIPISAH (render kedua) ===
+        html_items = []
         for nama, icon, waktu in jadwal_data:
             is_highlight = "highlight" if nama in highlight_names else ""
-            html_jadwal += f'''
+            html_items.append(f"""
             <div class="jadwal-item {is_highlight}">
                 <div class="jadwal-icon">{icon}</div>
                 <div class="jadwal-label">{nama}</div>
                 <div class="jadwal-time">{waktu}</div>
             </div>
-            '''
-        html_jadwal += '</div></div>'
+            """)
         
-        # Render HTML dengan unsafe_allow_html=True
+        html_jadwal = f"""
+        <div class="jadwal-container">
+            <div class="jadwal-grid">
+                {''.join(html_items)}
+            </div>
+        </div>
+        """
+        
         st.markdown(html_jadwal, unsafe_allow_html=True)
     else:
         st.error("❌ Kota tidak ditemukan di database API.")
