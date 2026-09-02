@@ -30,10 +30,10 @@ header {visibility: hidden !important;}
     line-height: 1.2 !important;
 }
 .main > div:first-child {
-    padding-top: 54px !important;
+    padding-top: 64px !important;
 }
 .block-container {
-    padding-top: 54px !important;
+    padding-top: 64px !important;
 }
 .stApp > header {
     display: none !important;
