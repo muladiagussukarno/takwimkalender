@@ -304,7 +304,7 @@ try:
 .jadwal-card.regular{background:linear-gradient(135deg,#f0f2f6 0%,#e8eaf6 100%);}
 .jadwal-card.highlight{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-color:#5a67d8;}
 .jadwal-icon{font-size:1.8rem;line-height:1;}
-.jadwal-label{font-size:0.75rem;font-weight:600;margin:4px 0;white-space:nowrap;}
+.jadwal-label{font-size:18px;font-weight:600;margin:4px 0;white-space:nowrap;}
 .jadwal-card.regular .jadwal-label{color:#555;}
 .jadwal-card.highlight .jadwal-label{color:rgba(255,255,255,0.95);}
 .jadwal-time{font-size:1.1rem;font-weight:bold;font-family:'Courier New',monospace;}
