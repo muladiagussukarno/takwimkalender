@@ -829,23 +829,123 @@ elif calendar_type == "Kalender Jawa (Saka)":
     st.caption("Angka besar = tanggal Jawa | Ungu = Pasaran | Angka kecil = tanggal Masehi | Hijau = hari ini")
 
 # ============================================
-# KALENDER 5: CINA
+# KALENDER 5: CINA (IMLEK)
 # ============================================
 elif calendar_type == "Kalender Cina (Imlek)":
-    st.header("🏯 Kalender Cina (Imlek)")
+    st.header("🏮 Kalender Cina (Imlek)")
     st.markdown("*Kalender Tradisional Cina*")
-    chinese = get_chinese_date(today.year, today.month, today.day)
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Shio</p><p style="font-size: 48px; font-weight: bold;">' + chinese['shio'] + '</p></div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Elemen</p><p style="font-size: 48px; font-weight: bold;">' + chinese['elemen'] + '</p></div>', unsafe_allow_html=True)
-    with col3:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Yin/Yang</p><p style="font-size: 48px; font-weight: bold;">' + chinese['yin_yang'] + '</p></div>', unsafe_allow_html=True)
-    with col4:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tahun Cina</p><p style="font-size: 48px; font-weight: bold;">' + str(chinese['tahun_cina']) + '</p></div>', unsafe_allow_html=True)
-    st.divider()
-    st.success(f"**Tahun {chinese['shio']} - {chinese['elemen']} ({chinese['yin_yang']})**")
-
-st.markdown("---")
-st.markdown("Dibuat dengan ❤️ menggunakan Streamlit")
+    
+    try:
+        from lunardate import LunarDate
+        
+        bulan_cina = ["Zheng", "Er", "San", "Si", "Wu", "Liu", "Qi", "Ba", "Jiu", "Shi", "Dong", "La"]
+        
+        l_today = LunarDate.fromSolarDate(today.year, today.month, today.day)
+        chinese = get_chinese_date(today.year, today.month, today.day)
+        
+        leap_today = "Run " if l_today.isLeapMonth else ""
+        st.info(f"**Hari ini:** {l_today.day} {leap_today}{bulan_cina[l_today.month-1]} | Tahun {chinese['shio']} - Elemen {chinese['elemen']} ({chinese['yin_yang']}) | Tahun Cina {today.year + 2698}")
+        
+        # Inisialisasi navigasi
+        if 'imlek_view_year' not in st.session_state:
+            st.session_state.imlek_view_year = l_today.year
+        if 'imlek_view_month' not in st.session_state:
+            st.session_state.imlek_view_month = l_today.month
+        
+        v_year = st.session_state.imlek_view_year
+        v_month = st.session_state.imlek_view_month
+        
+        # Navigasi bulan
+        col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+        with col_nav1:
+            if st.button("◀️ Bulan Sebelumnya", key="imlek_prev"):
+                if st.session_state.imlek_view_month == 1:
+                    st.session_state.imlek_view_month = 12
+                    st.session_state.imlek_view_year -= 1
+                else:
+                    st.session_state.imlek_view_month -= 1
+                st.rerun()
+        with col_nav2:
+            st.markdown(f"<h2 style='text-align: center;'>🏮 Bulan {bulan_cina[v_month-1]} ({v_month}) - Tahun {v_year + 2698}</h2>", unsafe_allow_html=True)
+        with col_nav3:
+            if st.button("Bulan Berikutnya ▶️", key="imlek_next"):
+                if st.session_state.imlek_view_month == 12:
+                    st.session_state.imlek_view_month = 1
+                    st.session_state.imlek_view_year += 1
+                else:
+                    st.session_state.imlek_view_month += 1
+                st.rerun()
+        
+        # Cek bulan kabisat (Run)
+        has_leap = False
+        try:
+            LunarDate(v_year, v_month, 1, True)
+            has_leap = True
+        except ValueError:
+            has_leap = False
+        
+        show_leap = False
+        if has_leap:
+            show_leap = st.checkbox("🔄 Tampilkan Bulan Run (kabisat)", value=False)
+        
+        # Awal bulan & jumlah hari
+        start_solar = LunarDate(v_year, v_month, 1, show_leap).toSolarDate()
+        try:
+            LunarDate(v_year, v_month, 30, show_leap)
+            n_days = 30
+        except ValueError:
+            n_days = 29
+        
+        # Susun grid minggu (mulai Senin)
+        weeks = []
+        week = [None] * 7
+        for i in range(start_solar.weekday()):
+            week[i] = None
+        for i in range(n_days):
+            d = start_solar + timedelta(days=i)
+            wd = d.weekday()
+            is_today = (d.date() == today.date())
+            week[wd] = (i + 1, d.strftime('%d/%m'), is_today)
+            if wd == 6:
+                weeks.append(week)
+                week = [None] * 7
+        if any(x is not None for x in week):
+            weeks.append(week)
+        
+        # Render tabel
+        table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
+        html_table = table_css + "<table class='calendar-table'><thead><tr>"
+        for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
+            html_table += f"<th>{day}</th>"
+        html_table += "</tr></thead><tbody>"
+        for w in weeks:
+            html_table += "<tr>"
+            for cell in w:
+                if cell is None:
+                    html_table += "<td class='empty'></td>"
+                else:
+                    l_day, g_short, is_today = cell
+                    if is_today:
+                        html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'><div style='font-size:20px;'>{l_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
+                    else:
+                        html_table += f"<td><div style='font-size:20px;font-weight:600;'>{l_day}</div><div style='font-size:11px;color:#888;'>{g_short}</div></td>"
+            html_table += "</tr>"
+        html_table += "</tbody></table>"
+        st.markdown(html_table, unsafe_allow_html=True)
+        st.caption("Angka besar = tanggal Imlek | Angka kecil = tanggal Masehi | Hijau = hari ini")
+        
+        # Info Shio lengkap
+        st.divider()
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("🐉 Shio", chinese['shio'])
+        with col2:
+            st.metric("🔥 Elemen", chinese['elemen'])
+        with col3:
+            st.metric("☯️ Yin/Yang", chinese['yin_yang'])
+        with col4:
+            st.metric("🏮 Tahun Cina", str(today.year + 2698))
+    except ImportError:
+        st.error("❌ Library 'lunardate' belum terinstall. Pastikan 'lunardate' ada di requirements.txt lalu push ulang.")
+    except Exception as e:
+        st.error(f"❌ Error: {str(e)}")
