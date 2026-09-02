@@ -573,7 +573,7 @@ elif calendar_type == "Kalender Hijriah Qomariah/Bulan":
             st.divider()
             
             # Ambil kalender bulan Hijriah dari API
-            url_bulan = f"http://api.aladhan.com/v1/hijriCalendar/{st.session_state.hijri_view_year}/{st.session_state.hijri_view_month}"
+            url_bulan = f"http://api.aladhan.com/v1/hijriCalendarByCity/{st.session_state.hijri_view_year}/{st.session_state.hijri_view_month}?city={st.session_state.city}&country={st.session_state.country}"
             r_bulan = requests.get(url_bulan, timeout=10)
             d_bulan = r_bulan.json()
             
@@ -583,15 +583,15 @@ elif calendar_type == "Kalender Hijriah Qomariah/Bulan":
                 # Susun grid minggu (mulai Senin)
                 weeks = []
                 week = [None] * 7
-                pertama = datetime.strptime(days[0]['gregorian']['date'], '%d-%m-%Y')
+                pertama = datetime.strptime(days[0]['date']['gregorian']['date'], '%d-%m-%Y')
                 for i in range(pertama.weekday()):
                     week[i] = None
                 
                 for item in days:
-                    gd = datetime.strptime(item['gregorian']['date'], '%d-%m-%Y')
+                    gd = datetime.strptime(item['date']['gregorian']['date'], '%d-%m-%Y')
                     wd = gd.weekday()
                     is_today = (gd.date() == today.date())
-                    week[wd] = (item['hijri']['day'], gd.strftime('%d/%m'), is_today)
+                    week[wd] = (item['date']['hijri']['day'], gd.strftime('%d/%m'), is_today)
                     if wd == 6:
                         weeks.append(week)
                         week = [None] * 7
