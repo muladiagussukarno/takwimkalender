@@ -243,12 +243,11 @@ if 'calendar_type' not in st.session_state:
 today = datetime.now()
 
 # ============================================
-# JADWAL SHOLAT (OTOMATIS MUNCUL DI ATAS!)
+# JADWAL SHOLAT (HORIZONTAL RESPONSIVE)
 # ============================================
 st.divider()
 st.subheader("🕌 Jadwal Sholat Hari Ini")
 
-# Info lokasi diambil dari session state
 st.info(f"📍 **Lokasi:** {st.session_state.city.title()}, {st.session_state.country.title()} | **Metode:** {st.session_state.method[1]}")
 
 try:
@@ -260,32 +259,117 @@ try:
         timings = data['data']['timings']
         date_info = data['data']['date']
         
-        st.write(f"**Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
+        st.write(f"**📅 Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
         st.divider()
         
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("🌅 Subuh (Fajr)", timings["Fajr"])
-            st.metric("☀️ Dzuhur (Dhuhr)", timings["Dhuhr"])
-            st.metric("🌤️ Ashar (Asr)", timings["Asr"])
-        with col2:
-            st.metric("🌇 Maghrib", timings["Maghrib"])
-            st.metric("🌙 Isya (Isha)", timings["Isha"])
-            st.metric("🌄 Terbit (Sunrise)", timings["Sunrise"])
-        with col3:
-            st.info("**⏰ Waktu Lainnya:**")
-            st.write(f"- Imsak: {timings.get('Imsak', '-')}")
-            st.write(f"- Midnight: {timings.get('Midnight', '-')}")
-            st.write(f"- First Third: {timings.get('Firstthird', '-')}")
-            st.write(f"- Last Third: {timings.get('Lastthird', '-')}")
+        # CSS untuk jadwal horizontal responsive
+        jadwal_css = """
+        <style>
+        .jadwal-container {
+            width: 100%;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        .jadwal-grid {
+            display: grid;
+            grid-template-columns: repeat(10, minmax(80px, 1fr));
+            gap: 8px;
+            min-width: 900px;
+        }
+        .jadwal-item {
+            background: linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%);
+            border-radius: 12px;
+            padding: 12px 6px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s;
+        }
+        .jadwal-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .jadwal-icon {
+            font-size: clamp(1rem, 2.5vw, 1.8rem);
+            margin-bottom: 4px;
+        }
+        .jadwal-label {
+            font-size: clamp(0.55rem, 1.2vw, 0.85rem);
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .jadwal-time {
+            font-size: clamp(0.9rem, 2vw, 1.5rem);
+            font-weight: bold;
+            color: #1a1a2e;
+            font-family: 'Courier New', monospace;
+        }
+        .jadwal-item.highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .jadwal-item.highlight .jadwal-label {
+            color: rgba(255,255,255,0.95);
+        }
+        .jadwal-item.highlight .jadwal-time {
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .jadwal-grid {
+                grid-template-columns: repeat(5, minmax(70px, 1fr));
+                min-width: 450px;
+            }
+        }
+        @media (max-width: 480px) {
+            .jadwal-grid {
+                grid-template-columns: repeat(10, minmax(65px, 1fr));
+                min-width: 700px;
+            }
+        }
+        </style>
+        """
+        
+        # Data jadwal sholat
+        jadwal_data = [
+            ("Imsak", "🌑", timings.get("Imsak", "-")),
+            ("Subuh", "🌅", timings.get("Fajr", "-")),
+            ("Terbit", "🌄", timings.get("Sunrise", "-")),
+            ("Dzuhur", "☀️", timings.get("Dhuhr", "-")),
+            ("Ashar", "🌤️", timings.get("Asr", "-")),
+            ("Maghrib", "🌇", timings.get("Maghrib", "-")),
+            ("Isya", "🌙", timings.get("Isha", "-")),
+            ("1/3 Malam", "🌌", timings.get("Firstthird", "-")),
+            ("Tengah Malam", "", timings.get("Midnight", "-")),
+            ("Akhir Malam", "✨", timings.get("Lastthird", "-")),
+        ]
+        
+        # Highlight waktu sholat utama (Subuh, Dzuhur, Ashar, Maghrib, Isya)
+        highlight_names = ["Subuh", "Dzuhur", "Ashar", "Maghrib", "Isya"]
+        
+        html_jadwal = jadwal_css + '<div class="jadwal-container"><div class="jadwal-grid">'
+        for nama, icon, waktu in jadwal_data:
+            is_highlight = "highlight" if nama in highlight_names else ""
+            html_jadwal += f"""
+            <div class="jadwal-item {is_highlight}">
+                <div class="jadwal-icon">{icon}</div>
+                <div class="jadwal-label">{nama}</div>
+                <div class="jadwal-time">{waktu}</div>
+            </div>
+            """
+        html_jadwal += '</div></div>'
+        
+        st.markdown(html_jadwal, unsafe_allow_html=True)
     else:
-        st.error("❌ Kota tidak ditemukan di database API.")
-        st.warning("💡 Coba pilih kota lain atau periksa koneksi internet.")
+        st.error(" Kota tidak ditemukan di database API.")
         
 except requests.exceptions.Timeout:
     st.error("⏱️ Request timeout. Koneksi internet lambat.")
 except requests.exceptions.ConnectionError:
-    st.error("🔌 Koneksi internet terputus. Periksa koneksi Anda.")
+    st.error("🔌 Koneksi internet terputus.")
 except Exception as e:
     st.error(f"❌ Terjadi kesalahan: {str(e)}")
 
