@@ -279,7 +279,7 @@ if 'calendar_type' not in st.session_state:
 today = datetime.now()
 
 # ============================================
-# JADWAL SHOLAT (HORIZONTAL - NATIVE STREAMLIT)
+# JADWAL SHOLAT (HORIZONTAL - RAPI & SERAGAM)
 # ============================================
 st.divider()
 st.subheader("🕌 Jadwal Sholat Hari Ini")
@@ -298,7 +298,7 @@ try:
         st.write(f"**📅 Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
         st.divider()
         
-        # Data jadwal sholat
+        # Data jadwal sholat - SEMUA punya icon (pakai emoji kecil untuk yang tidak ada)
         jadwal_data = [
             ("Imsak", "🌑", timings.get("Imsak", "-"), False),
             ("Subuh", "🌅", timings.get("Fajr", "-"), True),
@@ -307,43 +307,114 @@ try:
             ("Ashar", "🌤️", timings.get("Asr", "-"), True),
             ("Maghrib", "🌇", timings.get("Maghrib", "-"), True),
             ("Isya", "🌙", timings.get("Isha", "-"), True),
-            ("1/3 Malam", "", timings.get("Firstthird", "-"), False),
+            ("1/3 Malam", "🌌", timings.get("Firstthird", "-"), False),
             ("Tengah Malam", "🕛", timings.get("Midnight", "-"), False),
             ("Akhir Malam", "✨", timings.get("Lastthird", "-"), False),
         ]
         
-        # Buat 10 kolom
-        cols = st.columns(10)
+        # CSS untuk kartu seragam
+        css_jadwal = """
+        <style>
+        .jadwal-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        .jadwal-row {
+            display: flex;
+            gap: 10px;
+            min-width: 1000px;
+        }
+        .jadwal-card {
+            flex: 1;
+            min-width: 90px;
+            max-width: 120px;
+            height: 140px;
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .jadwal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+        .jadwal-card.regular {
+            background: linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%);
+        }
+        .jadwal-card.highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #5a67d8;
+        }
+        .jadwal-icon {
+            font-size: 1.8rem;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .jadwal-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 4px 0;
+            white-space: nowrap;
+        }
+        .jadwal-card.regular .jadwal-label {
+            color: #555;
+        }
+        .jadwal-card.highlight .jadwal-label {
+            color: rgba(255,255,255,0.95);
+        }
+        .jadwal-time {
+            font-size: 1.1rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin-top: auto;
+        }
+        .jadwal-card.regular .jadwal-time {
+            color: #1a1a2e;
+        }
+        .jadwal-card.highlight .jadwal-time {
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .jadwal-row {
+                min-width: 900px;
+            }
+            .jadwal-card {
+                min-width: 80px;
+                height: 130px;
+            }
+        }
+        </style>
+        """
+        st.markdown(css_jadwal, unsafe_allow_html=True)
         
-        for i, (nama, icon, waktu, is_highlight) in enumerate(jadwal_data):
-            with cols[i]:
-                if is_highlight:
-                    # Waktu sholat wajib - pakai metric dengan warna
-                    st.markdown(f"""
-                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                                border-radius: 12px; 
-                                padding: 15px 5px; 
-                                text-align: center;
-                                color: white;">
-                        <div style="font-size: 1.5rem;">{icon}</div>
-                        <div style="font-size: 0.7rem; font-weight: 600; margin: 5px 0;">{nama}</div>
-                        <div style="font-size: 1.2rem; font-weight: bold; font-family: monospace;">{waktu}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                else:
-                    # Waktu lainnya - pakai metric biasa
-                    st.markdown(f"""
-                    <div style="background: linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%); 
-                                border-radius: 12px; 
-                                padding: 15px 5px; 
-                                text-align: center;
-                                border: 1px solid #e0e0e0;">
-                        <div style="font-size: 1.5rem;">{icon}</div>
-                        <div style="font-size: 0.7rem; font-weight: 600; margin: 5px 0; color: #555;">{nama}</div>
-                        <div style="font-size: 1.2rem; font-weight: bold; font-family: monospace; color: #1a1a2e;">{waktu}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
+        # Build HTML
+        html_cards = []
+        for nama, icon, waktu, is_highlight in jadwal_data:
+            card_class = "highlight" if is_highlight else "regular"
+            html_cards.append(f'''
+            <div class="jadwal-card {card_class}">
+                <div class="jadwal-icon">{icon}</div>
+                <div class="jadwal-label">{nama}</div>
+                <div class="jadwal-time">{waktu}</div>
+            </div>
+            ''')
         
+        html_jadwal = f'''
+        <div class="jadwal-wrapper">
+            <div class="jadwal-row">
+                {''.join(html_cards)}
+            </div>
+        </div>
+        '''
+        
+        st.markdown(html_jadwal, unsafe_allow_html=True)
     else:
         st.error("❌ Kota tidak ditemukan di database API.")
         
