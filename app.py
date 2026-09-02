@@ -510,15 +510,13 @@ def display_calendar(year, month, month_names, highlight_day=None):
 # ============================================
 if calendar_type == "Kalender Masehi":
     st.header("Kalender Masehi")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tanggal</p><p style="font-size: 48px; font-weight: bold;">' + today.strftime("%d") + '</p></div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Bulan</p><p style="font-size: 48px; font-weight: bold;">' + bulan_indonesia[today.month-1] + '</p></div>', unsafe_allow_html=True)
-    with col3:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tahun</p><p style="font-size: 48px; font-weight: bold;">' + today.strftime("%Y") + '</p></div>', unsafe_allow_html=True)
-    st.divider()
     st.info(f"**Hari: {hari_indonesia[today.weekday()]}, {today.strftime('%d')} {bulan_indonesia[today.month-1]} {today.strftime('%Y')}**")
+    display_calendar(
+        st.session_state.view_year, 
+        st.session_state.view_month, 
+        bulan_indonesia,
+        today.day if st.session_state.view_month == today.month and st.session_state.view_year == today.year else None
+    )
     display_calendar(st.session_state.view_year, st.session_state.view_month, bulan_indonesia, today.day if st.session_state.view_month == today.month and st.session_state.view_year == today.year else None)
 
 # ============================================
