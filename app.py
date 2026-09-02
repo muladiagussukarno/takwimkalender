@@ -904,7 +904,7 @@ elif calendar_type == "Kalender Cina (Imlek)":
         for i in range(n_days):
             d = start_solar + timedelta(days=i)
             wd = d.weekday()
-            is_today = (d.date() == today.date())
+            is_today = (d == today.date())
             week[wd] = (i + 1, d.strftime('%d/%m'), is_today)
             if wd == 6:
                 weeks.append(week)
