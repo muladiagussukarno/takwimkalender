@@ -114,6 +114,91 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
+# MODE TV (UNTUK LAYAR MASJID)
+# Akses: /?mode=tv&city=Jakarta&country=Indonesia&masjid=Al-Ikhlas
+# ==========================================
+mode = st.query_params.get("mode", "default")
+
+if mode == "tv":
+    tv_city = st.query_params.get("city", "Jakarta")
+    tv_country = st.query_params.get("country", "Indonesia")
+    tv_masjid = st.query_params.get("masjid", "Masjid Raya")
+    
+    st.markdown("""<style>
+html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%) !important; }
+#MainMenu, header, footer { visibility: hidden !important; }
+.main-header { display: none !important; }
+.block-container { padding: 2vh 2vw !important; max-width: 100% !important; }
+.tv-header { display:flex; justify-content:space-between; align-items:center; }
+.tv-title { color:#ffd700; font-size:2.6vw; font-weight:800; }
+.tv-clock { color:#fff; font-size:3.5vw; font-weight:800; font-family:monospace; }
+.tv-dates { color:#cfe8ff; font-size:1.4vw; text-align:center; margin:1.5vh 0; }
+.tv-grid { display:grid; grid-template-columns:repeat(7, 1fr); gap:1vw; margin-top:2vh; }
+.tv-card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:1vw; padding:2.5vh 0.5vw; text-align:center; }
+.tv-card.next { background:linear-gradient(135deg,#f7971e,#ffd200); border-color:#ffd200; }
+.tv-name { color:#ffd700; font-size:1.4vw; font-weight:700; }
+.tv-card.next .tv-name { color:#1a1a2e; }
+.tv-time { color:#fff; font-size:2.6vw; font-weight:800; font-family:monospace; }
+.tv-card.next .tv-time { color:#1a1a2e; }
+.tv-count { text-align:center; margin-top:3vh; color:#fff; font-size:2vw; }
+.tv-count b { color:#ffd200; font-size:2.8vw; font-family:monospace; }
+</style>""", unsafe_allow_html=True)
+    
+    try:
+        tv_method = st.query_params.get("method", "20")
+        url = f"http://api.aladhan.com/v1/timingsByCity?city={tv_city}&country={tv_country}&method={tv_method}"
+        data = requests.get(url, timeout=10).json()
+        
+        if data['code'] == 200:
+            timings = data['data']['timings']
+            date_info = data['data']['date']
+            
+            daftar = [("Subuh", timings["Fajr"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5])]
+            
+            def cari_next(n):
+                for nama, t in daftar:
+                    jt = datetime.strptime(t, "%H:%M").replace(year=n.year, month=n.month, day=n.day)
+                    if jt > n:
+                        return nama, jt
+                return None, None
+            
+            next_name, next_time = cari_next(datetime.now())
+            
+            @st.fragment(run_every=1)
+            def tv_header():
+                n = datetime.now()
+                st.markdown(f"<div class='tv-header'><div class='tv-title'>🕌 {tv_masjid}</div><div class='tv-clock'>🕐 {n.strftime('%H:%M:%S')}</div></div>", unsafe_allow_html=True)
+            tv_header()
+            
+            st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
+            
+            grid_items = [("Imsak", timings["Imsak"][:5]), ("Subuh", timings["Fajr"][:5]), ("Terbit", timings["Sunrise"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5])]
+            html = "<div class='tv-grid'>"
+            for nama, t in grid_items:
+                cls = "tv-card next" if nama == next_name else "tv-card"
+                html += f"<div class='{cls}'><div class='tv-name'>{nama}</div><div class='tv-time'>{t}</div></div>"
+            html += "</div>"
+            st.markdown(html, unsafe_allow_html=True)
+            
+            @st.fragment(run_every=1)
+            def tv_countdown():
+                n = datetime.now()
+                nm, nt = cari_next(n)
+                if nt:
+                    total = int((nt - n).total_seconds())
+                    h, m, s = total // 3600, (total % 3600) // 60, total % 60
+                    st.markdown(f"<div class='tv-count'>⏳ Menuju waktu <b>{nm}</b> &nbsp; <b>{h:02d}:{m:02d}:{s:02d}</b></div>", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"<div class='tv-count'>🌙 Menanti Subuh besok: <b>{daftar[0][1]}</b></div>", unsafe_allow_html=True)
+            tv_countdown()
+        else:
+            st.error("❌ Kota tidak ditemukan.")
+    except Exception as e:
+        st.error(f"❌ Error: {str(e)}")
+    
+    st.stop()
+
+# ==========================================
 # DATABASE KOTA DUNIA
 # ==========================================
 WORLD_CITIES = {
@@ -949,3 +1034,28 @@ elif calendar_type == "Kalender Cina (Imlek)":
         st.error("❌ Library 'lunardate' belum terinstall. Pastikan 'lunardate' ada di requirements.txt lalu push ulang.")
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
+
+# ==========================================
+# GENERATOR LINK TV MASJID (SOLUSI MULTI-MASJID)
+# ==========================================
+from urllib.parse import quote
+
+with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
+    st.markdown("**Untuk takmir & masjid lain:** isi data di bawah, salin link / cetak QR, tempel di TV masjid. Tanpa perlu sentuh kode!")
+    
+    g_col1, g_col2 = st.columns([2, 1])
+    with g_col1:
+        g_masjid = st.text_input("🕌 Nama Masjid", value="Masjid Al-Ikhlas", key="g_masjid")
+        g_loc = st.selectbox("🌍 Kota / Kabupaten", options=ALL_CITIES, key="g_loc")
+        g_method = st.selectbox("🧮 Metode Perhitungan", options=[(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")], format_func=lambda x: x[1], key="g_method")
+        
+        c_part, n_part = g_loc.split(", ")
+        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(c_part) + "&country=" + quote(n_part) + "&masjid=" + quote(g_masjid) + "&method=" + str(g_method[0])
+        
+        st.markdown("**Link TV Masjid Anda:**")
+        st.code(tv_url)
+        st.markdown(f"🔗 **[Klik untuk Uji Coba Link]({tv_url})**")
+    
+    with g_col2:
+        st.image("https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + quote(tv_url), width=200)
+        st.caption("📱 Cetak QR ini & tempel di masjid — takmir tinggal scan!")
