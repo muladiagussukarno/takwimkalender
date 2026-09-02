@@ -133,12 +133,12 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
 .tv-title { color:#ffd700; font-size:2.6vw; font-weight:800; }
 .tv-clock { color:#fff; font-size:3.5vw; font-weight:800; font-family:monospace; }
 .tv-dates { color:#cfe8ff; font-size:1.4vw; text-align:center; margin:1.5vh 0; }
-.tv-grid { display:grid; grid-template-columns:repeat(7, 1fr); gap:1vw; margin-top:2vh; }
+.tv-grid { display:grid; grid-template-columns:repeat(10, 1fr); gap:1vw; margin-top:2vh; }
 .tv-card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:1vw; padding:2.5vh 0.5vw; text-align:center; }
 .tv-card.next { background:linear-gradient(135deg,#f7971e,#ffd200); border-color:#ffd200; }
-.tv-name { color:#ffd700; font-size:1.4vw; font-weight:700; }
+.tv-name { color:#ffd700; font-size:1.1vw; font-weight:700; }
 .tv-card.next .tv-name { color:#1a1a2e; }
-.tv-time { color:#fff; font-size:2.6vw; font-weight:800; font-family:monospace; }
+.tv-time { color:#fff; font-size:2vw; font-weight:800; font-family:monospace; }
 .tv-card.next .tv-time { color:#1a1a2e; }
 .tv-count { text-align:center; margin-top:3vh; color:#fff; font-size:2vw; }
 .tv-count b { color:#ffd200; font-size:2.8vw; font-family:monospace; }
@@ -172,7 +172,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             
             st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
             
-            grid_items = [("Imsak", timings["Imsak"][:5]), ("Subuh", timings["Fajr"][:5]), ("Terbit", timings["Sunrise"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5])]
+            grid_items = [("Imsak", timings["Imsak"][:5]), ("Subuh", timings["Fajr"][:5]), ("Terbit", timings["Sunrise"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5]), ("1/3 Malam", timings["Firstthird"][:5]), ("Tengah Malam", timings["Midnight"][:5]), ("Akhir Malam", timings["Lastthird"][:5])]
             html = "<div class='tv-grid'>"
             for nama, t in grid_items:
                 cls = "tv-card next" if nama == next_name else "tv-card"
