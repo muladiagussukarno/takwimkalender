@@ -172,7 +172,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             
             st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
             
-            grid_items = [("Imsak", timings["Imsak"][:5]), ("Subuh", timings["Fajr"][:5]), ("Terbit", timings["Sunrise"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5]), ("1/3 Malam", timings["Firstthird"][:5]), ("Tengah Malam", timings["Midnight"][:5]), ("Akhir Malam", timings["Lastthird"][:5])]
+                        grid_items = [("Imsak", timings["Imsak"][:5]), ("Subuh", timings["Fajr"][:5]), ("Terbit", timings["Sunrise"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5]), ("1/3 Malam", timings["Firstthird"][:5]), ("Tengah Malam", timings["Midnight"][:5]), ("Akhir Malam", timings["Lastthird"][:5])]
             html = "<div class='tv-grid'>"
             for nama, t in grid_items:
                 cls = "tv-card next" if nama == next_name else "tv-card"
