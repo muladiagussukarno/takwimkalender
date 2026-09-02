@@ -279,11 +279,8 @@ if 'calendar_type' not in st.session_state:
 today = datetime.now()
 
 # ============================================
-# JADWAL SHOLAT (HORIZONTAL - RAPI & SERAGAM)
+# JADWAL SHOLAT (JUDUL KIRI + INFO KANAN)
 # ============================================
-st.subheader("🕌 Jadwal Sholat Hari Ini")
-
-st.info(f"📍 **Lokasi:** {st.session_state.city.title()}, {st.session_state.country.title()} | **Metode:** {st.session_state.method[1]}")
 
 try:
     url = f"http://api.aladhan.com/v1/timingsByCity?city={st.session_state.city}&country={st.session_state.country}&method={st.session_state.method[0]}"
@@ -294,10 +291,17 @@ try:
         timings = data['data']['timings']
         date_info = data['data']['date']
 
-        st.write(f"**📅 Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
-        st.divider()
+        # === BARIS HEADER: JUDUL KIRI + INFO KANAN ===
+        col_title, col_info = st.columns([1, 2])
 
-        # CSS harus dimulai dari kolom 0 (tanpa spasi di depan <style>)
+        with col_title:
+            st.subheader("🕌 Jadwal Sholat Hari Ini")
+
+        with col_info:
+            info_html = '<div style="text-align:right;background:#eaf1fb;border-radius:10px;padding:12px 15px;"><div style="font-size:0.9rem;color:#1a56db;font-weight:600;">📍 Lokasi: ' + st.session_state.city.title() + ', ' + st.session_state.country.title() + ' | Metode: ' + st.session_state.method[1] + '</div><div style="font-size:0.85rem;color:#555;margin-top:4px;">📅 Tanggal: ' + date_info['gregorian']['date'] + ' | ' + date_info['hijri']['date'] + ' ' + date_info['hijri']['month']['en'] + ' ' + date_info['hijri']['year'] + ' H</div></div>'
+            st.markdown(info_html, unsafe_allow_html=True)
+
+        # === CSS KARTU (mulai kolom 0, jangan menjorok!) ===
         css_jadwal = """<style>
 .jadwal-wrapper{width:100%;overflow-x:auto;padding:10px 0;}
 .jadwal-row{display:flex;gap:10px;min-width:1000px;}
@@ -315,6 +319,7 @@ try:
 </style>"""
         st.markdown(css_jadwal, unsafe_allow_html=True)
 
+        # === DATA 10 WAKTU ===
         jadwal_data = [
             ("Imsak", "🌑", timings.get("Imsak", "-"), False),
             ("Subuh", "🌅", timings.get("Fajr", "-"), True),
@@ -328,7 +333,7 @@ try:
             ("Akhir Malam", "✨", timings.get("Lastthird", "-"), False),
         ]
 
-        # PENTING: HTML dibangun SATU BARIS, tanpa enter, tanpa spasi menjorok!
+        # === HTML KARTU SATU BARIS (wajib tanpa enter/menjorok!) ===
         html_jadwal = '<div class="jadwal-wrapper"><div class="jadwal-row">'
         for nama, icon, waktu, is_highlight in jadwal_data:
             card_class = "highlight" if is_highlight else "regular"
@@ -337,13 +342,17 @@ try:
 
         st.markdown(html_jadwal, unsafe_allow_html=True)
     else:
+        st.subheader("🕌 Jadwal Sholat Hari Ini")
         st.error("❌ Kota tidak ditemukan di database API.")
 
 except requests.exceptions.Timeout:
+    st.subheader("🕌 Jadwal Sholat Hari Ini")
     st.error("⏱️ Request timeout. Koneksi internet lambat.")
 except requests.exceptions.ConnectionError:
+    st.subheader("🕌 Jadwal Sholat Hari Ini")
     st.error("🔌 Koneksi internet terputus.")
 except Exception as e:
+    st.subheader("🕌 Jadwal Sholat Hari Ini")
     st.error(f"❌ Terjadi kesalahan: {str(e)}")
 
 # ==========================================
