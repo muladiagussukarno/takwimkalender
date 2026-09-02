@@ -528,33 +528,113 @@ if calendar_type == "Kalender Masehi":
 # ============================================
 # KALENDER 2: HIJRIAH QOMARIAH
 # ============================================
-elif calendar_type == "Kalender Hijriah Global Tunggal Qomariah":
+elif calendar_type == "Kalender Hijriah Qomariah/Bulan":
     st.header("🌙 Kalender Hijriah Qomariah/Bulan")
+    
+    nama_bulan_hijriah = ["Muharram", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"]
+    
     try:
         url = f"http://api.aladhan.com/v1/gToH/{today.strftime('%d-%m-%Y')}"
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         data = response.json()
+        
         if data['code'] == 200:
             hijri = data['data']['hijri']
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tanggal Hijriah</p><p style="font-size: 48px; font-weight: bold;">' + hijri['day'] + '</p></div>', unsafe_allow_html=True)
-            with col2:
-                st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Bulan</p><p style="font-size: 48px; font-weight: bold;">' + hijri['month']['en'] + '</p></div>', unsafe_allow_html=True)
-            with col3:
-                st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tahun</p><p style="font-size: 48px; font-weight: bold;">' + hijri['year'] + '</p></div>', unsafe_allow_html=True)
+            
+            st.info(f"**Hari ini:** {hari_indonesia[today.weekday()]}, {hijri['day']} {hijri['month']['ar']} ({nama_bulan_hijriah[int(hijri['month']['number'])-1]}) {hijri['year']} H")
+            
+            # Inisialisasi navigasi bulan Hijriah
+            if 'hijri_view_year' not in st.session_state:
+                st.session_state.hijri_view_year = int(hijri['year'])
+            if 'hijri_view_month' not in st.session_state:
+                st.session_state.hijri_view_month = int(hijri['month']['number'])
+            
+            # Navigasi bulan
+            col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+            with col_nav1:
+                if st.button("◀️ Bulan Sebelumnya", key="hijri_prev"):
+                    if st.session_state.hijri_view_month == 1:
+                        st.session_state.hijri_view_month = 12
+                        st.session_state.hijri_view_year -= 1
+                    else:
+                        st.session_state.hijri_view_month -= 1
+                    st.rerun()
+            with col_nav2:
+                st.markdown(f"<h2 style='text-align: center;'>🌙 {nama_bulan_hijriah[st.session_state.hijri_view_month-1]} {st.session_state.hijri_view_year} H</h2>", unsafe_allow_html=True)
+            with col_nav3:
+                if st.button("Bulan Berikutnya ▶️", key="hijri_next"):
+                    if st.session_state.hijri_view_month == 12:
+                        st.session_state.hijri_view_month = 1
+                        st.session_state.hijri_view_year += 1
+                    else:
+                        st.session_state.hijri_view_month += 1
+                    st.rerun()
+            
             st.divider()
-            st.success(f"**Hari: {hijri['weekday']['en']}, {hijri['day']} {hijri['month']['en']} {hijri['year']} H**")
-            st.info(f"**Arab:** {hijri['day']} {hijri['month']['ar']} {hijri['year']}")
+            
+            # Ambil kalender bulan Hijriah dari API
+            url_bulan = f"http://api.aladhan.com/v1/hijriCalendar/{st.session_state.hijri_view_year}/{st.session_state.hijri_view_month}"
+            r_bulan = requests.get(url_bulan, timeout=10)
+            d_bulan = r_bulan.json()
+            
+            if d_bulan['code'] == 200:
+                days = d_bulan['data']
+                
+                # Susun grid minggu (mulai Senin)
+                weeks = []
+                week = [None] * 7
+                pertama = datetime.strptime(days[0]['gregorian']['date'], '%d-%m-%Y')
+                for i in range(pertama.weekday()):
+                    week[i] = None
+                
+                for item in days:
+                    gd = datetime.strptime(item['gregorian']['date'], '%d-%m-%Y')
+                    wd = gd.weekday()
+                    is_today = (gd.date() == today.date())
+                    week[wd] = (item['hijri']['day'], gd.strftime('%d/%m'), is_today)
+                    if wd == 6:
+                        weeks.append(week)
+                        week = [None] * 7
+                if any(x is not None for x in week):
+                    weeks.append(week)
+                
+                # Render tabel
+                table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
+                html_table = table_css + "<table class='calendar-table'><thead><tr>"
+                for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
+                    html_table += f"<th>{day}</th>"
+                html_table += "</tr></thead><tbody>"
+                
+                for w in weeks:
+                    html_table += "<tr>"
+                    for cell in w:
+                        if cell is None:
+                            html_table += "<td class='empty'></td>"
+                        else:
+                            h_day, g_short, is_today = cell
+                            if is_today:
+                                html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'><div style='font-size:20px;'>{h_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
+                            else:
+                                html_table += f"<td><div style='font-size:20px;font-weight:600;'>{h_day}</div><div style='font-size:11px;color:#888;'>{g_short}</div></td>"
+                    html_table += "</tr>"
+                html_table += "</tbody></table>"
+                st.markdown(html_table, unsafe_allow_html=True)
+                st.caption("Angka besar = tanggal Hijriah | Angka kecil = tanggal Masehi | Hijau = hari ini")
+            else:
+                st.error("❌ Gagal mengambil data kalender Hijriah.")
         else:
-            st.error(" Gagal mengambil data")
+            st.error("❌ Gagal mengambil data tanggal Hijriah.")
+    except requests.exceptions.Timeout:
+        st.error("⏱️ Request timeout. Koneksi internet lambat.")
+    except requests.exceptions.ConnectionError:
+        st.error("🔌 Koneksi internet terputus.")
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
 
 # ============================================
 # KALENDER 3: HIJRIAH SYAMSIYAH
 # ============================================
-elif calendar_type == "Kalender Hijrah Global Tunggal Syamsiah":
+elif calendar_type == "Kalender Hijrah Syamsiah/Matahari":
     st.header("☀️ Kalender Hijrah Syamsiah/Matahari")
     p_year, p_month, p_day = gregorian_to_persian(today.year, today.month, today.day)
     col1, col2, col3 = st.columns(3)
