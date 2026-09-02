@@ -30,10 +30,10 @@ header {visibility: hidden !important;}
     line-height: 1.2 !important;
 }
 .main > div:first-child {
-    padding-top: 80px !important;
+    padding-top: 44px !important;
 }
 .block-container {
-    padding-top: 80px !important;
+    padding-top: 44px !important;
 }
 .stApp > header {
     display: none !important;
@@ -281,7 +281,6 @@ today = datetime.now()
 # ============================================
 # JADWAL SHOLAT (HORIZONTAL - RAPI & SERAGAM)
 # ============================================
-st.divider()
 st.subheader("🕌 Jadwal Sholat Hari Ini")
 
 st.info(f"📍 **Lokasi:** {st.session_state.city.title()}, {st.session_state.country.title()} | **Metode:** {st.session_state.method[1]}")
