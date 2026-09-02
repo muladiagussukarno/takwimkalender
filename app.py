@@ -469,13 +469,13 @@ bulan_indonesia = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli
 def display_calendar(year, month, month_names, highlight_day=None):
     col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
     with col_nav1:
-        if st.button("◀️ Bulan Sebelumnya", key="prev_month"):
+        if st.button("◀️ Bulan Sebelumnya"):
             prev_month()
             st.rerun()
     with col_nav2:
         st.markdown(f"<h2 style='text-align: center;'> {month_names[month-1]} {year}</h2>", unsafe_allow_html=True)
     with col_nav3:
-        if st.button("Bulan Berikutnya ▶️", key="next_month"):
+        if st.button("Bulan Berikutnya ▶️"):
             next_month()
             st.rerun()
     st.divider()
