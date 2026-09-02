@@ -632,20 +632,100 @@ elif calendar_type == "Kalender Hijriah Qomariah/Bulan":
         st.error(f"❌ Error: {str(e)}")
 
 # ============================================
-# KALENDER 3: HIJRIAH SYAMSIYAH
+# KALENDER 3: HIJRAH SYAMSIYAH
 # ============================================
 elif calendar_type == "Kalender Hijrah Syamsiah/Matahari":
     st.header("☀️ Kalender Hijrah Syamsiah/Matahari")
+    
     p_year, p_month, p_day = gregorian_to_persian(today.year, today.month, today.day)
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tanggal</p><p style="font-size: 48px; font-weight: bold;">' + str(p_day) + '</p></div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Bulan</p><p style="font-size: 48px; font-weight: bold;">' + persian_months[p_month-1] + '</p></div>', unsafe_allow_html=True)
-    with col3:
-        st.markdown('<div class="notranslate" translate="no"><p style="font-size: 14px; color: gray;">Tahun</p><p style="font-size: 48px; font-weight: bold;">' + str(p_year) + '</p></div>', unsafe_allow_html=True)
+    
+    st.info(f"**Hari ini:** {hari_indonesia[today.weekday()]}, {p_day} {persian_months[p_month-1]} {p_year} HS")
+    
+    # Inisialisasi navigasi bulan Syamsiah
+    if 'syamsiah_view_year' not in st.session_state:
+        st.session_state.syamsiah_view_year = p_year
+    if 'syamsiah_view_month' not in st.session_state:
+        st.session_state.syamsiah_view_month = p_month
+    
+    # Navigasi bulan
+    col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+    with col_nav1:
+        if st.button("◀️ Bulan Sebelumnya", key="syams_prev"):
+            if st.session_state.syamsiah_view_month == 1:
+                st.session_state.syamsiah_view_month = 12
+                st.session_state.syamsiah_view_year -= 1
+            else:
+                st.session_state.syamsiah_view_month -= 1
+            st.rerun()
+    with col_nav2:
+        st.markdown(f"<h2 style='text-align: center;'>☀️ {persian_months[st.session_state.syamsiah_view_month-1]} {st.session_state.syamsiah_view_year} HS</h2>", unsafe_allow_html=True)
+    with col_nav3:
+        if st.button("Bulan Berikutnya ▶️", key="syams_next"):
+            if st.session_state.syamsiah_view_month == 12:
+                st.session_state.syamsiah_view_month = 1
+                st.session_state.syamsiah_view_year += 1
+            else:
+                st.session_state.syamsiah_view_month += 1
+            st.rerun()
+    
     st.divider()
-    st.success(f"**Hari: {hari_indonesia[today.weekday()]}, {p_day} {persian_months[p_month-1]} {p_year} HS**")
+    
+    # Kumpulkan hari pada bulan Syamsiah yang ditampilkan
+    v_year = st.session_state.syamsiah_view_year
+    v_month = st.session_state.syamsiah_view_month
+    
+    if v_month <= 6:
+        offset_hari = (v_month - 1) * 31
+    else:
+        offset_hari = 186 + (v_month - 7) * 30
+    mulai = datetime(v_year + 621, 3, 19) + timedelta(days=offset_hari - 3)
+    
+    hari_bulan = []
+    for i in range(45):
+        d = mulai + timedelta(days=i)
+        py, pm, pd = gregorian_to_persian(d.year, d.month, d.day)
+        if py == v_year and pm == v_month:
+            hari_bulan.append((d, pd))
+        elif hari_bulan:
+            break
+    
+    # Susun grid minggu (mulai Senin)
+    weeks = []
+    week = [None] * 7
+    if hari_bulan:
+        for i in range(hari_bulan[0][0].weekday()):
+            week[i] = None
+        for d, pd in hari_bulan:
+            wd = d.weekday()
+            is_today = (d.date() == today.date())
+            week[wd] = (pd, d.strftime('%d/%m'), is_today)
+            if wd == 6:
+                weeks.append(week)
+                week = [None] * 7
+        if any(x is not None for x in week):
+            weeks.append(week)
+    
+    # Render tabel
+    table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
+    html_table = table_css + "<table class='calendar-table'><thead><tr>"
+    for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
+        html_table += f"<th>{day}</th>"
+    html_table += "</tr></thead><tbody>"
+    for w in weeks:
+        html_table += "<tr>"
+        for cell in w:
+            if cell is None:
+                html_table += "<td class='empty'></td>"
+            else:
+                s_day, g_short, is_today = cell
+                if is_today:
+                    html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'><div style='font-size:20px;'>{s_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
+                else:
+                    html_table += f"<td><div style='font-size:20px;font-weight:600;'>{s_day}</div><div style='font-size:11px;color:#888;'>{g_short}</div></td>"
+        html_table += "</tr>"
+    html_table += "</tbody></table>"
+    st.markdown(html_table, unsafe_allow_html=True)
+    st.caption("Angka besar = tanggal Hijrah Syamsiah | Angka kecil = tanggal Masehi | Hijau = hari ini")
 
 # ============================================
 # KALENDER 4: JAWA
