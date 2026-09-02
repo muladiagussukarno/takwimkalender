@@ -302,33 +302,45 @@ try:
         jadwal_data = [
             ("Imsak", "🌑", timings.get("Imsak", "-")),
             ("Subuh", "🌅", timings.get("Fajr", "-")),
-            ("Terbit", "🌄", timings.get("Sunrise", "-")),
+            ("Terbit", "", timings.get("Sunrise", "-")),
             ("Dzuhur", "☀️", timings.get("Dhuhr", "-")),
             ("Ashar", "🌤️", timings.get("Asr", "-")),
             ("Maghrib", "🌇", timings.get("Maghrib", "-")),
             ("Isya", "🌙", timings.get("Isha", "-")),
-            ("1/3 Malam", "", timings.get("Firstthird", "-")),
+            ("1/3 Malam", "🌌", timings.get("Firstthird", "-")),
             ("Tengah Malam", "🕛", timings.get("Midnight", "-")),
             ("Akhir Malam", "✨", timings.get("Lastthird", "-")),
         ]
         
         highlight_names = ["Subuh", "Dzuhur", "Ashar", "Maghrib", "Isya"]
         
-        # Build HTML (hanya struktur, tanpa CSS)
+        # Build HTML dengan INLINE STYLE (pasti ter-render!)
         html_items = []
         for nama, icon, waktu in jadwal_data:
-            is_highlight = "highlight" if nama in highlight_names else ""
+            is_highlight = nama in highlight_names
+            
+            # Background color
+            if is_highlight:
+                bg_color = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                text_color = "white"
+            else:
+                bg_color = "linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%)"
+                text_color = "#1a1a2e"
+            
+            label_color = "rgba(255,255,255,0.95)" if is_highlight else "#555"
+            
             html_items.append(f'''
-            <div class="jadwal-item {is_highlight}">
-                <div class="jadwal-icon">{icon}</div>
-                <div class="jadwal-label">{nama}</div>
-                <div class="jadwal-time">{waktu}</div>
+            <div style="background: {bg_color}; border-radius: 12px; padding: 12px 6px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; min-width: 80px; flex: 1;">
+                <div style="font-size: clamp(1rem, 2.5vw, 1.8rem); margin-bottom: 4px;">{icon}</div>
+                <div style="font-size: clamp(0.55rem, 1.2vw, 0.85rem); color: {label_color}; font-weight: 600; margin-bottom: 6px; white-space: nowrap;">{nama}</div>
+                <div style="font-size: clamp(0.9rem, 2vw, 1.5rem); font-weight: bold; color: {text_color}; font-family: 'Courier New', monospace;">{waktu}</div>
             </div>
             ''')
         
+        # Container dengan flexbox
         html_jadwal = f'''
-        <div class="jadwal-container">
-            <div class="jadwal-grid">
+        <div style="width: 100%; overflow-x: auto; padding: 10px 0;">
+            <div style="display: flex; gap: 8px; min-width: 900px;">
                 {''.join(html_items)}
             </div>
         </div>
@@ -337,7 +349,7 @@ try:
         # Render HTML
         st.markdown(html_jadwal, unsafe_allow_html=True)
     else:
-        st.error("❌ Kota tidak ditemukan di database API.")
+        st.error(" Kota tidak ditemukan di database API.")
         
 except requests.exceptions.Timeout:
     st.error("⏱️ Request timeout. Koneksi internet lambat.")
