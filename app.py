@@ -279,7 +279,7 @@ if 'calendar_type' not in st.session_state:
 today = datetime.now()
 
 # ============================================
-# JADWAL SHOLAT (HORIZONTAL RESPONSIVE)
+# JADWAL SHOLAT (HORIZONTAL - NATIVE STREAMLIT)
 # ============================================
 st.divider()
 st.subheader("🕌 Jadwal Sholat Hari Ini")
@@ -300,56 +300,52 @@ try:
         
         # Data jadwal sholat
         jadwal_data = [
-            ("Imsak", "🌑", timings.get("Imsak", "-")),
-            ("Subuh", "🌅", timings.get("Fajr", "-")),
-            ("Terbit", "", timings.get("Sunrise", "-")),
-            ("Dzuhur", "☀️", timings.get("Dhuhr", "-")),
-            ("Ashar", "🌤️", timings.get("Asr", "-")),
-            ("Maghrib", "🌇", timings.get("Maghrib", "-")),
-            ("Isya", "🌙", timings.get("Isha", "-")),
-            ("1/3 Malam", "🌌", timings.get("Firstthird", "-")),
-            ("Tengah Malam", "🕛", timings.get("Midnight", "-")),
-            ("Akhir Malam", "✨", timings.get("Lastthird", "-")),
+            ("Imsak", "🌑", timings.get("Imsak", "-"), False),
+            ("Subuh", "🌅", timings.get("Fajr", "-"), True),
+            ("Terbit", "🌄", timings.get("Sunrise", "-"), False),
+            ("Dzuhur", "☀️", timings.get("Dhuhr", "-"), True),
+            ("Ashar", "🌤️", timings.get("Asr", "-"), True),
+            ("Maghrib", "🌇", timings.get("Maghrib", "-"), True),
+            ("Isya", "🌙", timings.get("Isha", "-"), True),
+            ("1/3 Malam", "", timings.get("Firstthird", "-"), False),
+            ("Tengah Malam", "🕛", timings.get("Midnight", "-"), False),
+            ("Akhir Malam", "✨", timings.get("Lastthird", "-"), False),
         ]
         
-        highlight_names = ["Subuh", "Dzuhur", "Ashar", "Maghrib", "Isya"]
+        # Buat 10 kolom
+        cols = st.columns(10)
         
-        # Build HTML dengan INLINE STYLE (pasti ter-render!)
-        html_items = []
-        for nama, icon, waktu in jadwal_data:
-            is_highlight = nama in highlight_names
-            
-            # Background color
-            if is_highlight:
-                bg_color = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                text_color = "white"
-            else:
-                bg_color = "linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%)"
-                text_color = "#1a1a2e"
-            
-            label_color = "rgba(255,255,255,0.95)" if is_highlight else "#555"
-            
-            html_items.append(f'''
-            <div style="background: {bg_color}; border-radius: 12px; padding: 12px 6px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; min-width: 80px; flex: 1;">
-                <div style="font-size: clamp(1rem, 2.5vw, 1.8rem); margin-bottom: 4px;">{icon}</div>
-                <div style="font-size: clamp(0.55rem, 1.2vw, 0.85rem); color: {label_color}; font-weight: 600; margin-bottom: 6px; white-space: nowrap;">{nama}</div>
-                <div style="font-size: clamp(0.9rem, 2vw, 1.5rem); font-weight: bold; color: {text_color}; font-family: 'Courier New', monospace;">{waktu}</div>
-            </div>
-            ''')
+        for i, (nama, icon, waktu, is_highlight) in enumerate(jadwal_data):
+            with cols[i]:
+                if is_highlight:
+                    # Waktu sholat wajib - pakai metric dengan warna
+                    st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                border-radius: 12px; 
+                                padding: 15px 5px; 
+                                text-align: center;
+                                color: white;">
+                        <div style="font-size: 1.5rem;">{icon}</div>
+                        <div style="font-size: 0.7rem; font-weight: 600; margin: 5px 0;">{nama}</div>
+                        <div style="font-size: 1.2rem; font-weight: bold; font-family: monospace;">{waktu}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    # Waktu lainnya - pakai metric biasa
+                    st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%); 
+                                border-radius: 12px; 
+                                padding: 15px 5px; 
+                                text-align: center;
+                                border: 1px solid #e0e0e0;">
+                        <div style="font-size: 1.5rem;">{icon}</div>
+                        <div style="font-size: 0.7rem; font-weight: 600; margin: 5px 0; color: #555;">{nama}</div>
+                        <div style="font-size: 1.2rem; font-weight: bold; font-family: monospace; color: #1a1a2e;">{waktu}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
         
-        # Container dengan flexbox
-        html_jadwal = f'''
-        <div style="width: 100%; overflow-x: auto; padding: 10px 0;">
-            <div style="display: flex; gap: 8px; min-width: 900px;">
-                {''.join(html_items)}
-            </div>
-        </div>
-        '''
-        
-        # Render HTML
-        st.markdown(html_jadwal, unsafe_allow_html=True)
     else:
-        st.error(" Kota tidak ditemukan di database API.")
+        st.error("❌ Kota tidak ditemukan di database API.")
         
 except requests.exceptions.Timeout:
     st.error("⏱️ Request timeout. Koneksi internet lambat.")
