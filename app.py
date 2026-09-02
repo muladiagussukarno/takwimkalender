@@ -290,15 +290,32 @@ try:
     url = f"http://api.aladhan.com/v1/timingsByCity?city={st.session_state.city}&country={st.session_state.country}&method={st.session_state.method[0]}"
     response = requests.get(url, timeout=10)
     data = response.json()
-    
+
     if data['code'] == 200:
         timings = data['data']['timings']
         date_info = data['data']['date']
-        
+
         st.write(f"**📅 Tanggal:** {date_info['gregorian']['date']} | {date_info['hijri']['date']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H")
         st.divider()
-        
-        # Data jadwal sholat - SEMUA punya icon (pakai emoji kecil untuk yang tidak ada)
+
+        # CSS harus dimulai dari kolom 0 (tanpa spasi di depan <style>)
+        css_jadwal = """<style>
+.jadwal-wrapper{width:100%;overflow-x:auto;padding:10px 0;}
+.jadwal-row{display:flex;gap:10px;min-width:1000px;}
+.jadwal-card{flex:1;min-width:90px;height:140px;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #e0e0e0;transition:transform 0.2s;}
+.jadwal-card:hover{transform:translateY(-4px);box-shadow:0 6px 16px rgba(0,0,0,0.15);}
+.jadwal-card.regular{background:linear-gradient(135deg,#f0f2f6 0%,#e8eaf6 100%);}
+.jadwal-card.highlight{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-color:#5a67d8;}
+.jadwal-icon{font-size:1.8rem;line-height:1;}
+.jadwal-label{font-size:0.75rem;font-weight:600;margin:4px 0;white-space:nowrap;}
+.jadwal-card.regular .jadwal-label{color:#555;}
+.jadwal-card.highlight .jadwal-label{color:rgba(255,255,255,0.95);}
+.jadwal-time{font-size:1.1rem;font-weight:bold;font-family:'Courier New',monospace;}
+.jadwal-card.regular .jadwal-time{color:#1a1a2e;}
+.jadwal-card.highlight .jadwal-time{color:white;}
+</style>"""
+        st.markdown(css_jadwal, unsafe_allow_html=True)
+
         jadwal_data = [
             ("Imsak", "🌑", timings.get("Imsak", "-"), False),
             ("Subuh", "🌅", timings.get("Fajr", "-"), True),
@@ -311,113 +328,18 @@ try:
             ("Tengah Malam", "🕛", timings.get("Midnight", "-"), False),
             ("Akhir Malam", "✨", timings.get("Lastthird", "-"), False),
         ]
-        
-        # CSS untuk kartu seragam
-        css_jadwal = """
-        <style>
-        .jadwal-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            padding: 10px 0;
-        }
-        .jadwal-row {
-            display: flex;
-            gap: 10px;
-            min-width: 1000px;
-        }
-        .jadwal-card {
-            flex: 1;
-            min-width: 90px;
-            max-width: 120px;
-            height: 140px;
-            border-radius: 12px;
-            padding: 10px 6px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 1px solid #e0e0e0;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .jadwal-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-        }
-        .jadwal-card.regular {
-            background: linear-gradient(135deg, #f0f2f6 0%, #e8eaf6 100%);
-        }
-        .jadwal-card.highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-color: #5a67d8;
-        }
-        .jadwal-icon {
-            font-size: 1.8rem;
-            line-height: 1;
-            margin-bottom: 4px;
-        }
-        .jadwal-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin: 4px 0;
-            white-space: nowrap;
-        }
-        .jadwal-card.regular .jadwal-label {
-            color: #555;
-        }
-        .jadwal-card.highlight .jadwal-label {
-            color: rgba(255,255,255,0.95);
-        }
-        .jadwal-time {
-            font-size: 1.1rem;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            margin-top: auto;
-        }
-        .jadwal-card.regular .jadwal-time {
-            color: #1a1a2e;
-        }
-        .jadwal-card.highlight .jadwal-time {
-            color: white;
-        }
-        @media (max-width: 768px) {
-            .jadwal-row {
-                min-width: 900px;
-            }
-            .jadwal-card {
-                min-width: 80px;
-                height: 130px;
-            }
-        }
-        </style>
-        """
-        st.markdown(css_jadwal, unsafe_allow_html=True)
-        
-        # Build HTML
-        html_cards = []
+
+        # PENTING: HTML dibangun SATU BARIS, tanpa enter, tanpa spasi menjorok!
+        html_jadwal = '<div class="jadwal-wrapper"><div class="jadwal-row">'
         for nama, icon, waktu, is_highlight in jadwal_data:
             card_class = "highlight" if is_highlight else "regular"
-            html_cards.append(f'''
-            <div class="jadwal-card {card_class}">
-                <div class="jadwal-icon">{icon}</div>
-                <div class="jadwal-label">{nama}</div>
-                <div class="jadwal-time">{waktu}</div>
-            </div>
-            ''')
-        
-        html_jadwal = f'''
-        <div class="jadwal-wrapper">
-            <div class="jadwal-row">
-                {''.join(html_cards)}
-            </div>
-        </div>
-        '''
-        
+            html_jadwal += '<div class="jadwal-card ' + card_class + '"><div class="jadwal-icon">' + icon + '</div><div class="jadwal-label">' + nama + '</div><div class="jadwal-time">' + waktu + '</div></div>'
+        html_jadwal += '</div></div>'
+
         st.markdown(html_jadwal, unsafe_allow_html=True)
     else:
         st.error("❌ Kota tidak ditemukan di database API.")
-        
+
 except requests.exceptions.Timeout:
     st.error("⏱️ Request timeout. Koneksi internet lambat.")
 except requests.exceptions.ConnectionError:
