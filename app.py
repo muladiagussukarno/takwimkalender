@@ -291,15 +291,9 @@ try:
         timings = data['data']['timings']
         date_info = data['data']['date']
 
-        # === BARIS HEADER: JUDUL KIRI + INFO KANAN ===
-        col_title, col_info = st.columns([1, 2])
-
-        with col_title:
-            st.subheader("🕌 Jadwal Sholat Hari Ini")
-
-        with col_info:
-            info_html = '<div style="text-align:right;background:#eaf1fb;border-radius:10px;padding:12px 15px;"><div style="font-size:0.9rem;color:#1a56db;font-weight:600;">📍 Lokasi: ' + st.session_state.city.title() + ', ' + st.session_state.country.title() + ' | Metode: ' + st.session_state.method[1] + '</div><div style="font-size:0.85rem;color:#555;margin-top:4px;">📅 Tanggal: ' + date_info['gregorian']['date'] + ' | ' + date_info['hijri']['date'] + ' ' + date_info['hijri']['month']['en'] + ' ' + date_info['hijri']['year'] + ' H</div></div>'
-            st.markdown(info_html, unsafe_allow_html=True)
+        # === HEADER SEJAJAR: JUDUL KIRI + INFO KANAN (1 BARIS) ===
+        header_html = '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:5px 0;"><div style="font-size:1.6rem;font-weight:700;color:#1a1a2e;">🕌 Jadwal Sholat Hari Ini</div><div style="text-align:right;font-size:0.85rem;color:#555;background:#eaf1fb;border-radius:10px;padding:8px 15px;">📍 <b style="color:#1a56db;">Lokasi:</b> ' + st.session_state.city.title() + ', ' + st.session_state.country.title() + ' | <b style="color:#1a56db;">Metode:</b> ' + st.session_state.method[1] + ' &nbsp;•&nbsp; 📅 <b style="color:#1a56db;">Tanggal:</b> ' + date_info['gregorian']['date'] + ' | ' + date_info['hijri']['date'] + ' ' + date_info['hijri']['month']['en'] + ' ' + date_info['hijri']['year'] + ' H</div></div>'
+        st.markdown(header_html, unsafe_allow_html=True)
 
         # === CSS KARTU (mulai kolom 0, jangan menjorok!) ===
         css_jadwal = """<style>
