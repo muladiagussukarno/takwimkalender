@@ -169,6 +169,10 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         tv_method = st.query_params.get("method", "20")
         url = f"http://api.aladhan.com/v1/timingsByCity?city={tv_city}&country={tv_country}&method={tv_method}"
         data = requests.get(url, timeout=10).json()
+        if data['code'] != 200:
+            import time
+            time.sleep(1)
+            data = requests.get(url, timeout=10).json()
         
         if data['code'] == 200:
             timings = data['data']['timings']
@@ -246,7 +250,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             running_text = "  ★  ".join(running_items) + "  ★  "
             marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
             st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
-            st.error("❌ Kota tidak ditemukan.")
+            st.error(f"❌ Kota tidak ditemukan: {tv_city}, {tv_country} — periksa penulisan kota/negara di link TV.")
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
     
