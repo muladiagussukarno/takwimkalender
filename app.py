@@ -26,7 +26,7 @@ if 'theme_select' in st.session_state:
 tema_grad = THEMES.get(st.session_state.theme, THEMES["💜 Ungu (Default)"])
 
 # CSS untuk membuat header sticky dan selalu terlihat
-st.markdown("""
+st.markdown(("""
 <style>
 header {visibility: hidden !important;}
 .main-header {
