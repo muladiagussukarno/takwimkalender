@@ -505,45 +505,6 @@ except Exception as e:
     st.error(f"❌ Terjadi kesalahan: {str(e)}")
 
 # ==========================================
-# PENGATURAN (Expander di Main Content)
-# ==========================================
-with st.expander("⚙️ Pengaturan Kalender", expanded=False):
-    st.markdown("### Pilih pengaturan di bawah ini:")
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        calendar_options = [
-            "Kalender Masehi", "Kalender Hijriah Qomariah/Bulan",
-            "Kalender Hijrah Syamsiah/Matahari", "Kalender Jawa (Saka)", "Kalender Cina (Imlek)"
-        ]
-        current_cal_idx = calendar_options.index(st.session_state.calendar_type) if st.session_state.calendar_type in calendar_options else 0
-        
-        # Langsung update session state saat user memilih
-        st.session_state.calendar_type = st.radio("Pilih Kalender:", calendar_options, index=current_cal_idx, key="cal_radio")
-    
-    with col2:
-        current_location = f"{st.session_state.city}, {st.session_state.country}"
-        default_city_idx = ALL_CITIES.index(current_location) if current_location in ALL_CITIES else 0
-        
-        selected_loc = st.selectbox("🌍 Cari & Pilih Kota", options=ALL_CITIES, index=default_city_idx, key="city_select")
-        # Langsung update session state saat user memilih
-        st.session_state.city = selected_loc.split(", ")[0]
-        st.session_state.country = selected_loc.split(", ")[1]
-    
-    with col3:
-        method_options = [(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")]
-        current_method_idx = next((i for i, x in enumerate(method_options) if x == st.session_state.method), 0)
-        
-        # Langsung update session state saat user memilih
-        st.session_state.method = st.selectbox("Metode Perhitungan Sholat", method_options, index=current_method_idx, format_func=lambda x: x[1], key="method_select")
-    
-    st.success("✅ Pengaturan tersimpan. Tutup panel ini untuk melihat hasil.")
-    st.divider()
-    tema_options = list(THEMES.keys())
-    current_tema_idx = tema_options.index(st.session_state.theme) if st.session_state.theme in tema_options else 0
-    st.session_state.theme = st.selectbox("🎨 Tema Dashboard", tema_options, index=current_tema_idx, key="theme_select")
-
-# ==========================================
 # AMBIL NILAI DARI SESSION STATE (PASTI ADA!)
 # ==========================================
 calendar_type = st.session_state.calendar_type
@@ -1096,6 +1057,45 @@ elif calendar_type == "Kalender Cina (Imlek)":
         st.error("❌ Library 'lunardate' belum terinstall. Pastikan 'lunardate' ada di requirements.txt lalu push ulang.")
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
+
+# ==========================================
+# PENGATURAN (Expander di Main Content)
+# ==========================================
+with st.expander("⚙️ Pengaturan Kalender", expanded=False):
+    st.markdown("### Pilih pengaturan di bawah ini:")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        calendar_options = [
+            "Kalender Masehi", "Kalender Hijriah Qomariah/Bulan",
+            "Kalender Hijrah Syamsiah/Matahari", "Kalender Jawa (Saka)", "Kalender Cina (Imlek)"
+        ]
+        current_cal_idx = calendar_options.index(st.session_state.calendar_type) if st.session_state.calendar_type in calendar_options else 0
+        
+        # Langsung update session state saat user memilih
+        st.session_state.calendar_type = st.radio("Pilih Kalender:", calendar_options, index=current_cal_idx, key="cal_radio")
+    
+    with col2:
+        current_location = f"{st.session_state.city}, {st.session_state.country}"
+        default_city_idx = ALL_CITIES.index(current_location) if current_location in ALL_CITIES else 0
+        
+        selected_loc = st.selectbox("🌍 Cari & Pilih Kota", options=ALL_CITIES, index=default_city_idx, key="city_select")
+        # Langsung update session state saat user memilih
+        st.session_state.city = selected_loc.split(", ")[0]
+        st.session_state.country = selected_loc.split(", ")[1]
+    
+    with col3:
+        method_options = [(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")]
+        current_method_idx = next((i for i, x in enumerate(method_options) if x == st.session_state.method), 0)
+        
+        # Langsung update session state saat user memilih
+        st.session_state.method = st.selectbox("Metode Perhitungan Sholat", method_options, index=current_method_idx, format_func=lambda x: x[1], key="method_select")
+    
+    st.success("✅ Pengaturan tersimpan. Tutup panel ini untuk melihat hasil.")
+    st.divider()
+    tema_options = list(THEMES.keys())
+    current_tema_idx = tema_options.index(st.session_state.theme) if st.session_state.theme in tema_options else 0
+    st.session_state.theme = st.selectbox("🎨 Tema Dashboard", tema_options, index=current_tema_idx, key="theme_select")
 
 # ==========================================
 # GENERATOR LINK TV MASJID (SOLUSI MULTI-MASJID)
