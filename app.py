@@ -123,6 +123,13 @@ body {
     }
 }
 /* === AKHIR CSS JADWAL === */
+/* === MODE COMPACT (muat satu layar) === */
+.main h1 { font-size: 1.5rem !important; margin: 0.4rem 0 !important; }
+.main h2 { font-size: 1.25rem !important; margin: 0.3rem 0 !important; }
+.calendar-table th { padding: 6px !important; font-size: 13px !important; }
+.calendar-table td { padding: 6px !important; font-size: 14px !important; }
+.stButton > button { padding: 0.25rem 0.6rem !important; }
+hr { margin: 0.5rem 0 !important; }
 </style>
 """).replace("GRAD1", tema_grad[0]).replace("GRAD2", tema_grad[1]), unsafe_allow_html=True)
 
@@ -472,12 +479,12 @@ try:
         css_jadwal = """<style>
 .jadwal-wrapper{width:100%;overflow-x:auto;padding:10px 0;}
 .jadwal-row{display:flex;gap:10px;min-width:1000px;}
-.jadwal-card{flex:1;min-width:90px;height:140px;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #e0e0e0;transition:transform 0.2s;}
+.jadwal-card{flex:1;min-width:90px;height:110px;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #e0e0e0;transition:transform 0.2s;}
 .jadwal-card:hover{transform:translateY(-4px);box-shadow:0 6px 16px rgba(0,0,0,0.15);}
 .jadwal-card.regular{background:linear-gradient(135deg,#f0f2f6 0%,#e8eaf6 100%);}
 .jadwal-card.highlight{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-color:#5a67d8;}
-.jadwal-icon{font-size:1.8rem;line-height:1;}
-.jadwal-label{font-size:18px;font-weight:600;margin:4px 0;white-space:nowrap;}
+.jadwal-icon{font-size:1.5rem;line-height:1;}
+.jadwal-label{font-size:14px;font-weight:600;margin:4px 0;white-space:nowrap;}
 .jadwal-card.regular .jadwal-label{color:#555;}
 .jadwal-card.highlight .jadwal-label{color:rgba(255,255,255,0.95);}
 .jadwal-time{font-size:1.1rem;font-weight:bold;font-family:'Courier New',monospace;}
@@ -504,7 +511,7 @@ try:
         # === HTML KARTU SATU BARIS (inline style warna alami) ===
         html_jadwal = '<div class="jadwal-wrapper"><div class="jadwal-row">'
         for nama, icon, waktu, c1, c2, tcolor in jadwal_data:
-            html_jadwal += '<div style="flex:1;min-width:90px;height:140px;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:space-between;align-items:center;box-shadow:0 3px 10px rgba(0,0,0,0.2);background:linear-gradient(135deg,' + c1 + ' 0%,' + c2 + ' 100%);"><div style="font-size:1.8rem;line-height:1;">' + icon + '</div><div style="font-size:18px;font-weight:600;margin:4px 0;white-space:nowrap;color:' + tcolor + ';">' + nama + '</div><div style="font-size:1.1rem;font-weight:bold;font-family:monospace;color:' + tcolor + ';">' + waktu + '</div></div>'
+            html_jadwal += '<div style="flex:1;min-width:90px;height:110px;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:space-between;align-items:center;box-shadow:0 3px 10px rgba(0,0,0,0.2);background:linear-gradient(135deg,' + c1 + ' 0%,' + c2 + ' 100%);"><div style="font-size:1.5rem;line-height:1;">' + icon + '</div><div style="font-size:14px;font-weight:600;margin:4px 0;white-space:nowrap;color:' + tcolor + ';">' + nama + '</div><div style="font-size:1.1rem;font-weight:bold;font-family:monospace;color:' + tcolor + ';">' + waktu + '</div></div>'
         html_jadwal += '</div></div>'
 
         st.markdown(html_jadwal, unsafe_allow_html=True)
