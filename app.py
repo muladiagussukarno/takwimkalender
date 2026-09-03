@@ -175,6 +175,15 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             date_info = data['data']['date']
             from zoneinfo import ZoneInfo
             tz = ZoneInfo(data['data']['meta']['timezone'])
+            tz_name = data['data']['meta']['timezone']
+            if tv_country.lower() == "indonesia" and ("Jakarta" in tz_name or "Pontianak" in tz_name):
+                tz_label = "WIB"
+            elif tv_country.lower() == "indonesia" and "Makassar" in tz_name:
+                tz_label = "WITA"
+            elif tv_country.lower() == "indonesia" and "Jayapura" in tz_name:
+                tz_label = "WIT"
+            else:
+                tz_label = tz_name.split("/")[-1].replace("_", " ")
             
             daftar = [("Subuh", timings["Fajr"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5])]
             
@@ -190,7 +199,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             @st.fragment(run_every=1)
             def tv_header():
                 n = datetime.now(tz)
-                st.markdown(f"<div class='tv-header'><div class='tv-title'>🕌 {tv_masjid}</div><div class='tv-clock'>🕐 {n.strftime('%H:%M:%S')}</div></div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='tv-header'><div class='tv-title'>🕌 {tv_masjid}</div><div class='tv-clock'>🕐 {n.strftime('%H:%M:%S')} <span style='font-size:1.6vw;color:#ffd700;'>({tz_label})</span></div></div>", unsafe_allow_html=True)
             tv_header()
             
             st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
