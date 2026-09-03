@@ -130,7 +130,7 @@ st.markdown(("""
 <style>
 header {visibility: hidden !important;}
 </div>
-""", unsafe_allow_html=True)
+""").replace("GRAD1", tema_grad[0]).replace("GRAD2", tema_grad[1]), unsafe_allow_html=True)
 
 # ==========================================
 # MODE TV (UNTUK LAYAR MASJID)
