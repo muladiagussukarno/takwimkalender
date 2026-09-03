@@ -673,8 +673,7 @@ elif calendar_type == "Kalender Hijriah Qomariah/Bulan":
         if data['code'] == 200:
             hijri = data['data']['hijri']
             
-            st.info(f"**Hari ini:** {hari_indonesia[today.weekday()]}, {hijri['day']} {hijri['month']['ar']} ({nama_bulan_hijriah[int(hijri['month']['number'])-1]}) {hijri['year']} H")
-            
+                       
             # Inisialisasi navigasi bulan Hijriah
             if 'hijri_view_year' not in st.session_state:
                 st.session_state.hijri_view_year = int(hijri['year'])
@@ -771,8 +770,7 @@ elif calendar_type == "Kalender Hijrah Syamsiah/Matahari":
     
     p_year, p_month, p_day = gregorian_to_persian(today.year, today.month, today.day)
     
-    st.info(f"**Hari ini:** {hari_indonesia[today.weekday()]}, {p_day} {persian_months[p_month-1]} {p_year} HS")
-    
+        
     # Inisialisasi navigasi bulan Syamsiah
     if 'syamsiah_view_year' not in st.session_state:
         st.session_state.syamsiah_view_year = p_year
@@ -873,8 +871,7 @@ elif calendar_type == "Kalender Jawa (Saka)":
     j_today = get_javanese_date(today.year, today.month, today.day)
     neptu = neptu_hari[j_today['hari']] + neptu_pasaran[j_today['pasaran']]
     
-    st.info(f"**Hari ini:** {j_today['weton']} (Neptu {neptu}) | {j_today['saka_day']} {j_today['saka_month']} {j_today['saka_year']} | Windu: {j_today['windu']}")
-    
+        
     # Inisialisasi navigasi bulan Jawa
     if 'jawa_view_year' not in st.session_state:
         st.session_state.jawa_view_year = j_today['saka_year']
@@ -976,8 +973,7 @@ elif calendar_type == "Kalender Cina (Imlek)":
         chinese = get_chinese_date(today.year, today.month, today.day)
         
         leap_today = "Run " if l_today.isLeapMonth else ""
-        st.info(f"**Hari ini:** {l_today.day} {leap_today}{bulan_cina[l_today.month-1]} | Tahun {chinese['shio']} - Elemen {chinese['elemen']} ({chinese['yin_yang']}) | Tahun Cina {today.year + 2698}")
-        
+                
         # Inisialisasi navigasi
         if 'imlek_view_year' not in st.session_state:
             st.session_state.imlek_view_year = l_today.year
