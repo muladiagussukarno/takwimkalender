@@ -152,21 +152,23 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         if data['code'] == 200:
             timings = data['data']['timings']
             date_info = data['data']['date']
+            from zoneinfo import ZoneInfo
+            tz = ZoneInfo(data['data']['meta']['timezone'])
             
             daftar = [("Subuh", timings["Fajr"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5])]
             
             def cari_next(n):
                 for nama, t in daftar:
-                    jt = datetime.strptime(t, "%H:%M").replace(year=n.year, month=n.month, day=n.day)
+                    jt = datetime.strptime(t, "%H:%M").replace(year=n.year, month=n.month, day=n.day, tzinfo=tz)
                     if jt > n:
                         return nama, jt
                 return None, None
             
-            next_name, next_time = cari_next(datetime.now())
+            next_name, next_time = cari_next(datetime.now(tz))
             
             @st.fragment(run_every=1)
             def tv_header():
-                n = datetime.now()
+                n = datetime.now(tz)
                 st.markdown(f"<div class='tv-header'><div class='tv-title'>🕌 {tv_masjid}</div><div class='tv-clock'>🕐 {n.strftime('%H:%M:%S')}</div></div>", unsafe_allow_html=True)
             tv_header()
             
@@ -182,7 +184,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             
             @st.fragment(run_every=1)
             def tv_countdown():
-                n = datetime.now()
+                n = datetime.now(tz)
                 nm, nt = cari_next(n)
                 if nt:
                     total = int((nt - n).total_seconds())
