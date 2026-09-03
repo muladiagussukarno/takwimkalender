@@ -6,6 +6,25 @@ import calendar
 # Konfigurasi halaman
 st.set_page_config(page_title="Dasbor Kalender Taqwim", layout="wide", page_icon="🌍")
 
+# ==========================================
+# SISTEM TEMA (pilihan warna dashboard)
+# ==========================================
+THEMES = {
+    "💜 Ungu (Default)": ("#667eea", "#764ba2"),
+    "💚 Hijau Masjid": ("#11998e", "#0b6b4f"),
+    "💙 Biru Samudra": ("#2193b0", "#123c63"),
+    "🧡 Emas Royal": ("#f7971e", "#8a5a00"),
+    "❤️ Merah Marun": ("#b31217", "#4a0a0a"),
+    "🖤 Gelap Malam": ("#232526", "#0f1011"),
+}
+
+if 'theme' not in st.session_state:
+    st.session_state.theme = "💜 Ungu (Default)"
+if 'theme_select' in st.session_state:
+    st.session_state.theme = st.session_state.theme_select
+
+tema_grad = THEMES.get(st.session_state.theme, THEMES["💜 Ungu (Default)"])
+
 # CSS untuk membuat header sticky dan selalu terlihat
 st.markdown("""
 <style>
@@ -15,7 +34,7 @@ header {visibility: hidden !important;}
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, GRAD1 0%, GRAD2 100%) !important;
     color: white !important;
     padding: 15px 20px 10px 20px !important;
     z-index: 99999 !important;
@@ -104,12 +123,12 @@ body {
 }
 /* === AKHIR CSS JADWAL === */
 </style>
-""", unsafe_allow_html=True)
+""").replace("GRAD1", tema_grad[0]).replace("GRAD2", tema_grad[1]), unsafe_allow_html=True)
 
 # Header
-st.markdown("""
-<div class="main-header">
-    <h1>🌍 Dasbor Kalender Taqwim</h1>
+st.markdown(("""
+<style>
+header {visibility: hidden !important;}
 </div>
 """, unsafe_allow_html=True)
 
@@ -482,6 +501,10 @@ with st.expander("⚙️ Pengaturan Kalender", expanded=False):
         st.session_state.method = st.selectbox("Metode Perhitungan Sholat", method_options, index=current_method_idx, format_func=lambda x: x[1], key="method_select")
     
     st.success("✅ Pengaturan tersimpan. Tutup panel ini untuk melihat hasil.")
+        st.divider()
+    tema_options = list(THEMES.keys())
+    current_tema_idx = tema_options.index(st.session_state.theme) if st.session_state.theme in tema_options else 0
+    st.session_state.theme = st.selectbox("🎨 Tema Dashboard", tema_options, index=current_tema_idx, key="theme_select")
 
 # ==========================================
 # AMBIL NILAI DARI SESSION STATE (PASTI ADA!)
