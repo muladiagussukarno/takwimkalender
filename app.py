@@ -41,6 +41,7 @@ header {visibility: hidden !important;}
     box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
     text-align: center !important;
 }
+.header-date { color: #fff; font-size: 1.25rem; margin-top: 4px; font-weight: 600; }
 .main-header h1 {
     margin: 0 !important;
     font-size: 1.8rem !important;
@@ -49,10 +50,10 @@ header {visibility: hidden !important;}
     line-height: 1.2 !important;
 }
 .main > div:first-child {
-    padding-top: 64px !important;
+    padding-top: 110px !important;
 }
 .block-container {
-    padding-top: 64px !important;
+    padding-top: 110px !important;
 }
 .stApp > header {
     display: none !important;
@@ -125,12 +126,6 @@ body {
 </style>
 """).replace("GRAD1", tema_grad[0]).replace("GRAD2", tema_grad[1]), unsafe_allow_html=True)
 
-# Header
-st.markdown("""
-<div class="main-header">
-    <h1>🌍 Dasbor Kalender Taqwim</h1>
-</div>
-""", unsafe_allow_html=True)
 
 # ==========================================
 # MODE TV (UNTUK LAYAR MASJID)
@@ -433,6 +428,30 @@ if 'cal_radio' in st.session_state:
 
 today = datetime.now()
 
+
+# ==========================================
+# HEADER DENGAN TANGGAL & LOKASI
+# ==========================================
+nama_hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+
+hijri_str = "-"
+try:
+    r_h = requests.get(f"http://api.aladhan.com/v1/gToH/{today.strftime('%d-%m-%Y')}", timeout=10)
+    d_h = r_h.json()
+    if d_h['code'] == 200:
+        h_info = d_h['data']['hijri']
+        hijri_str = f"{h_info['day']} {h_info['month']['en']} {h_info['year']} H"
+except Exception:
+    hijri_str = "-"
+
+st.markdown(f"""
+<div class="main-header">
+    <h1>🌍 Dasbor Kalender Taqwim</h1>
+    <div class="header-date">{nama_hari[today.weekday()]}, {today.day} {nama_bulan[today.month-1]} {today.year} M / {hijri_str} &nbsp;&nbsp; Lokasi : {st.session_state.city} {st.session_state.country}</div>
+</div>
+""", unsafe_allow_html=True)
+
 # ============================================
 # JADWAL SHOLAT (JUDUL KIRI + INFO KANAN)
 # ============================================
@@ -447,8 +466,7 @@ try:
         date_info = data['data']['date']
 
         # === HEADER SEJAJAR: JUDUL KIRI + INFO KANAN (1 BARIS) ===
-        header_html = '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:5px 0;"><div style="font-size:1.6rem;font-weight:700;color:#1a1a2e;">🕌 Jadwal Sholat Hari Ini</div><div style="text-align:right;font-size:18px;color:#555;background:#eaf1fb;border-radius:0.8em;padding:0.6em 1.2em;">📍 <b style="color:#1a56db;">Lokasi:</b> ' + st.session_state.city.title() + ', ' + st.session_state.country.title() + ' | <b style="color:#1a56db;">Metode:</b> ' + st.session_state.method[1] + ' &nbsp;•&nbsp; 📅 <b style="color:#1a56db;">Tanggal:</b> ' + date_info['gregorian']['date'] + ' | ' + date_info['hijri']['date'] + ' ' + date_info['hijri']['month']['en'] + ' ' + date_info['hijri']['year'] + ' H</div></div>'
-        st.markdown(header_html, unsafe_allow_html=True)
+        st.markdown('<div style="font-size:1.6rem;font-weight:700;color:#1a1a2e;margin:8px 0;">🕌 Jadwal Sholat Hari Ini</div>', unsafe_allow_html=True)
 
         # === CSS KARTU (mulai kolom 0, jangan menjorok!) ===
         css_jadwal = """<style>
