@@ -230,7 +230,23 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
                 else:
                     st.markdown(f"<div class='tv-count'>🌙 Menanti Subuh besok: <b>{daftar[0][1]}</b></div>", unsafe_allow_html=True)
             tv_countdown()
-        else:
+            # === RUNNING TEXT (ayat/hadits/pengumuman) ===
+    tv_pesan = st.query_params.get("pesan", "")
+    running_items = []
+    if tv_pesan:
+        running_items.append("📢 " + tv_pesan)
+    running_items += [
+        "🕌 " + tv_masjid + " — Selamat datang jamaah, semoga ibadah diterima",
+        "📖 <span class='ar'>أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</span> — Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram (QS. Ar-Ra'd: 28)",
+        "🕌 <span class='ar'>إِنَّ الصَّلَاةَ تَنْهَى عَنِ الْفَحْشَاءِ وَالْمُنكَرِ</span> — Sesungguhnya shalat mencegah dari keji & mungkar (QS. Al-'Ankabut: 45)",
+        "📖 Rabbana ātina fid dunya hasanah wa fil ākhirati hasanah wa qinā 'adzāban nār (QS. Al-Baqarah: 201)",
+        "🕌 <span class='ar'>خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</span> — Sebaik-baik kalian yang belajar & mengajarkan Al-Qur'an (HR. Bukhari)",
+        "📱 Mohon nonaktifkan atau senyapkan HP Anda selama shalat",
+    ]
+    running_text = "  ★  ".join(running_items) + "  ★  "
+
+    marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
+    st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)        else:
             st.error("❌ Kota tidak ditemukan.")
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
@@ -1105,20 +1121,3 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         st.image("https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + quote(tv_url), width=200)
         st.caption("📱 Cetak QR ini & tempel di masjid — takmir tinggal scan!")
 
-                    # === RUNNING TEXT (ayat/hadits/pengumuman) ===
-            tv_pesan = st.query_params.get("pesan", "")
-            running_items = []
-            if tv_pesan:
-                running_items.append("📢 " + tv_pesan)
-            running_items += [
-                "🕌 " + tv_masjid + " — Selamat datang jamaah, semoga ibadah diterima",
-                "📖 <span class='ar'>أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</span> — Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram (QS. Ar-Ra'd: 28)",
-                "🕌 <span class='ar'>إِنَّ الصَّلَاةَ تَنْهَى عَنِ الْفَحْشَاءِ وَالْمُنكَرِ</span> — Sesungguhnya shalat mencegah dari keji & mungkar (QS. Al-'Ankabut: 45)",
-                "📖 Rabbana ātina fid dunya hasanah wa fil ākhirati hasanah wa qinā 'adzāban nār (QS. Al-Baqarah: 201)",
-                "🕌 <span class='ar'>خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</span> — Sebaik-baik kalian yang belajar & mengajarkan Al-Qur'an (HR. Bukhari)",
-                "📱 Mohon nonaktifkan atau senyapkan HP Anda selama shalat",
-            ]
-            running_text = "  ★  ".join(running_items) + "  ★  "
-            
-            marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
-            st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
