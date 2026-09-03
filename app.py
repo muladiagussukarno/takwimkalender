@@ -151,7 +151,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
 .main-header { display: none !important; }
 .block-container { padding: 2vh 2vw !important; max-width: 100% !important; }
 .tv-header { display:flex; justify-content:space-between; align-items:center; }
-.tv-title { color:#ffd700; font-size:2.6vw; font-weight:800; }
+.tv-title { color:#ffd700; font-size:3.5vw; font-weight:800; }
 .tv-clock { color:#fff; font-size:3.5vw; font-weight:800; font-family:monospace; }
 .tv-dates { color:#cfe8ff; font-size:1.4vw; text-align:center; margin:1.5vh 0; }
 .tv-grid { display:grid; grid-template-columns:repeat(10, 1fr); gap:1vw; margin-top:2vh; }
