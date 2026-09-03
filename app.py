@@ -146,6 +146,7 @@ if mode == "tv":
     tv_masjid = st.query_params.get("masjid", "Masjid Raya")
     tv_alamat = st.query_params.get("alamat", "")
     tv_kontak = st.query_params.get("kontak", "")
+    tv_teks = st.query_params.get("teks", "")
     
     st.markdown("""<style>
 html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%) !important; }
@@ -241,6 +242,8 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             running_items = []
             if tv_pesan:
                 running_items.append("📢 " + tv_pesan)
+            if tv_teks:
+                running_items += ["📢 " + t for t in tv_teks.split("|") if t]
             running_items += [
                 "🕌 " + tv_masjid + " — Selamat datang jamaah, semoga ibadah diterima",
                 "📖 <span class='ar'>أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</span> — Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram (QS. Ar-Ra'd: 28)",
@@ -1130,11 +1133,15 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         g_masjid = st.text_input("🕌 Nama Masjid", value="Masjid Al-Ikhlas", key="g_masjid")
         g_alamat = st.text_input("📮 Alamat Masjid", value="Jl. Raya No. 1", key="g_alamat")
         g_kontak = st.text_input("📞 Kontak Takmir", value="0812-3456-7890", key="g_kontak")
+        g_teks = st.text_area("📜 Running Text / Pengumuman (satu pesan per baris, opsional)", value="", height=100, key="g_teks")
         g_method = st.selectbox("🧮 Metode Perhitungan", options=[(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")], format_func=lambda x: x[1], key="g_method")
         
         st.info(f"🌍 Kota mengikuti pengaturan utama: **{st.session_state.city}, {st.session_state.country}** (ubah lewat 'Cari & Pilih Kota' di atas)")
         
-        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(st.session_state.country) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0])
+        teks_param = ""
+        if g_teks.strip():
+            teks_param = "&teks=" + quote("|".join([t.strip() for t in g_teks.split(chr(10)) if t.strip()]))
+        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(st.session_state.country) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0]) + teks_param
         
         st.markdown("**Link TV Masjid Anda:**")
         st.code(tv_url)
