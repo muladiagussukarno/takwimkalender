@@ -501,7 +501,7 @@ with st.expander("⚙️ Pengaturan Kalender", expanded=False):
         st.session_state.method = st.selectbox("Metode Perhitungan Sholat", method_options, index=current_method_idx, format_func=lambda x: x[1], key="method_select")
     
     st.success("✅ Pengaturan tersimpan. Tutup panel ini untuk melihat hasil.")
-        st.divider()
+    st.divider()
     tema_options = list(THEMES.keys())
     current_tema_idx = tema_options.index(st.session_state.theme) if st.session_state.theme in tema_options else 0
     st.session_state.theme = st.selectbox("🎨 Tema Dashboard", tema_options, index=current_tema_idx, key="theme_select")
