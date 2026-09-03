@@ -142,6 +142,8 @@ if mode == "tv":
     tv_city = st.query_params.get("city", "Jakarta")
     tv_country = st.query_params.get("country", "Indonesia")
     tv_masjid = st.query_params.get("masjid", "Masjid Raya")
+    tv_alamat = st.query_params.get("alamat", "")
+    tv_kontak = st.query_params.get("kontak", "")
     
     st.markdown("""<style>
 html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%) !important; }
@@ -192,6 +194,13 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             tv_header()
             
             st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
+                        if tv_alamat or tv_kontak:
+                extra = ""
+                if tv_alamat:
+                    extra += "📮 " + tv_alamat
+                if tv_kontak:
+                    extra += (" &nbsp;•&nbsp; " if extra else "") + "📞 " + tv_kontak
+                st.markdown(f"<div class='tv-dates'>{extra}</div>", unsafe_allow_html=True)
             
             grid_items = [("Imsak", timings["Imsak"][:5]), ("Subuh", timings["Fajr"][:5]), ("Terbit", timings["Sunrise"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5]), ("1/3 Malam", timings["Firstthird"][:5]), ("Tengah Malam", timings["Midnight"][:5]), ("Akhir Malam", timings["Lastthird"][:5])]
             html = "<div class='tv-grid'>"
@@ -1071,11 +1080,13 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
     g_col1, g_col2 = st.columns([2, 1])
     with g_col1:
         g_masjid = st.text_input("🕌 Nama Masjid", value="Masjid Al-Ikhlas", key="g_masjid")
-        g_loc = st.selectbox("🌍 Kota / Kabupaten", options=ALL_CITIES, key="g_loc")
+        g_alamat = st.text_input("📮 Alamat Masjid", value="Jl. Raya No. 1", key="g_alamat")
+        g_kontak = st.text_input("📞 Kontak Takmir", value="0812-3456-7890", key="g_kontak")
         g_method = st.selectbox("🧮 Metode Perhitungan", options=[(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")], format_func=lambda x: x[1], key="g_method")
         
-        c_part, n_part = g_loc.split(", ")
-        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(c_part) + "&country=" + quote(n_part) + "&masjid=" + quote(g_masjid) + "&method=" + str(g_method[0])
+        st.info(f"🌍 Kota mengikuti pengaturan utama: **{st.session_state.city}, {st.session_state.country}** (ubah lewat 'Cari & Pilih Kota' di atas)")
+        
+        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(st.session_state.country) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0])
         
         st.markdown("**Link TV Masjid Anda:**")
         st.code(tv_url)
