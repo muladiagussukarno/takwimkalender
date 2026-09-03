@@ -648,7 +648,6 @@ def display_calendar(year, month, month_names, highlight_day=None):
 # ============================================
 if calendar_type == "Kalender Masehi":
     st.header("Kalender Masehi")
-    st.info(f"**Hari: {hari_indonesia[today.weekday()]}, {today.strftime('%d')} {bulan_indonesia[today.month-1]} {today.strftime('%Y')}**")
     display_calendar(st.session_state.view_year, st.session_state.view_month, bulan_indonesia, today.day if st.session_state.view_month == today.month and st.session_state.view_year == today.year else None)
 
 # ============================================
