@@ -126,11 +126,11 @@ body {
 """).replace("GRAD1", tema_grad[0]).replace("GRAD2", tema_grad[1]), unsafe_allow_html=True)
 
 # Header
-st.markdown(("""
-<style>
-header {visibility: hidden !important;}
+st.markdown("""
+<div class="main-header">
+    <h1>🌍 Dasbor Kalender Taqwim</h1>
 </div>
-""").replace("GRAD1", tema_grad[0]).replace("GRAD2", tema_grad[1]), unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # ==========================================
 # MODE TV (UNTUK LAYAR MASJID)
