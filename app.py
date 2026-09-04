@@ -508,9 +508,34 @@ if 'cal_radio' in st.session_state:
     st.session_state.calendar_type = st.session_state.cal_radio
 
 today = datetime.now()
+hijri_pre = "-"
+try:
+    from zoneinfo import ZoneInfo as _ZoneInfo
+    _method_no = st.session_state.method[0] if isinstance(st.session_state.method, tuple) else st.session_state.method
+    _url = f"http://api.aladhan.com/v1/timingsByCity?city={st.session_state.city}&country={st.session_state.country}&method={_method_no}"
+    _d = get_json(_url)
+
+    if _d.get('code') == 200:
+        _tz = _ZoneInfo(_d['data']['meta']['timezone'])
+        _local_now = datetime.now(_tz)
+        _api_date = datetime.strptime(_d['data']['date']['gregorian']['date'], '%d-%m-%Y').date()
+
+        # Kalau tanggal API masih beda dengan tanggal lokal kota, ambil ulang tanggal lokal
+        if _local_now.date() != _api_date:
+            _url2 = f"http://api.aladhan.com/v1/timingsByCity/{_local_now.strftime('%d-%m-%Y')}?city={st.session_state.city}&country={st.session_state.country}&method={_method_no}"
+            _d2 = get_json(_url2)
+            if _d2.get('code') == 200:
+                _d = _d2
+
+        _g = _d['data']['date']['gregorian']
+        today = datetime.strptime(_g['date'], '%d-%m-%Y')
+
+        _h = _d['data']['date']['hijri']
+        hijri_pre = f"{_h['day']} {_h['month']['en']} {_h['year']} H"
+except Exception:
+    pass
 
 
-# ==========================================
 # HEADER DENGAN TANGGAL & LOKASI
 # ==========================================
 nama_hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
