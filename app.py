@@ -289,19 +289,22 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         running_text = "  ★  ".join(running_items) + "  ★  "
         marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
         st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
-    # === LATAR TV (default hijau-biru / gambar dari link) ===
+    # === LATAR TV (default hijau-biru / gambar / video bisu) ===
     tv_bg = st.query_params.get("bg", "")
     if "drive.google.com" in tv_bg:
         import re as _re
         m = _re.search(r"/d/([^/?]+)", tv_bg) or _re.search(r"id=([^&]+)", tv_bg)
         if m:
             tv_bg = "https://lh3.googleusercontent.com/d/" + m.group(1)
-    if tv_bg:
+    is_video = any(tv_bg.lower().endswith(e) for e in (".mp4", ".webm", ".ogg", ".mov", ".m4v"))
+    bg_default = "background: linear-gradient(135deg, #064635 0%, #0a5c5c 50%, #123c63 100%) !important;"
+    if tv_bg and is_video:
+        st.markdown("<style>html, body, .stApp { background: transparent !important; } .tv-bgvideo { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; filter: brightness(0.45); }</style><video class='tv-bgvideo' src='" + tv_bg + "' autoplay muted loop playsinline></video>", unsafe_allow_html=True)
+    elif tv_bg:
         bg_css = "background: linear-gradient(rgba(8,12,18,0.72), rgba(8,12,18,0.72)), url('" + tv_bg + "') center/cover no-repeat, linear-gradient(135deg, #064635 0%, #0a5c5c 50%, #123c63 100%) !important;"
+        st.markdown("<style>html, body, .stApp { " + bg_css + " }</style>", unsafe_allow_html=True)
     else:
-        bg_css = "background: linear-gradient(135deg, #064635 0%, #0a5c5c 50%, #123c63 100%) !important;"
-    st.markdown("<style>html, body, .stApp { " + bg_css + " }</style>", unsafe_allow_html=True)
-    st.stop()
+        st.markdown("<style>html, body, .stApp { " + bg_default + " }</style>", unsafe_allow_html=True)    st.stop()
 
 # ==========================================
 # DATABASE KOTA DUNIA
@@ -1177,7 +1180,7 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         g_alamat = st.text_input("📮 Alamat Masjid", value="Jl. Raya No. 1", key="g_alamat")
         g_kontak = st.text_input("📞 Kontak Takmir", value="0812-3456-7890", key="g_kontak")
         g_teks = st.text_area("📜 Running Text / Pengumuman (satu pesan per baris, opsional)", value="", height=100, key="g_teks")
-        g_bg = st.text_input("🖼️ URL Gambar Latar (opsional, menggantikan tema)", value="", key="g_bg")
+        g_bg = st.text_input("🖼️ URL Gambar / Video Latar (opsional)", value="", key="g_bg")
         g_method = st.selectbox("🧮 Metode Perhitungan", options=[(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")], format_func=lambda x: x[1], key="g_method")
         
         st.info(f"🌍 Kota mengikuti pengaturan utama: **{st.session_state.city}, {st.session_state.country}** (ubah lewat 'Cari & Pilih Kota' di atas)")
