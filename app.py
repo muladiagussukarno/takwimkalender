@@ -237,21 +237,21 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
                 else:
                     st.markdown(f"<div class='tv-count'>🌙 Menanti Subuh besok: <b>{daftar[0][1]}</b></div>", unsafe_allow_html=True)
             tv_countdown()
-            # === RUNNING TEXT (ayat/hadits/pengumuman) ===
-            tv_pesan = st.query_params.get("pesan", "")
-            running_items = []
-            if tv_pesan:
-                running_items.append("📢 " + tv_pesan)
-            if tv_teks:
-                running_items += ["📢 " + t for t in tv_teks.split("|") if t]
-            if running_items:
-                running_text = "  ★  ".join(running_items) + "  ★  "
-                marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
-                st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
-            st.stop()
+            pass
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
     
+    # === RUNNING TEXT (ayat/hadits/pengumuman) ===
+    tv_pesan = st.query_params.get("pesan", "")
+    running_items = []
+    if tv_pesan:
+        running_items.append("📢 " + tv_pesan)
+    if tv_teks:
+        running_items += ["📢 " + t for t in tv_teks.split("|") if t]
+    if running_items:
+        running_text = "  ★  ".join(running_items) + "  ★  "
+        marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
+        st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
     st.stop()
 
 # ==========================================
