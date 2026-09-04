@@ -171,11 +171,11 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
     try:
         tv_method = st.query_params.get("method", "20")
         url = f"http://api.aladhan.com/v1/timingsByCity?city={tv_city}&country={tv_country}&method={tv_method}"
-        data = requests.get(url, timeout=10).json()
+        data = get_json(url)
         if data['code'] != 200:
             import time
             time.sleep(1)
-            data = requests.get(url, timeout=10).json()
+            data = get_json(url)
         
         if data['code'] == 200:
             timings = data['data']['timings']
@@ -441,7 +441,7 @@ nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "A
 hijri_str = "-"
 try:
     r_h = requests.get(f"http://api.aladhan.com/v1/gToH/{today.strftime('%d-%m-%Y')}", timeout=10)
-    d_h = r_h.json()
+    d_h = indo_hijri(r_h.json())
     if d_h['code'] == 200:
         h_info = d_h['data']['hijri']
         hijri_str = f"{h_info['day']} {h_info['month']['en']} {h_info['year']} H"
@@ -962,6 +962,28 @@ elif calendar_type == "Kalender Cina (Imlek)":
     
     try:
         from lunardate import LunarDate
+
+# ==========================================
+# NAMA BULAN HIJRIAH STANDAR KBBI
+# ==========================================
+HIJRI_INDO = {1:"Muharam",2:"Safar",3:"Rabiulawal",4:"Rabiulakhir",5:"Jumadilawal",6:"Jumadilakhir",7:"Rajab",8:"Syakban",9:"Ramadan",10:"Syawal",11:"Zulkaidah",12:"Zulhijah"}
+
+def indo_hijri(obj):
+    if isinstance(obj, dict):
+        if 'month' in obj and isinstance(obj['month'], dict) and 'number' in obj['month']:
+            try:
+                obj['month']['en'] = HIJRI_INDO[int(obj['month']['number'])]
+            except Exception:
+                pass
+        for v in obj.values():
+            indo_hijri(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            indo_hijri(v)
+    return obj
+
+def get_json(url):
+    return indo_hijri(get_json(url))
         
         bulan_cina = ["Zheng", "Er", "San", "Si", "Wu", "Liu", "Qi", "Ba", "Jiu", "Shi", "Dong", "La"]
         
