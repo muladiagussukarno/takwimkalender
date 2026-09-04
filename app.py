@@ -47,6 +47,7 @@ if 'theme_select' in st.session_state:
 tema_grad = THEMES.get(st.session_state.theme, THEMES["💜 Ungu (Default)"])
 
 HARI_INDO = {"Monday":"Senin","Tuesday":"Selasa","Wednesday":"Rabu","Thursday":"Kamis","Friday":"Jumat","Saturday":"Sabtu","Sunday":"Minggu"}
+GREG_INDO = {"January":"Januari","February":"Februari","March":"Maret","April":"April","May":"Mei","June":"Juni","July":"Juli","August":"Agustus","September":"September","October":"Oktober","November":"November","December":"Desember"}
 
 TV_THEMES = {
     "gelap": ("#0f2027", "#203a43", "#2c5364"),
@@ -242,7 +243,8 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             tv_header()
             
             hari_tv = HARI_INDO.get(date_info["gregorian"]["weekday"]["en"], "")
-            st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 🗓️ {hari_tv} &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} M &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
+            bulan_m_tv = GREG_INDO.get(date_info["gregorian"]["month"]["en"], date_info["gregorian"]["month"]["en"])
+            st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 🗓️ {hari_tv} &nbsp;•&nbsp; 📅 {date_info['gregorian']['day']} {bulan_m_tv} {date_info['gregorian']['year']} M &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
             if tv_alamat or tv_kontak:
                 extra = ""
                 if tv_alamat:
