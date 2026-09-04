@@ -46,6 +46,8 @@ if 'theme_select' in st.session_state:
 
 tema_grad = THEMES.get(st.session_state.theme, THEMES["💜 Ungu (Default)"])
 
+HARI_INDO = {"Monday":"Senin","Tuesday":"Selasa","Wednesday":"Rabu","Thursday":"Kamis","Friday":"Jumat","Saturday":"Sabtu","Sunday":"Minggu"}
+
 TV_THEMES = {
     "gelap": ("#0f2027", "#203a43", "#2c5364"),
     "hijau": ("#06251a", "#0e4d33", "#17724c"),
@@ -239,7 +241,8 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
                 st.markdown(f"<div class='tv-header'><div class='tv-title'>🕌 {tv_masjid}</div><div class='tv-clock'>🕐 {n.strftime('%H:%M:%S')} <span style='color:#ffd700;'>({tz_label})</span></div></div>", unsafe_allow_html=True)
             tv_header()
             
-            st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} M &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
+            hari_tv = HARI_INDO.get(date_info["gregorian"]["weekday"]["en"], "")
+            st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} ({hari_tv}) &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} M &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
             if tv_alamat or tv_kontak:
                 extra = ""
                 if tv_alamat:
