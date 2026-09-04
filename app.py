@@ -516,19 +516,9 @@ today = datetime.now()
 nama_hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
 nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
 
-hijri_str = "-"
+hijri_str = hijri_pre
 hari_str = nama_hari[today.weekday()]
-tgl_str = f"{today.day} {nama_bulan[today.month-1]} {today.year}"
-try:
-    d_h = get_city_data(st.session_state.city, st.session_state.country, st.session_state.method[0])
-    if d_h['code'] == 200:
-        h_info = d_h['data']['hijri']
-        hijri_str = f"{h_info['day']} {h_info['month']['en']} {h_info['year']} H"
-        g_info = d_h['data']['date']['gregorian']
-        hari_str = HARI_INDO.get(g_info['weekday']['en'], hari_str)
-        tgl_str = f"{g_info['day']} {GREG_INDO.get(g_info['month']['en'], g_info['month']['en'])} {g_info['year']}"
-except Exception:
-    pass
+tgl_str = f"{today.day} {nama_bulan[today.month-1]} {today.year}"    pass
 
 st.markdown(f"""
 <div class="main-header">
