@@ -21,6 +21,25 @@ def indo_hijri(obj):
 
 def get_json(url):
     return indo_hijri(requests.get(url, timeout=10).json())
+
+from zoneinfo import ZoneInfo
+
+def get_city_data(city, country, method=20):
+    url = f"http://api.aladhan.com/v1/timingsByCity?city={city}&country={country}&method={method}"
+    data = get_json(url)
+    if data.get('code') == 200:
+        try:
+            tz = ZoneInfo(data['data']['meta']['timezone'])
+            local_now = datetime.now(tz)
+            api_date = datetime.strptime(data['data']['date']['gregorian']['date'], '%d-%m-%Y').date()
+            if local_now.date() != api_date:
+                url2 = f"http://api.aladhan.com/v1/timingsByCity/{local_now.strftime('%d-%m-%Y')}?city={city}&country={country}&method={method}"
+                d2 = get_json(url2)
+                if d2.get('code') == 200:
+                    data = d2
+        except Exception:
+            pass
+    return data
 import requests
 from datetime import datetime, timedelta
 import calendar
@@ -204,12 +223,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
     
     try:
         tv_method = st.query_params.get("method", "20")
-        url = f"http://api.aladhan.com/v1/timingsByCity?city={tv_city}&country={tv_country}&method={tv_method}"
-        data = get_json(url)
-        if data['code'] != 200:
-            import time
-            time.sleep(1)
-            data = get_json(url)
+        data = get_city_data(tv_city, tv_country, tv_method)
         
         if data['code'] == 200:
             timings = data['data']['timings']
@@ -503,19 +517,23 @@ nama_hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
 nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
 
 hijri_str = "-"
+hari_str = nama_hari[today.weekday()]
+tgl_str = f"{today.day} {nama_bulan[today.month-1]} {today.year}"
 try:
-    r_h = requests.get(f"http://api.aladhan.com/v1/gToH/{today.strftime('%d-%m-%Y')}", timeout=10)
-    d_h = indo_hijri(r_h.json())
+    d_h = get_city_data(st.session_state.city, st.session_state.country, st.session_state.method[0])
     if d_h['code'] == 200:
         h_info = d_h['data']['hijri']
         hijri_str = f"{h_info['day']} {h_info['month']['en']} {h_info['year']} H"
+        g_info = d_h['data']['date']['gregorian']
+        hari_str = HARI_INDO.get(g_info['weekday']['en'], hari_str)
+        tgl_str = f"{g_info['day']} {GREG_INDO.get(g_info['month']['en'], g_info['month']['en'])} {g_info['year']}"
 except Exception:
-    hijri_str = "-"
+    pass
 
 st.markdown(f"""
 <div class="main-header">
     <h1>🌍 Dasbor Kalender Taqwim</h1>
-    <div class="header-date">{nama_hari[today.weekday()]}, {today.day} {nama_bulan[today.month-1]} {today.year} M / {hijri_str} &nbsp;&nbsp; Lokasi : {st.session_state.city} {st.session_state.country}</div>
+    <div class="header-date">{hari_str}, {tgl_str} M / {hijri_str} &nbsp;&nbsp; Lokasi : {st.session_state.city} {st.session_state.country}</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -524,9 +542,7 @@ st.markdown(f"""
 # ============================================
 
 try:
-    url = f"http://api.aladhan.com/v1/timingsByCity?city={st.session_state.city}&country={st.session_state.country}&method={st.session_state.method[0]}"
-    response = requests.get(url, timeout=10)
-    data = response.json()
+    data = get_city_data(st.session_state.city, st.session_state.country, st.session_state.method[0])
 
     if data['code'] == 200:
         timings = data['data']['timings']
