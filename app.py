@@ -1,4 +1,25 @@
 import streamlit as st
+# ==========================================
+# NAMA BULAN HIJRIAH STANDAR KBBI
+# ==========================================
+HIJRI_INDO = {1:"Muharam",2:"Safar",3:"Rabiulawal",4:"Rabiulakhir",5:"Jumadilawal",6:"Jumadilakhir",7:"Rajab",8:"Syakban",9:"Ramadan",10:"Syawal",11:"Zulkaidah",12:"Zulhijah"}
+
+def indo_hijri(obj):
+    if isinstance(obj, dict):
+        if 'month' in obj and isinstance(obj['month'], dict) and 'number' in obj['month']:
+            try:
+                obj['month']['en'] = HIJRI_INDO[int(obj['month']['number'])]
+            except Exception:
+                pass
+        for v in obj.values():
+            indo_hijri(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            indo_hijri(v)
+    return obj
+
+def get_json(url):
+    return indo_hijri(get_json(url))
 import requests
 from datetime import datetime, timedelta
 import calendar
@@ -963,27 +984,6 @@ elif calendar_type == "Kalender Cina (Imlek)":
     try:
         from lunardate import LunarDate
 
-# ==========================================
-# NAMA BULAN HIJRIAH STANDAR KBBI
-# ==========================================
-HIJRI_INDO = {1:"Muharam",2:"Safar",3:"Rabiulawal",4:"Rabiulakhir",5:"Jumadilawal",6:"Jumadilakhir",7:"Rajab",8:"Syakban",9:"Ramadan",10:"Syawal",11:"Zulkaidah",12:"Zulhijah"}
-
-def indo_hijri(obj):
-    if isinstance(obj, dict):
-        if 'month' in obj and isinstance(obj['month'], dict) and 'number' in obj['month']:
-            try:
-                obj['month']['en'] = HIJRI_INDO[int(obj['month']['number'])]
-            except Exception:
-                pass
-        for v in obj.values():
-            indo_hijri(v)
-    elif isinstance(obj, list):
-        for v in obj:
-            indo_hijri(v)
-    return obj
-
-def get_json(url):
-    return indo_hijri(get_json(url))
         
         bulan_cina = ["Zheng", "Er", "San", "Si", "Wu", "Liu", "Qi", "Ba", "Jiu", "Shi", "Dong", "La"]
         
