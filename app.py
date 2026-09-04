@@ -569,7 +569,7 @@ try:
         # === CSS KARTU (mulai kolom 0, jangan menjorok!) ===
         css_jadwal = """<style>
 .jadwal-wrapper{width:100%;overflow-x:auto;padding:10px 0;}
-.jadwal-row{display:flex;gap:10px;min-width:1000px;}
+.jadwal-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
 .jadwal-card{flex:1;min-width:90px;height:110px;border-radius:12px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid #e0e0e0;transition:transform 0.2s;}
 .jadwal-card:hover{transform:translateY(-4px);box-shadow:0 6px 16px rgba(0,0,0,0.15);}
 .jadwal-card.regular{background:linear-gradient(135deg,#f0f2f6 0%,#e8eaf6 100%);}
@@ -586,10 +586,21 @@ try:
 
                 # === DATA 10 WAKTU + WARNA PENCAHAYAAN ALAMI KHATULISTIWA ===
         # Format: (Nama, Icon, Waktu, WarnaAtas, WarnaBawah, WarnaTeks)
+        def _hm(t):
+            h, m = t.split(":")
+            return int(h) * 60 + int(m)
+        def _hm2(m):
+            return f"{(m // 60) % 24:02d}:{m % 60:02d}"
+        _sr = _hm(timings.get("Sunrise", "06:00")[:5])
+        _ss = _hm(timings.get("Sunset", "18:00")[:5])
+        dhuha_t = _hm2(_sr + 15)
+        istiwa_t = _hm2((_sr + _ss) // 2)
         jadwal_data = [
             ("Imsak", "🌑", timings.get("Imsak", "-"), "#0f2027", "#2c5364", "#ffffff"),
             ("Subuh", "🌅", timings.get("Fajr", "-"), "#2b5876", "#4e4376", "#ffffff"),
             ("Terbit", "🌄", timings.get("Sunrise", "-"), "#f7971e", "#ffd200", "#1a1a2e"),
+            ("Dhuha", "🌞", dhuha_t, "#FDC830", "#F37335", "#1a1a2e"),
+            ("Istiwa", "🔆", istiwa_t, "#f83600", "#f9d423", "#1a1a2e"),
             ("Dzuhur", "☀️", timings.get("Dhuhr", "-"), "#2193b0", "#6dd5ed", "#ffffff"),
             ("Ashar", "🌤️", timings.get("Asr", "-"), "#f2994a", "#f2c94c", "#1a1a2e"),
             ("Maghrib", "🌇", timings.get("Maghrib", "-"), "#c33764", "#1d2671", "#ffffff"),
