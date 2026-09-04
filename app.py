@@ -176,6 +176,14 @@ body {
     }
 }
 /* === AKHIR CSS JADWAL === */
+/* === PANEL KALENDER INDAH (semua jenis kalender) === */
+.kal-panel { background: linear-gradient(135deg, #ffffff 0%, #f5f7ff 100%); border-radius: 16px; padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 1px solid #e3e6f0; }
+.kal-table { width: 100%; border-collapse: separate; border-spacing: 4px; font-family: 'Segoe UI', Tahoma, sans-serif; }
+.kal-table th { background: linear-gradient(135deg, GRAD1 0%, GRAD2 100%); color: #fff; padding: 8px 4px; text-align: center; font-weight: 700; border-radius: 8px; font-size: 13px; }
+.kal-table td { background: #fff; padding: 8px 4px; text-align: center; border-radius: 8px; color: #333; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: transform .15s; }
+.kal-table td:hover { transform: scale(1.06); }
+.kal-table td.empty { background: transparent; box-shadow: none; }
+.kal-table td.today { background: linear-gradient(135deg, #f7971e, #ffd200); color: #1a1a2e; font-weight: 800; box-shadow: 0 0 12px rgba(255,215,0,0.6); }
 /* === MODE COMPACT (muat satu layar) === */
 .main h1 { font-size: 1.5rem !important; margin: 0.4rem 0 !important; }
 .main h2 { font-size: 1.25rem !important; margin: 0.3rem 0 !important; }
@@ -748,11 +756,11 @@ def display_calendar(year, month, month_names, highlight_day=None):
             if day == 0:
                 html_table += "<td class='empty'></td>"
             elif highlight_day and day == highlight_day:
-                html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'>{day}</td>"
+                html_table += f"<td class='today'>{day}</td>"
             else:
                 html_table += f"<td>{day}</td>"
         html_table += "</tr>"
-    html_table += "</tbody></table>"
+    html_table += "</tbody></table></div>"
     st.markdown(html_table, unsafe_allow_html=True)
 
 with col_kanan:
@@ -850,11 +858,11 @@ with col_kanan:
                             else:
                                 h_day, g_short, is_today = cell
                                 if is_today:
-                                    html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'><div style='font-size:20px;'>{h_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
+                                    html_table += f"<td class='today'><div style='font-size:20px;'>{h_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
                                 else:
                                     html_table += f"<td><div style='font-size:20px;font-weight:600;'>{h_day}</div><div style='font-size:11px;color:#888;'>{g_short}</div></td>"
                         html_table += "</tr>"
-                    html_table += "</tbody></table>"
+                    html_table += "</tbody></table></div>"
                     st.markdown(html_table, unsafe_allow_html=True)
                     st.caption("Angka besar = tanggal Hijriah | Angka kecil = tanggal Masehi | Hijau = hari ini")
                 else:
@@ -955,11 +963,11 @@ with col_kanan:
                 else:
                     s_day, g_short, is_today = cell
                     if is_today:
-                        html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'><div style='font-size:20px;'>{s_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
+                        html_table += f"<td class='today'><div style='font-size:20px;'>{s_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
                     else:
                         html_table += f"<td><div style='font-size:20px;font-weight:600;'>{s_day}</div><div style='font-size:11px;color:#888;'>{g_short}</div></td>"
             html_table += "</tr>"
-        html_table += "</tbody></table>"
+        html_table += "</tbody></table></div>"
         st.markdown(html_table, unsafe_allow_html=True)
         st.caption("Angka besar = tanggal Hijrah Syamsiah | Angka kecil = tanggal Masehi | Hijau = hari ini")
 
@@ -1055,11 +1063,11 @@ with col_kanan:
                 else:
                     s_day, pasaran, g_short, is_today = cell
                     if is_today:
-                        html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'><div style='font-size:20px;'>{s_day}</div><div style='font-size:12px;font-weight:600;'>{pasaran}</div><div style='font-size:10px;opacity:0.9;'>{g_short}</div></td>"
+                        html_table += f"<td class='today'><div style='font-size:20px;'>{s_day}</div><div style='font-size:12px;font-weight:600;'>{pasaran}</div><div style='font-size:10px;opacity:0.9;'>{g_short}</div></td>"
                     else:
                         html_table += f"<td><div style='font-size:20px;font-weight:600;'>{s_day}</div><div style='font-size:12px;color:#764ba2;font-weight:600;'>{pasaran}</div><div style='font-size:10px;color:#888;'>{g_short}</div></td>"
             html_table += "</tr>"
-        html_table += "</tbody></table>"
+        html_table += "</tbody></table></div>"
         st.markdown(html_table, unsafe_allow_html=True)
         st.caption("Angka besar = tanggal Jawa | Ungu = Pasaran | Angka kecil = tanggal Masehi | Hijau = hari ini")
 
@@ -1161,11 +1169,11 @@ with col_kanan:
                     else:
                         l_day, g_short, is_today = cell
                         if is_today:
-                            html_table += f"<td style='background-color: #4CAF50; color: white; font-weight: bold;'><div style='font-size:20px;'>{l_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
+                            html_table += f"<td class='today'><div style='font-size:20px;'>{l_day}</div><div style='font-size:11px;opacity:0.9;'>{g_short}</div></td>"
                         else:
                             html_table += f"<td><div style='font-size:20px;font-weight:600;'>{l_day}</div><div style='font-size:11px;color:#888;'>{g_short}</div></td>"
                 html_table += "</tr>"
-            html_table += "</tbody></table>"
+            html_table += "</tbody></table></div>"
             st.markdown(html_table, unsafe_allow_html=True)
             st.caption("Angka besar = tanggal Imlek | Angka kecil = tanggal Masehi | Hijau = hari ini")
         
