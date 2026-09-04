@@ -19,7 +19,7 @@ def indo_hijri(obj):
     return obj
 
 def get_json(url):
-    return indo_hijri(get_json(url))
+    return indo_hijri(requests.get(url, timeout=10).json())
 import requests
 from datetime import datetime, timedelta
 import calendar
