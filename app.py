@@ -242,7 +242,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             tv_header()
             
             hari_tv = HARI_INDO.get(date_info["gregorian"]["weekday"]["en"], "")
-            st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} ({hari_tv}) &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} M &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='tv-dates'>📍 {tv_city}, {tv_country} &nbsp;•&nbsp; 🗓️ {hari_tv} &nbsp;•&nbsp; 📅 {date_info['gregorian']['date']} M &nbsp;•&nbsp; 🌙 {date_info['hijri']['day']} {date_info['hijri']['month']['en']} {date_info['hijri']['year']} H</div>", unsafe_allow_html=True)
             if tv_alamat or tv_kontak:
                 extra = ""
                 if tv_alamat:
