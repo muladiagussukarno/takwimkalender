@@ -6,9 +6,10 @@ HIJRI_INDO = {1:"Muharam",2:"Safar",3:"Rabiulawal",4:"Rabiulakhir",5:"Jumadilawa
 
 def indo_hijri(obj):
     if isinstance(obj, dict):
-        if 'month' in obj and isinstance(obj['month'], dict) and 'number' in obj['month']:
+        h = obj.get('hijri')
+        if isinstance(h, dict) and isinstance(h.get('month'), dict) and 'number' in h['month']:
             try:
-                obj['month']['en'] = HIJRI_INDO[int(obj['month']['number'])]
+                h['month']['en'] = HIJRI_INDO[int(h['month']['number'])]
             except Exception:
                 pass
         for v in obj.values():
