@@ -1189,6 +1189,7 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
     g_col1, g_col2 = st.columns([2, 1])
     with g_col1:
         g_masjid = st.text_input("🕌 Nama Masjid", value="Masjid Al-Ikhlas", key="g_masjid")
+        g_city = st.selectbox("🌍 Kota untuk TV", options=ALL_CITIES, index=ALL_CITIES.index("Jakarta, Indonesia") if "Jakarta, Indonesia" in ALL_CITIES else 0, key="g_city")
         g_alamat = st.text_input("📮 Alamat Masjid", value="Jl. Raya No. 1", key="g_alamat")
         g_kontak = st.text_input("📞 Kontak Takmir", value="0812-3456-7890", key="g_kontak")
         g_teks = st.text_area("📜 Running Text / Pengumuman (satu pesan per baris, opsional)", value="", height=100, key="g_teks")
@@ -1197,12 +1198,12 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         g_jenis = st.selectbox("📦 Jenis file Google Drive", ["otomatis", "gambar", "video"], key="g_jenis")
         g_method = st.selectbox("🧮 Metode Perhitungan", options=[(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")], format_func=lambda x: x[1], key="g_method")
         
-        st.info(f"🌍 Kota mengikuti pengaturan utama: **{st.session_state.city}, {st.session_state.country}** (ubah lewat 'Cari & Pilih Kota' di atas)")
+        st.info(f"🌍 Kota untuk TV: **{g_city}** (ubah di selectbox di atas)")
         
         teks_param = ""
         if g_teks.strip():
             teks_param = "&teks=" + quote("|".join([t.strip() for t in g_teks.split(chr(10)) if t.strip()]))
-        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(st.session_state.country) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0]) + ("&bg=" + quote(g_bg) + ("&jenis=" + g_jenis if g_jenis != "otomatis" else "") if g_bg.strip() else "") + teks_param
+        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(g_city.split(", ")[1]) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0]) + ("&bg=" + quote(g_bg) + ("&jenis=" + g_jenis if g_jenis != "otomatis" else "") if g_bg.strip() else "") + teks_param
         
         st.markdown("**Link TV Masjid Anda:**")
         st.code(tv_url)
