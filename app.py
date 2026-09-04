@@ -240,10 +240,14 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
                 st.markdown(f"<div class='tv-dates'>{extra}</div>", unsafe_allow_html=True)
             
             grid_items = [("Imsak", timings["Imsak"][:5]), ("Subuh", timings["Fajr"][:5]), ("Terbit", timings["Sunrise"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5]), ("1/3 Malam", timings["Firstthird"][:5]), ("Tengah Malam", timings["Midnight"][:5]), ("Akhir Malam", timings["Lastthird"][:5])]
+            GAYA_KARTU = {"Imsak": ("🌑", "#0f2e2e", "#1f5f5f", "#fff"), "Subuh": ("🌅", "#4e54c8", "#8f94fb", "#fff"), "Terbit": ("🌄", "#f7971e", "#ffd200", "#1a1a2e"), "Dzuhur": ("☀️", "#2193b0", "#6dd5ed", "#fff"), "Ashar": ("⛅", "#f2994a", "#f2c94c", "#1a1a2e"), "Maghrib": ("🌆", "#8e2de2", "#c71f5e", "#fff"), "Isya": ("🌙", "#141e30", "#243b55", "#fff"), "1/3 Malam": ("🌌", "#1f1c4e", "#3a2f7d", "#fff"), "Tengah Malam": ("🕛", "#000000", "#434343", "#fff"), "Akhir Malam": ("✨", "#232526", "#414345", "#fff")}
             html = "<div class='tv-grid'>"
             for nama, t in grid_items:
-                cls = "tv-card next" if nama == next_name else "tv-card"
-                html += f"<div class='{cls}'><div class='tv-name'>{nama}</div><div class='tv-time'>{t}</div></div>"
+                ikon, w1, w2, tk = GAYA_KARTU[nama]
+                if nama == next_name:
+                    html += f"<div style='background:linear-gradient(135deg,#f7971e,#ffd200);border-radius:0.8vw;padding:1.8vh 0.4vw;text-align:center;box-shadow:0 0 1.5vw rgba(255,215,0,0.6);'><div style='font-size:1.8vw;line-height:1;'>{ikon}</div><div style='color:#1a1a2e;font-size:1.1vw;font-weight:700;margin:0.6vh 0;'>{nama}</div><div style='color:#1a1a2e;font-size:2vw;font-weight:800;font-family:monospace;'>{t}</div></div>"
+                else:
+                    html += f"<div style='background:linear-gradient(135deg,{w1},{w2});border-radius:0.8vw;padding:1.8vh 0.4vw;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.35);'><div style='font-size:1.8vw;line-height:1;'>{ikon}</div><div style='color:{tk};font-size:1.1vw;font-weight:700;margin:0.6vh 0;'>{nama}</div><div style='color:{tk};font-size:2vw;font-weight:800;font-family:monospace;'>{t}</div></div>"
             html += "</div>"
             st.markdown(html, unsafe_allow_html=True)
             
