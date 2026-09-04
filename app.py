@@ -597,7 +597,7 @@ with col_kiri:
             _sr = _hm(timings.get("Sunrise", "06:00")[:5])
             _ss = _hm(timings.get("Sunset", "18:00")[:5])
             dhuha_t = _hm2(_sr + 15)
-            istiwa_t = _hm2((_sr + _ss) // 2)
+            istiwa_t = _hm2(_hm(timings.get("Dhuhr", "12:00")[:5]) - 2)
             jadwal_data = [
                 ("Imsak", "🌑", timings.get("Imsak", "-"), "#0f2027", "#2c5364", "#ffffff"),
                 ("Subuh", "🌅", timings.get("Fajr", "-"), "#2b5876", "#4e4376", "#ffffff"),
