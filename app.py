@@ -46,6 +46,15 @@ if 'theme_select' in st.session_state:
 
 tema_grad = THEMES.get(st.session_state.theme, THEMES["💜 Ungu (Default)"])
 
+TV_THEMES = {
+    "gelap": ("#0f2027", "#203a43", "#2c5364"),
+    "hijau": ("#06251a", "#0e4d33", "#17724c"),
+    "marun": ("#200707", "#4a1010", "#6e1a1a"),
+    "biru": ("#071a2e", "#123c63", "#1f5f8a"),
+    "ungu": ("#1a1030", "#3a2f7d", "#5b4bb8"),
+    "emas": ("#2a1a05", "#5a3a10", "#8a5a20"),
+}
+
 # CSS untuk membuat header sticky dan selalu terlihat
 st.markdown(("""
 <style>
@@ -277,6 +286,16 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         running_text = "  ★  ".join(running_items) + "  ★  "
         marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
         st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
+    # === TEMA LATAR TV (per link) ===
+    tv_tema = st.query_params.get("tema", "gelap")
+    tv_bg = st.query_params.get("bg", "")
+    bg1, bg2, bg3 = TV_THEMES.get(tv_tema, TV_THEMES["gelap"])
+    if tv_bg:
+        bg_css = "background: linear-gradient(rgba(8,12,18,0.72), rgba(8,12,18,0.72)), url('" + tv_bg + "') center/cover no-repeat fixed !important;"
+    else:
+        bg_css = "background: linear-gradient(135deg, " + bg1 + " 0%, " + bg2 + " 50%, " + bg3 + " 100%) !important;"
+    st.markdown("<style>html, body, .stApp { " + bg_css + " }</style>", unsafe_allow_html=True)
+
     st.stop()
 
 # ==========================================
@@ -1153,6 +1172,8 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         g_alamat = st.text_input("📮 Alamat Masjid", value="Jl. Raya No. 1", key="g_alamat")
         g_kontak = st.text_input("📞 Kontak Takmir", value="0812-3456-7890", key="g_kontak")
         g_teks = st.text_area("📜 Running Text / Pengumuman (satu pesan per baris, opsional)", value="", height=100, key="g_teks")
+        g_tema = st.selectbox("🎨 Tema Latar TV", options=list(TV_THEMES.keys()), key="g_tema")
+        g_bg = st.text_input("🖼️ URL Gambar Latar (opsional, menggantikan tema)", value="", key="g_bg")
         g_method = st.selectbox("🧮 Metode Perhitungan", options=[(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")], format_func=lambda x: x[1], key="g_method")
         
         st.info(f"🌍 Kota mengikuti pengaturan utama: **{st.session_state.city}, {st.session_state.country}** (ubah lewat 'Cari & Pilih Kota' di atas)")
@@ -1160,7 +1181,7 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         teks_param = ""
         if g_teks.strip():
             teks_param = "&teks=" + quote("|".join([t.strip() for t in g_teks.split(chr(10)) if t.strip()]))
-        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(st.session_state.country) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0]) + teks_param
+        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(st.session_state.country) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0]) + "&tema=" + g_tema + ("&bg=" + quote(g_bg) if g_bg.strip() else "") + teks_param
         
         st.markdown("**Link TV Masjid Anda:**")
         st.code(tv_url)
