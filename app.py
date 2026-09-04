@@ -518,7 +518,7 @@ nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "A
 
 hijri_str = hijri_pre
 hari_str = nama_hari[today.weekday()]
-tgl_str = f"{today.day} {nama_bulan[today.month-1]} {today.year}"    pass
+tgl_str = f"{today.day} {nama_bulan[today.month-1]} {today.year}"
 
 st.markdown(f"""
 <div class="main-header">
