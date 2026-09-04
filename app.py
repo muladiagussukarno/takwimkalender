@@ -304,7 +304,9 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         bg_css = "background: linear-gradient(rgba(8,12,18,0.72), rgba(8,12,18,0.72)), url('" + tv_bg + "') center/cover no-repeat, linear-gradient(135deg, #064635 0%, #0a5c5c 50%, #123c63 100%) !important;"
         st.markdown("<style>html, body, .stApp { " + bg_css + " }</style>", unsafe_allow_html=True)
     else:
-        st.markdown("<style>html, body, .stApp { " + bg_default + " }</style>", unsafe_allow_html=True)    st.stop()
+        st.markdown("<style>html, body, .stApp { " + bg_default + " }</style>", unsafe_allow_html=True)
+
+    st.stop()
 
 # ==========================================
 # DATABASE KOTA DUNIA
