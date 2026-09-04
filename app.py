@@ -292,23 +292,29 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         running_text = "  ★  ".join(running_items) + "  ★  "
         marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
         st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
-    # === LATAR TV (default hijau-biru / gambar / video bisu) ===
+    # === LATAR TV (Drive: gambar & video bisu+loop) ===
     tv_bg = st.query_params.get("bg", "")
+    tv_jenis = st.query_params.get("jenis", "")
+    drive_id = ""
     if "drive.google.com" in tv_bg:
         import re as _re
         m = _re.search(r"/d/([^/?]+)", tv_bg) or _re.search(r"id=([^&]+)", tv_bg)
         if m:
-            tv_bg = "https://lh3.googleusercontent.com/d/" + m.group(1)
-    is_video = any(tv_bg.lower().endswith(e) for e in (".mp4", ".webm", ".ogg", ".mov", ".m4v"))
+            drive_id = m.group(1)
+            tv_bg = "https://lh3.googleusercontent.com/d/" + drive_id
+    is_video = (tv_jenis == "video") or (tv_jenis != "gambar" and any(tv_bg.lower().endswith(e) for e in (".mp4", ".webm", ".ogg", ".mov", ".m4v")))
     bg_default = "background: linear-gradient(135deg, #064635 0%, #0a5c5c 50%, #123c63 100%) !important;"
     if tv_bg and is_video:
-        st.markdown("<style>html { background: linear-gradient(135deg, #064635 0%, #0a5c5c 50%, #123c63 100%) !important; } body, .stApp, .stAppViewContainer, [data-testid='stAppViewContainer'], [data-testid='stMainBlockContainer'], [data-testid='stAppViewBlockContainer'], section.main, .main, .block-container, header { background: transparent !important; background-color: transparent !important; } .tv-bgvideo { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; filter: brightness(0.45); }</style><video class='tv-bgvideo' src='" + tv_bg + "' autoplay muted loop playsinline></video>", unsafe_allow_html=True)
+        if drive_id:
+            video_html = "<video class='tv-bgvideo' autoplay muted loop playsinline><source src='https://drive.google.com/uc?export=download&id=" + drive_id + "' type='video/mp4'><source src='https://lh3.googleusercontent.com/d/" + drive_id + "' type='video/mp4'></video>"
+        else:
+            video_html = "<video class='tv-bgvideo' src='" + tv_bg + "' autoplay muted loop playsinline></video>"
+        st.markdown("<style>html { background: linear-gradient(135deg, #064635 0%, #0a5c5c 50%, #123c63 100%) !important; } body, .stApp, .stAppViewContainer, [data-testid='stAppViewContainer'], [data-testid='stMainBlockContainer'], [data-testid='stAppViewBlockContainer'], section.main, .main, .block-container, header { background: transparent !important; background-color: transparent !important; } .tv-bgvideo { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; filter: brightness(0.45); }</style>" + video_html, unsafe_allow_html=True)
     elif tv_bg:
         bg_css = "background: linear-gradient(rgba(8,12,18,0.72), rgba(8,12,18,0.72)), url('" + tv_bg + "') center/cover no-repeat, linear-gradient(135deg, #064635 0%, #0a5c5c 50%, #123c63 100%) !important;"
         st.markdown("<style>html, body, .stApp { " + bg_css + " }</style>", unsafe_allow_html=True)
     else:
         st.markdown("<style>html, body, .stApp { " + bg_default + " }</style>", unsafe_allow_html=True)
-
     st.stop()
 
 # ==========================================
@@ -1186,6 +1192,8 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         g_kontak = st.text_input("📞 Kontak Takmir", value="0812-3456-7890", key="g_kontak")
         g_teks = st.text_area("📜 Running Text / Pengumuman (satu pesan per baris, opsional)", value="", height=100, key="g_teks")
         g_bg = st.text_input("🖼️ URL Gambar / Video Latar (opsional)", value="", key="g_bg")
+        st.caption("📌 Google Drive: Share → 'Anyone with the link'. Gambar langsung tampil; untuk VIDEO pilih jenis 'video' → otomatis bisu + berulang di TV.")
+        g_jenis = st.selectbox("📦 Jenis file Google Drive", ["otomatis", "gambar", "video"], key="g_jenis")
         g_method = st.selectbox("🧮 Metode Perhitungan", options=[(20, "Kemenag RI (Indonesia)"), (2, "Muslim World League"), (4, "Umm Al-Qura University, Makkah")], format_func=lambda x: x[1], key="g_method")
         
         st.info(f"🌍 Kota mengikuti pengaturan utama: **{st.session_state.city}, {st.session_state.country}** (ubah lewat 'Cari & Pilih Kota' di atas)")
@@ -1193,7 +1201,7 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         teks_param = ""
         if g_teks.strip():
             teks_param = "&teks=" + quote("|".join([t.strip() for t in g_teks.split(chr(10)) if t.strip()]))
-        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(st.session_state.country) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0]) + ("&bg=" + quote(g_bg) if g_bg.strip() else "") + teks_param
+        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(st.session_state.country) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0]) + ("&bg=" + quote(g_bg) + ("&jenis=" + g_jenis if g_jenis != "otomatis" else "") if g_bg.strip() else "") + teks_param
         
         st.markdown("**Link TV Masjid Anda:**")
         st.code(tv_url)
