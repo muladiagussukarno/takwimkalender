@@ -296,7 +296,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
             tv_bg = "https://lh3.googleusercontent.com/d/" + m.group(1)
     bg1, bg2, bg3 = TV_THEMES.get(tv_tema, TV_THEMES["gelap"])
     if tv_bg:
-        bg_css = "background: linear-gradient(rgba(8,12,18,0.72), rgba(8,12,18,0.72)), url('" + tv_bg + "') center/cover no-repeat fixed !important;"
+        bg_css = "background: linear-gradient(rgba(8,12,18,0.72), rgba(8,12,18,0.72)), url('" + tv_bg + "') center/cover no-repeat, linear-gradient(135deg, " + bg1 + " 0%, " + bg2 + " 50%, " + bg3 + " 100%) !important;"
     else:
         bg_css = "background: linear-gradient(135deg, " + bg1 + " 0%, " + bg2 + " 50%, " + bg3 + " 100%) !important;"
     st.markdown("<style>html, body, .stApp { " + bg_css + " }</style>", unsafe_allow_html=True)
