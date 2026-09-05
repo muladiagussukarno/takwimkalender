@@ -251,6 +251,11 @@ body {
 .kal-table td.libur { background: linear-gradient(135deg, #cb2d3e, #ef473a) !important; color: #fff !important; }
 .kal-table td.cuti { background: linear-gradient(135deg, #f7971e, #ffd200) !important; color: #1a1a2e !important; }
 .lib-name { font-size: 8px; line-height: 1.15; font-weight: 600; opacity: 0.95; }
+/* === SUPPORT BY (dashboard) === */
+.support-by-dash { position:fixed; bottom:8px; right:12px; font-size:11px; color:rgba(100,100,100,0.6); z-index:9998; }
+.support-by-dash a { color:rgba(80,80,80,0.7); text-decoration:none; }
+.support-by-dash:hover { color:rgba(60,60,60,0.9); }
+
 /* === MODE COMPACT (muat satu layar) === */
 .main h1 { font-size: 1.5rem !important; margin: 0.4rem 0 !important; }
 .main h2 { font-size: 1.25rem !important; margin: 0.3rem 0 !important; }
@@ -297,6 +302,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
 .tv-card.next .tv-time { color:#1a1a2e; }
 .tv-count { text-align:center; margin-top:3vh; color:#fff; font-size:2vw; }
 .tv-count b { color:#ffd200; font-size:2.8vw; font-family:monospace; }
+.support-by-tv { position:fixed; bottom:6px; right:10px; font-size:11px; color:rgba(255,255,255,0.45); z-index:9998; }
 .tv-slogan { text-align:center; margin-top:2vh; color:#ffffff; font-size:3.5vw; font-weight:800; letter-spacing:1px; line-height:1.6; text-shadow:0 2px 8px rgba(0,0,0,0.5); }
 </style>""", unsafe_allow_html=True)
     
@@ -1349,6 +1355,8 @@ with st.expander("⚙️ Pengaturan Kalender", expanded=False):
 # GENERATOR LINK TV MASJID (SOLUSI MULTI-MASJID)
 # ==========================================
 from urllib.parse import quote
+
+st.markdown("<div class='support-by-dash'>Support by <a href='https://doodoo.id' target='_blank'>doodoo.id</a> • <a href='https://wa.me/6282342128005' target='_blank'>WA +6282342128005</a></div>", unsafe_allow_html=True)
 
 with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
     st.markdown("**Untuk takmir & masjid lain:** isi data di bawah, salin link / cetak QR, tempel di TV masjid. Tanpa perlu sentuh kode!")
