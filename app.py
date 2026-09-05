@@ -66,6 +66,53 @@ if 'theme_select' in st.session_state:
 
 tema_grad = THEMES.get(st.session_state.theme, THEMES["💜 Ungu (Default)"])
 
+def easter_gregorian(year):
+    a = year % 19
+    b, c2 = divmod(year, 100)
+    d, e = divmod(b, 4)
+    f = (b + 8) // 25
+    g = (b - f + 1) // 3
+    h = (19 * a + b - d - g + 15) % 30
+    i2, k = divmod(c2, 4)
+    l = (32 + 2 * e + 2 * i2 - h - k) % 7
+    m = (a + 11 * h + 22 * l) // 451
+    bulan, hari = divmod(h + l - 7 * m + 114, 31)
+    return datetime(year, bulan, hari + 1)
+
+def hitung_libur_otomatis(year):
+    from hijri_converter import Hijri
+    from lunardate import LunarDate
+    lib = {
+        "01-01": "Tahun Baru Masehi",
+        "05-01": "Hari Buruh Internasional",
+        "06-01": "Hari Lahir Pancasila",
+        "08-17": "HUT Kemerdekaan RI",
+        "12-25": "Hari Raya Natal",
+    }
+    ea = easter_gregorian(year)
+    lib[(ea - timedelta(days=2)).strftime("%m-%d")] = "Wafat Isa Almasih"
+    lib[(ea + timedelta(days=39)).strftime("%m-%d")] = "Kenaikan Isa Almasih"
+    try:
+        im = LunarDate(year, 1, 1).toSolarDate()
+        lib[im.strftime("%m-%d")] = f"Tahun Baru Imlek {year + 551}"
+    except Exception:
+        pass
+    for h in (year - 580, year - 579, year - 578):
+        for hm, hd, fmt in [(7, 27, "Isra' Mi'raj Nabi Muhammad SAW {h} H"), (10, 1, "Idul Fitri {h} H"), (10, 2, "Idul Fitri {h} H (Hari 2)"), (12, 10, "Idul Adha {h} H"), (1, 1, "Tahun Baru Islam {h} H"), (3, 12, "Maulid Nabi Muhammad SAW {h} H")]:
+            try:
+                g = Hijri(h, hm, hd).to_gregorian()
+            except Exception:
+                continue
+            if g.year == year:
+                lib.setdefault(g.strftime("%m-%d"), fmt.format(h=h))
+    return lib
+
+def get_libur(year):
+    lib = hitung_libur_otomatis(year)
+    lib.update(LIBUR_NASIONAL.get(year, {}))
+    cuti = dict(CUTI_BERSAMA.get(year, {}))
+    return lib, cuti
+
 HARI_INDO = {"Monday":"Senin","Tuesday":"Selasa","Wednesday":"Rabu","Thursday":"Kamis","Friday":"Jumat","Saturday":"Sabtu","Sunday":"Ahad"}
 GREG_INDO = {"January":"Januari","February":"Februari","March":"Maret","April":"April","May":"Mei","June":"Juni","July":"Juli","August":"Agustus","September":"September","October":"Oktober","November":"November","December":"Desember"}
 
