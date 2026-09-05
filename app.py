@@ -297,7 +297,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
 .tv-card.next .tv-time { color:#1a1a2e; }
 .tv-count { text-align:center; margin-top:3vh; color:#fff; font-size:2vw; }
 .tv-count b { color:#ffd200; font-size:2.8vw; font-family:monospace; }
-.tv-slogan { text-align:center; margin-top:2vh; color:#ffd700; font-size:clamp(14px, 2.4vw, 32px); font-weight:800; letter-spacing:1px; line-height:1.9; text-shadow:0 2px 8px rgba(0,0,0,0.5); }
+.tv-slogan { text-align:center; margin-top:2vh; color:#ffd700; font-size:3.5vw; font-weight:800; letter-spacing:1px; line-height:1.6; text-shadow:0 2px 8px rgba(0,0,0,0.5); }
 </style>""", unsafe_allow_html=True)
     
     try:
