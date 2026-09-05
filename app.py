@@ -849,7 +849,7 @@ def display_calendar(year, month, month_names, highlight_day=None):
     for day in header:
         html_table += f"<th>{day}</th>"
     html_table += "</tr></thead><tbody>"
-        lib, cuti = get_libur(year)
+    lib, cuti = get_libur(year)
     for week in cal:
         html_table += "<tr>"
         for day in week:
