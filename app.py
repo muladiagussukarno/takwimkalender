@@ -297,6 +297,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
 .tv-card.next .tv-time { color:#1a1a2e; }
 .tv-count { text-align:center; margin-top:3vh; color:#fff; font-size:2vw; }
 .tv-count b { color:#ffd200; font-size:2.8vw; font-family:monospace; }
+.tv-slogan { text-align:center; margin-top:2.5vh; color:#ffd700; font-size:clamp(14px, 1.9vw, 26px); font-weight:700; letter-spacing:2px; text-shadow:0 2px 8px rgba(0,0,0,0.5); }
 </style>""", unsafe_allow_html=True)
     
     try:
@@ -384,6 +385,9 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         running_text = "☪️  " + "  ★  ".join(running_items) + "  ☪️  "
         marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
         st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
+    tv_slogan = st.query_params.get("slogan", "Selamat Menunaikan Ibadah Sholat")
+    st.markdown("<div class='tv-slogan'>" + tv_slogan[:40] + "</div>", unsafe_allow_html=True)
+
     # === LATAR TV (Drive: gambar & video bisu+loop) ===
     tv_bg = st.query_params.get("bg", "")
     tv_jenis = st.query_params.get("jenis", "")
@@ -1355,6 +1359,7 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         g_alamat = st.text_input("📮 Alamat Masjid", value="Jl. Raya No. 1", key="g_alamat")
         g_kontak = st.text_input("📞 Kontak Takmir", value="0812-3456-7890", key="g_kontak")
         g_teks = st.text_area("📜 Running Text / Pengumuman (satu pesan per baris, opsional)", value="", height=100, key="g_teks")
+        g_slogan = st.text_input("✍️ Tulisan statis bawah TV (maks 40 karakter)", value="Selamat Menunaikan Ibadah Sholat", max_chars=40, key="g_slogan")
         g_bg = st.text_input("🖼️ URL Gambar / Video Latar (opsional)", value="", key="g_bg")
         st.caption("📌 Google Drive: Share → 'Anyone with the link'. Gambar langsung tampil; untuk VIDEO pilih jenis 'video' → otomatis bisu + berulang di TV.")
         g_jenis = st.selectbox("📦 Jenis file Google Drive", ["otomatis", "gambar", "video"], key="g_jenis")
@@ -1365,7 +1370,7 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         teks_param = ""
         if g_teks.strip():
             teks_param = "&teks=" + quote("|".join([t.strip() for t in g_teks.split(chr(10)) if t.strip()]))
-        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(g_city.split(", ")[1]) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + "&method=" + str(g_method[0]) + ("&bg=" + quote(g_bg) + ("&jenis=" + g_jenis if g_jenis != "otomatis" else "") if g_bg.strip() else "") + teks_param
+        tv_url = "https://takwimkalender.streamlit.app/?mode=tv&city=" + quote(st.session_state.city) + "&country=" + quote(g_city.split(", ")[1]) + "&masjid=" + quote(g_masjid) + "&alamat=" + quote(g_alamat) + "&kontak=" + quote(g_kontak) + ("&slogan=" + quote(g_slogan) if g_slogan.strip() else "") + "&method=" + str(g_method[0]) + ("&bg=" + quote(g_bg) + ("&jenis=" + g_jenis if g_jenis != "otomatis" else "") if g_bg.strip() else "") + teks_param
         
         st.markdown("**Link TV Masjid Anda:**")
         st.code(tv_url)
