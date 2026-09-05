@@ -182,7 +182,12 @@ body {
 .kal-table th { background: linear-gradient(135deg, GRAD1 0%, GRAD2 100%); color: #fff; padding: 8px 4px; text-align: center; font-weight: 700; border-radius: 8px; font-size: 13px; }
 .kal-table td { background: #fff; padding: 8px 4px; text-align: center; border-radius: 8px; color: #333; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: transform .15s; }
 .kal-table td:hover { transform: scale(1.06); }
-.kal-table td.empty { background: transparent; box-shadow: none; }
+.kal-table td:nth-child(-n+4) { background: linear-gradient(135deg, #4e54c8, #8f94fb); color: #fff; }
+.kal-table td:nth-child(5) { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; }
+.kal-table td:nth-child(6) { background: linear-gradient(135deg, #232526, #414345); color: #fff; }
+.kal-table td:nth-child(7) { background: linear-gradient(135deg, #cb2d3e, #ef473a); color: #fff; }
+.kal-table td div { color: rgba(255,255,255,0.9) !important; }
+.kal-table td.empty { background: transparent !important; box-shadow: none; }
 .kal-table td.today { background: linear-gradient(135deg, #f7971e, #ffd200); color: #1a1a2e; font-weight: 800; box-shadow: 0 0 12px rgba(255,215,0,0.6); }
 /* === MODE COMPACT (muat satu layar) === */
 .main h1 { font-size: 1.5rem !important; margin: 0.4rem 0 !important; }
