@@ -177,8 +177,8 @@ body {
 }
 /* === AKHIR CSS JADWAL === */
 /* === PANEL KALENDER INDAH (semua jenis kalender) === */
-.kal-panel { background: linear-gradient(135deg, #ffffff 0%, #f5f7ff 100%); border-radius: 16px; padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 1px solid #e3e6f0; }
-.kal-table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 7px; font-family: 'Segoe UI', Tahoma, sans-serif; }
+.kal-panel { background: linear-gradient(135deg, #ffffff 0%, #f5f7ff 100%); border-radius: 16px; padding: clamp(10px, 1vw, 18px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 1px solid #e3e6f0; }
+.kal-table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: clamp(6px, 0.7vw, 14px); font-family: 'Segoe UI', Tahoma, sans-serif; }
 .kal-table th { background: linear-gradient(135deg, GRAD1 0%, GRAD2 100%); color: #fff; padding: 10px 4px; text-align: center; font-weight: 700; border-radius: 8px; font-size: clamp(11px, 1.2vw, 14px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .kal-table th:nth-child(5) { background: linear-gradient(135deg, #11998e, #38ef7d) !important; }
 .kal-table th:nth-child(6) { background: linear-gradient(135deg, #232526, #414345) !important; }
