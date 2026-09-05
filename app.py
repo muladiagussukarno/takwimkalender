@@ -122,6 +122,9 @@ def get_libur(year):
 HARI_INDO = {"Monday":"Senin","Tuesday":"Selasa","Wednesday":"Rabu","Thursday":"Kamis","Friday":"Jumat","Saturday":"Sabtu","Sunday":"Ahad"}
 GREG_INDO = {"January":"Januari","February":"Februari","March":"Maret","April":"April","May":"Mei","June":"Juni","July":"Juli","August":"Agustus","September":"September","October":"Oktober","November":"November","December":"Desember"}
 
+LIBUR_NASIONAL = {2026: {"01-01": "Tahun Baru Masehi", "01-16": "Isra' Mi'raj Nabi Muhammad SAW", "02-17": "Tahun Baru Imlek 2577", "03-19": "Hari Suci Nyepi 1948 Saka", "03-20": "Idul Fitri 1447 H", "03-21": "Idul Fitri 1447 H (Hari 2)", "04-03": "Wafat Isa Almasih", "05-01": "Hari Buruh Internasional", "05-14": "Kenaikan Isa Almasih", "05-27": "Idul Adha 1447 H", "05-31": "Hari Raya Waisak 2570", "06-01": "Hari Lahir Pancasila", "06-16": "Tahun Baru Islam 1448 H", "08-17": "HUT Kemerdekaan RI", "08-25": "Maulid Nabi Muhammad SAW", "12-25": "Hari Raya Natal"}}
+CUTI_BERSAMA = {2026: {"02-16": "Cuti Bersama Imlek", "03-18": "Cuti Bersama Nyepi", "03-23": "Cuti Bersama Idul Fitri", "03-24": "Cuti Bersama Idul Fitri", "05-15": "Cuti Bersama Kenaikan Isa Almasih", "05-28": "Cuti Bersama Idul Adha", "12-24": "Cuti Bersama Natal"}}
+
 TV_THEMES = {
     "gelap": ("#0f2027", "#203a43", "#2c5364"),
     "hijau": ("#06251a", "#0e4d33", "#17724c"),
@@ -245,6 +248,9 @@ body {
 .kal-table td div { color: rgba(255,255,255,0.9) !important; }
 .kal-table td.empty { background: transparent !important; box-shadow: none; }
 .kal-table td.today { background: linear-gradient(135deg, #f7971e, #ffd200); color: #1a1a2e; font-weight: 800; box-shadow: 0 0 12px rgba(255,215,0,0.6); }
+.kal-table td.libur { background: linear-gradient(135deg, #cb2d3e, #ef473a) !important; color: #fff !important; }
+.kal-table td.cuti { background: linear-gradient(135deg, #f7971e, #ffd200) !important; color: #1a1a2e !important; }
+.lib-name { font-size: 8px; line-height: 1.15; font-weight: 600; opacity: 0.95; }
 /* === MODE COMPACT (muat satu layar) === */
 .main h1 { font-size: 1.5rem !important; margin: 0.4rem 0 !important; }
 .main h2 { font-size: 1.25rem !important; margin: 0.3rem 0 !important; }
@@ -843,17 +849,22 @@ def display_calendar(year, month, month_names, highlight_day=None):
     for day in header:
         html_table += f"<th>{day}</th>"
     html_table += "</tr></thead><tbody>"
+        lib, cuti = get_libur(year)
     for week in cal:
         html_table += "<tr>"
         for day in week:
+            key = f"{month:02d}-{day:02d}"
             if day == 0:
                 html_table += "<td class='empty'></td>"
             elif highlight_day and day == highlight_day:
                 html_table += f"<td class='today'>{day}</td>"
+            elif key in lib:
+                html_table += f"<td class='libur'>{day}<div class='lib-name'>{lib[key]}</div></td>"
+            elif key in cuti:
+                html_table += f"<td class='cuti'>{day}<div class='lib-name'>{cuti[key]}</div></td>"
             else:
                 html_table += f"<td>{day}</td>"
-        html_table += "</tr>"
-    html_table += "</tbody></table></div>"
+        html_table += "</tr>"    html_table += "</tbody></table></div>"
     st.markdown(html_table, unsafe_allow_html=True)
 
 with col_kanan:
