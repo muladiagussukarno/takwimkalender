@@ -80,8 +80,14 @@ def easter_gregorian(year):
     return datetime(year, bulan, hari + 1)
 
 def hitung_libur_otomatis(year):
-    from hijri_converter import Hijri
-    from lunardate import LunarDate
+    try:
+        from hijri_converter import Hijri
+    except Exception:
+        Hijri = None
+    try:
+        from lunardate import LunarDate
+    except Exception:
+        LunarDate = None
     lib = {
         "01-01": "Tahun Baru Masehi",
         "05-01": "Hari Buruh Internasional",
