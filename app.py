@@ -250,6 +250,7 @@ body {
 .kal-table td.empty { background: transparent !important; box-shadow: none; }
 .kal-table td.today { background: linear-gradient(135deg, #f7971e, #ffd200); color: #1a1a2e; font-weight: 800; box-shadow: 0 0 12px rgba(255,215,0,0.6); }
 .kal-table th, .kal-table td { background-clip: padding-box !important; }
+.kal-table th:nth-child(n), .kal-table td:nth-child(n) { background-clip: padding-box !important; }
 .kal-table td.libur { background: linear-gradient(135deg, #cb2d3e, #ef473a) !important; color: #fff !important; }
 .kal-table td.cuti { background: linear-gradient(135deg, #f7971e, #ffd200) !important; color: #1a1a2e !important; }
 .lib-name { font-size: 8px; line-height: 1.15; font-weight: 600; opacity: 0.95; }
