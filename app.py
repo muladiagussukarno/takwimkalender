@@ -419,6 +419,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         st.markdown("<style>html, body, .stApp { " + bg_css + " }</style>", unsafe_allow_html=True)
     else:
         st.markdown("<style>html, body, .stApp { " + bg_default + " }</style>", unsafe_allow_html=True)
+    st.markdown("<div class='support-by-tv'>Support by doodoo.id • WA +6282342128005</div>", unsafe_allow_html=True)
     st.stop()
 
 # ==========================================
