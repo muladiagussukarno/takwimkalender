@@ -746,7 +746,7 @@ def display_calendar(year, month, month_names, highlight_day=None):
     .calendar-table td { padding: 12px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }
     .calendar-table td.empty { background-color: #fafafa; }
     </style>"""
-    html_table = calendar_css + "<table class='calendar-table'><thead><tr>"
+    html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
     for day in header:
         html_table += f"<th>{day}</th>"
     html_table += "</tr></thead><tbody>"
@@ -845,7 +845,7 @@ with col_kanan:
                 
                     # Render tabel
                     table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
-                    html_table = table_css + "<table class='calendar-table'><thead><tr>"
+                    html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
                     for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
                         html_table += f"<th>{day}</th>"
                     html_table += "</tr></thead><tbody>"
@@ -951,7 +951,7 @@ with col_kanan:
     
         # Render tabel
         table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
-        html_table = table_css + "<table class='calendar-table'><thead><tr>"
+        html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
         for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
             html_table += f"<th>{day}</th>"
         html_table += "</tr></thead><tbody>"
@@ -1051,7 +1051,7 @@ with col_kanan:
     
         # Render tabel
         table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
-        html_table = table_css + "<table class='calendar-table'><thead><tr>"
+        html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
         for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
             html_table += f"<th>{day}</th>"
         html_table += "</tr></thead><tbody>"
@@ -1157,7 +1157,7 @@ with col_kanan:
         
             # Render tabel
             table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
-            html_table = table_css + "<table class='calendar-table'><thead><tr>"
+            html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
             for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
                 html_table += f"<th>{day}</th>"
             html_table += "</tr></thead><tbody>"
