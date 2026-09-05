@@ -256,7 +256,9 @@ body {
 .main h2 { font-size: 1.25rem !important; margin: 0.3rem 0 !important; }
 .calendar-table th { padding: 6px !important; font-size: 13px !important; }
 .calendar-table td { padding: 6px !important; font-size: 14px !important; }
-.stButton > button { padding: 0.25rem 0.6rem !important; }
+.stButton > button { background: linear-gradient(135deg, GRAD1 0%, GRAD2 100%) !important; color: #fff !important; border: none !important; border-radius: 50% !important; width: 46px !important; height: 46px !important; padding: 0 !important; font-size: 1.15rem !important; font-weight: 800 !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform .15s; }
+.stButton > button:hover { transform: scale(1.1) !important; }
+
 hr { margin: 0.5rem 0 !important; }
 </style>
 """).replace("GRAD1", tema_grad[0]).replace("GRAD2", tema_grad[1]), unsafe_allow_html=True)
@@ -826,13 +828,13 @@ bulan_indonesia = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli
 def display_calendar(year, month, month_names, highlight_day=None):
     col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
     with col_nav1:
-        if st.button("◀️ Bulan Sebelumnya"):
+        if st.button("❮"):
             prev_month()
             st.rerun()
     with col_nav2:
         st.markdown(f"<h2 style='text-align: center;'> {month_names[month-1]} {year}</h2>", unsafe_allow_html=True)
     with col_nav3:
-        if st.button("Bulan Berikutnya ▶️"):
+        if st.button("❯"):
             next_month()
             st.rerun()
     st.divider()
@@ -902,7 +904,7 @@ with col_kanan:
                 # Navigasi bulan
                 col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
                 with col_nav1:
-                    if st.button("◀️ Bulan Sebelumnya", key="hijri_prev"):
+                    if st.button("❮", key="hijri_prev"):
                         if st.session_state.hijri_view_month == 1:
                             st.session_state.hijri_view_month = 12
                             st.session_state.hijri_view_year -= 1
@@ -912,7 +914,7 @@ with col_kanan:
                 with col_nav2:
                     st.markdown(f"<h2 style='text-align: center;'>🌙 {nama_bulan_hijriah[st.session_state.hijri_view_month-1]} {st.session_state.hijri_view_year} H</h2>", unsafe_allow_html=True)
                 with col_nav3:
-                    if st.button("Bulan Berikutnya ▶️", key="hijri_next"):
+                    if st.button("❯", key="hijri_next"):
                         if st.session_state.hijri_view_month == 12:
                             st.session_state.hijri_view_month = 1
                             st.session_state.hijri_view_year += 1
@@ -999,7 +1001,7 @@ with col_kanan:
         # Navigasi bulan
         col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
         with col_nav1:
-            if st.button("◀️ Bulan Sebelumnya", key="syams_prev"):
+            if st.button("❮", key="syams_prev"):
                 if st.session_state.syamsiah_view_month == 1:
                     st.session_state.syamsiah_view_month = 12
                     st.session_state.syamsiah_view_year -= 1
@@ -1009,7 +1011,7 @@ with col_kanan:
         with col_nav2:
             st.markdown(f"<h2 style='text-align: center;'>☀️ {persian_months[st.session_state.syamsiah_view_month-1]} {st.session_state.syamsiah_view_year} HS</h2>", unsafe_allow_html=True)
         with col_nav3:
-            if st.button("Bulan Berikutnya ▶️", key="syams_next"):
+            if st.button("❯", key="syams_next"):
                 if st.session_state.syamsiah_view_month == 12:
                     st.session_state.syamsiah_view_month = 1
                     st.session_state.syamsiah_view_year += 1
@@ -1100,7 +1102,7 @@ with col_kanan:
         # Navigasi bulan
         col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
         with col_nav1:
-            if st.button("◀️ Bulan Sebelumnya", key="jawa_prev"):
+            if st.button("❮", key="jawa_prev"):
                 if st.session_state.jawa_view_month == 1:
                     st.session_state.jawa_view_month = 12
                     st.session_state.jawa_view_year -= 1
@@ -1110,7 +1112,7 @@ with col_kanan:
         with col_nav2:
             st.markdown(f"<h2 style='text-align: center;'>📜 {bulan_jawa[st.session_state.jawa_view_month-1]} {st.session_state.jawa_view_year} Saka</h2>", unsafe_allow_html=True)
         with col_nav3:
-            if st.button("Bulan Berikutnya ▶️", key="jawa_next"):
+            if st.button("❯", key="jawa_next"):
                 if st.session_state.jawa_view_month == 12:
                     st.session_state.jawa_view_month = 1
                     st.session_state.jawa_view_year += 1
@@ -1206,7 +1208,7 @@ with col_kanan:
             # Navigasi bulan
             col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
             with col_nav1:
-                if st.button("◀️ Bulan Sebelumnya", key="imlek_prev"):
+                if st.button("❮", key="imlek_prev"):
                     if st.session_state.imlek_view_month == 1:
                         st.session_state.imlek_view_month = 12
                         st.session_state.imlek_view_year -= 1
@@ -1216,7 +1218,7 @@ with col_kanan:
             with col_nav2:
                 st.markdown(f"<h2 style='text-align: center;'>🏮 Bulan {bulan_cina[v_month-1]} ({v_month}) - Tahun {v_year + 2698}</h2>", unsafe_allow_html=True)
             with col_nav3:
-                if st.button("Bulan Berikutnya ▶️", key="imlek_next"):
+                if st.button("❯", key="imlek_next"):
                     if st.session_state.imlek_view_month == 12:
                         st.session_state.imlek_view_month = 1
                         st.session_state.imlek_view_year += 1
