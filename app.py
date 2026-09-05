@@ -297,7 +297,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
 .tv-card.next .tv-time { color:#1a1a2e; }
 .tv-count { text-align:center; margin-top:3vh; color:#fff; font-size:2vw; }
 .tv-count b { color:#ffd200; font-size:2.8vw; font-family:monospace; }
-.tv-slogan { text-align:center; margin-top:2vh; color:#ffd700; font-size:clamp(12px, 1.7vw, 24px); font-weight:700; letter-spacing:2px; line-height:1.7; text-shadow:0 2px 8px rgba(0,0,0,0.5); }
+.tv-slogan { text-align:center; margin-top:2vh; color:#ffd700; font-size:clamp(10px, 1.3vw, 20px); font-weight:700; letter-spacing:1px; line-height:1.7; text-shadow:0 2px 8px rgba(0,0,0,0.5); }
 </style>""", unsafe_allow_html=True)
     
     try:
@@ -386,7 +386,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
         marquee_css = "<style>.tv-marquee-wrap{margin-top:4vh;overflow:hidden;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:1vw;padding:1.8vh 0;}.tv-marquee{display:inline-block;white-space:nowrap;padding-left:100%;animation:tv-scroll 60s linear infinite;color:#fff;font-size:1.8vw;}.ar{font-size:2.4vw;font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;color:#ffd700;}@keyframes tv-scroll{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}</style>"
         st.markdown(marquee_css + "<div class='tv-marquee-wrap'><div class='tv-marquee'>" + running_text + "</div></div>", unsafe_allow_html=True)
     tv_slogan = st.query_params.get("slogan", "Selamat Menunaikan Ibadah Sholat")
-    _slog_lines = [t.strip()[:40] for t in tv_slogan.replace("|", "\n").split("\n") if t.strip()][:3]
+    _slog_lines = [t.strip()[:120] for t in tv_slogan.replace("|", "\n").split("\n") if t.strip()][:3]
     st.markdown("<div class='tv-slogan'>" + "<br>".join(_slog_lines) + "</div>", unsafe_allow_html=True)
 
     # === LATAR TV (Drive: gambar & video bisu+loop) ===
@@ -1360,7 +1360,15 @@ with st.expander("📺 Buat Link TV Masjid Anda (Solusi Multi-Masjid)"):
         g_alamat = st.text_input("📮 Alamat Masjid", value="Jl. Raya No. 1", key="g_alamat")
         g_kontak = st.text_input("📞 Kontak Takmir", value="0812-3456-7890", key="g_kontak")
         g_teks = st.text_area("📜 Running Text / Pengumuman (satu pesan per baris, opsional)", value="", height=100, key="g_teks")
-        g_slogan = st.text_area("✍️ Tulisan statis bawah TV (maks 3 baris x 40 karakter — satu baris per pesan)", value="Selamat Menunaikan Ibadah Sholat", height=90, key="g_slogan")
+        st.markdown("**✍️ Tulisan statis bawah TV (maks 3 baris × 120 karakter):**")
+        s_col1, s_col2, s_col3 = st.columns(3)
+        with s_col1:
+            g_slogan1 = st.text_input("Baris 1", value="Selamat Menunaikan Ibadah Sholat", max_chars=120, key="g_slogan1")
+        with s_col2:
+            g_slogan2 = st.text_input("Baris 2", value="", max_chars=120, key="g_slogan2")
+        with s_col3:
+            g_slogan3 = st.text_input("Baris 3", value="", max_chars=120, key="g_slogan3")
+        g_slogan = "\n".join([t for t in [g_slogan1, g_slogan2, g_slogan3] if t.strip()])
         g_bg = st.text_input("🖼️ URL Gambar / Video Latar (opsional)", value="", key="g_bg")
         st.caption("📌 Google Drive: Share → 'Anyone with the link'. Gambar langsung tampil; untuk VIDEO pilih jenis 'video' → otomatis bisu + berulang di TV.")
         g_jenis = st.selectbox("📦 Jenis file Google Drive", ["otomatis", "gambar", "video"], key="g_jenis")
