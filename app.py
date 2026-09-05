@@ -640,11 +640,11 @@ with col_kiri:
             from zoneinfo import ZoneInfo as _ZI
             _tz = _ZI(data['data']['meta']['timezone'])
             _tzn = data['data']['meta']['timezone']
-            if country.lower() == "indonesia" and ("Jakarta" in _tzn or "Pontianak" in _tzn):
+            if st.session_state.country.lower() == "indonesia" and ("Jakarta" in _tzn or "Pontianak" in _tzn):
                 _tzl = "WIB"
-            elif country.lower() == "indonesia" and "Makassar" in _tzn:
+            elif st.session_state.country.lower() == "indonesia" and "Makassar" in _tzn:
                 _tzl = "WITA"
-            elif country.lower() == "indonesia" and "Jayapura" in _tzn:
+            elif st.session_state.country.lower() == "indonesia" and "Jayapura" in _tzn:
                 _tzl = "WIT"
             else:
                 _tzl = _tzn.split("/")[-1].replace("_", " ")
