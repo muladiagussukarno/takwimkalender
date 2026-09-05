@@ -236,6 +236,7 @@ body {
 .kal-panel { background: linear-gradient(135deg, #ffffff 0%, #f5f7ff 100%); border-radius: 16px; padding: clamp(10px, 1vw, 18px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 1px solid #e3e6f0; }
 .kal-table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: clamp(6px, 0.7vw, 14px); font-family: 'Segoe UI', Tahoma, sans-serif; }
 .kal-table th { background: linear-gradient(135deg, GRAD1 0%, GRAD2 100%); color: #fff; padding: 12px 4px; text-align: center; font-weight: 700; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); font-size: clamp(11px, 1.2vw, 14px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border: clamp(3px, 0.4vw, 6px) solid transparent; background-clip: padding-box; }
+.kal-table th, .kal-table td { height: clamp(44px, 4vw, 60px); vertical-align: middle; }
 .kal-table th:nth-child(5) { background: linear-gradient(135deg, #11998e, #38ef7d) !important; }
 .kal-table th:nth-child(6) { background: linear-gradient(135deg, #232526, #414345) !important; }
 .kal-table th:nth-child(7) { background: linear-gradient(135deg, #cb2d3e, #ef473a) !important; }
