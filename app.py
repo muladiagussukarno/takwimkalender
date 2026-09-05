@@ -827,7 +827,7 @@ hari_indonesia = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]
 bulan_indonesia = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
 
 def display_calendar(year, month, month_names, highlight_day=None):
-    col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+    col_nav1, col_nav2, col_nav3 = st.columns([1, 12, 1])
     with col_nav1:
         if st.button("❮"):
             prev_month()
@@ -903,7 +903,7 @@ with col_kanan:
                     st.session_state.hijri_view_month = int(hijri['month']['number'])
             
                 # Navigasi bulan
-                col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+                col_nav1, col_nav2, col_nav3 = st.columns([1, 12, 1])
                 with col_nav1:
                     if st.button("❮", key="hijri_prev"):
                         if st.session_state.hijri_view_month == 1:
@@ -1000,7 +1000,7 @@ with col_kanan:
             st.session_state.syamsiah_view_month = p_month
     
         # Navigasi bulan
-        col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+        col_nav1, col_nav2, col_nav3 = st.columns([1, 12, 1])
         with col_nav1:
             if st.button("❮", key="syams_prev"):
                 if st.session_state.syamsiah_view_month == 1:
@@ -1101,7 +1101,7 @@ with col_kanan:
             st.session_state.jawa_view_month = bulan_jawa.index(j_today['saka_month']) + 1
     
         # Navigasi bulan
-        col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+        col_nav1, col_nav2, col_nav3 = st.columns([1, 12, 1])
         with col_nav1:
             if st.button("❮", key="jawa_prev"):
                 if st.session_state.jawa_view_month == 1:
@@ -1207,7 +1207,7 @@ with col_kanan:
             v_month = st.session_state.imlek_view_month
         
             # Navigasi bulan
-            col_nav1, col_nav2, col_nav3 = st.columns([1, 3, 1])
+            col_nav1, col_nav2, col_nav3 = st.columns([1, 12, 1])
             with col_nav1:
                 if st.button("❮", key="imlek_prev"):
                     if st.session_state.imlek_view_month == 1:
