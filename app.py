@@ -864,7 +864,8 @@ def display_calendar(year, month, month_names, highlight_day=None):
                 html_table += f"<td class='cuti'>{day}<div class='lib-name'>{cuti[key]}</div></td>"
             else:
                 html_table += f"<td>{day}</td>"
-        html_table += "</tr>"    html_table += "</tbody></table></div>"
+        html_table += "</tr>"
+    html_table += "</tbody></table></div>"
     st.markdown(html_table, unsafe_allow_html=True)
 
 with col_kanan:
