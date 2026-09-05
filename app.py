@@ -66,7 +66,7 @@ if 'theme_select' in st.session_state:
 
 tema_grad = THEMES.get(st.session_state.theme, THEMES["💜 Ungu (Default)"])
 
-HARI_INDO = {"Monday":"Senin","Tuesday":"Selasa","Wednesday":"Rabu","Thursday":"Kamis","Friday":"Jumat","Saturday":"Sabtu","Sunday":"Minggu"}
+HARI_INDO = {"Monday":"Senin","Tuesday":"Selasa","Wednesday":"Rabu","Thursday":"Kamis","Friday":"Jumat","Saturday":"Sabtu","Sunday":"Ahad"}
 GREG_INDO = {"January":"Januari","February":"Februari","March":"Maret","April":"April","May":"Mei","June":"Juni","July":"Juli","August":"Agustus","September":"September","October":"Oktober","November":"November","December":"Desember"}
 
 TV_THEMES = {
@@ -180,6 +180,9 @@ body {
 .kal-panel { background: linear-gradient(135deg, #ffffff 0%, #f5f7ff 100%); border-radius: 16px; padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 1px solid #e3e6f0; }
 .kal-table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 4px; font-family: 'Segoe UI', Tahoma, sans-serif; }
 .kal-table th { background: linear-gradient(135deg, GRAD1 0%, GRAD2 100%); color: #fff; padding: 10px 4px; text-align: center; font-weight: 700; border-radius: 8px; font-size: clamp(11px, 1.2vw, 14px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kal-table th:nth-child(5) { background: linear-gradient(135deg, #11998e, #38ef7d) !important; }
+.kal-table th:nth-child(6) { background: linear-gradient(135deg, #232526, #414345) !important; }
+.kal-table th:nth-child(7) { background: linear-gradient(135deg, #cb2d3e, #ef473a) !important; }
 .kal-table td { background: #fff; padding: 8px 4px; text-align: center; border-radius: 8px; color: #333; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: transform .15s; }
 .kal-table td:hover { transform: scale(1.06); }
 .kal-table td:nth-child(-n+4) { background: linear-gradient(135deg, #4e54c8, #8f94fb); color: #fff; }
@@ -551,7 +554,7 @@ except Exception:
 
 # HEADER DENGAN TANGGAL & LOKASI
 # ==========================================
-nama_hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+nama_hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]
 nama_bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
 
 hijri_str = hijri_pre
@@ -710,7 +713,7 @@ def get_javanese_date(year, month, day):
     ref_pasaran = datetime(2000, 1, 1)
     days_diff_pasaran = (current_date - ref_pasaran).days
     pasaran_index = (days_diff_pasaran + 3) % 5
-    hari_indonesia = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+    hari_indonesia = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]
     return {
         'saka_year': saka_year_calc, 'saka_month': bulan_jawa[saka_month], 'saka_day': saka_day,
         'windu': windu[windu_index], 'pasaran': pasaran[pasaran_index],
@@ -726,7 +729,7 @@ def get_chinese_date(year, month, day):
     return {'shio': shio[shio_index], 'elemen': elemen[elemen_index], 'yin_yang': yin_yang, 'tahun_cina': year - 2698}
 
 persian_months = ["Farvardin", "Ordibehesht", "Khordad", "Tir", "Mordad", "Shahrivar", "Mehr", "Aban", "Azar", "Dey", "Bahman", "Esfand"]
-hari_indonesia = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+hari_indonesia = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]
 bulan_indonesia = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
 
 def display_calendar(year, month, month_names, highlight_day=None):
@@ -743,7 +746,7 @@ def display_calendar(year, month, month_names, highlight_day=None):
             st.rerun()
     st.divider()
     cal = calendar.monthcalendar(year, month)
-    header = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+    header = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]
     calendar_css = """
     <style>
     .calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }
@@ -851,7 +854,7 @@ with col_kanan:
                     # Render tabel
                     table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
                     html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
-                    for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
+                    for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]:
                         html_table += f"<th>{day}</th>"
                     html_table += "</tr></thead><tbody>"
                 
@@ -957,7 +960,7 @@ with col_kanan:
         # Render tabel
         table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
         html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
-        for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
+        for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]:
             html_table += f"<th>{day}</th>"
         html_table += "</tr></thead><tbody>"
         for w in weeks:
@@ -1057,7 +1060,7 @@ with col_kanan:
         # Render tabel
         table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
         html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
-        for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
+        for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]:
             html_table += f"<th>{day}</th>"
         html_table += "</tr></thead><tbody>"
         for w in weeks:
@@ -1163,7 +1166,7 @@ with col_kanan:
             # Render tabel
             table_css = "<style>.calendar-table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; }.calendar-table th { background-color: #f0f2f6; padding: 12px; text-align: center; font-weight: 600; border: 1px solid #ddd; color: #333; }.calendar-table td { padding: 10px; text-align: center; border: 1px solid #ddd; color: #333; font-weight: 500; }.calendar-table td.empty { background-color: #fafafa; }</style>"
             html_table = "<div class='kal-panel'><table class='kal-table'><thead><tr>"
-            for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]:
+            for day in ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Ahad"]:
                 html_table += f"<th>{day}</th>"
             html_table += "</tr></thead><tbody>"
             for w in weeks:
