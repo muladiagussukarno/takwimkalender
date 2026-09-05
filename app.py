@@ -258,6 +258,7 @@ body {
 .calendar-table td { padding: 6px !important; font-size: 14px !important; }
 .stButton > button { background: linear-gradient(135deg, GRAD1 0%, GRAD2 100%) !important; color: #fff !important; border: none !important; border-radius: 50% !important; width: 46px !important; height: 46px !important; padding: 0 !important; font-size: 1.15rem !important; font-weight: 800 !important; box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important; transition: transform .15s; }
 .stButton > button:hover { transform: scale(1.1) !important; }
+div[data-testid='stHorizontalBlock'] > div:last-child .stButton { text-align: right; }
 
 hr { margin: 0.5rem 0 !important; }
 </style>
