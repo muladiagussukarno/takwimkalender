@@ -183,7 +183,7 @@ body {
 .kal-table th:nth-child(5) { background: linear-gradient(135deg, #11998e, #38ef7d) !important; }
 .kal-table th:nth-child(6) { background: linear-gradient(135deg, #232526, #414345) !important; }
 .kal-table th:nth-child(7) { background: linear-gradient(135deg, #cb2d3e, #ef473a) !important; }
-.kal-table td { background: #fff; padding: 11px 4px; text-align: center; border-radius: 8px; color: #333; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: transform .15s; }
+.kal-table td { background: #fff; border: clamp(3px, 0.4vw, 6px) solid transparent; background-clip: padding-box; padding: 11px 4px; text-align: center; border-radius: 8px; color: #333; font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: transform .15s; }
 .kal-table td:hover { transform: scale(1.06); }
 .kal-table td:nth-child(-n+4) { background: linear-gradient(135deg, #4e54c8, #8f94fb); color: #fff; }
 .kal-table td:nth-child(5) { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; }
