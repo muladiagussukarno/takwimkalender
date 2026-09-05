@@ -255,7 +255,7 @@ body {
 .kal-table td.cuti { background: linear-gradient(135deg, #f7971e, #ffd200) !important; color: #1a1a2e !important; }
 .lib-name { font-size: 8px; line-height: 1.15; font-weight: 600; opacity: 0.95; }
 /* === SUPPORT BY (dashboard) === */
-.support-by-dash { position:fixed; bottom:8px; right:12px; font-size:11px; color:rgba(100,100,100,0.6); z-index:9998; }
+.support-by-dash { position:fixed; bottom:8px; left:12px; font-size:11px; color:rgba(100,100,100,0.6); z-index:9998; }
 .support-by-dash a { color:rgba(80,80,80,0.7); text-decoration:none; }
 .support-by-dash:hover { color:rgba(60,60,60,0.9); }
 
@@ -305,7 +305,7 @@ html, body, .stApp { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%
 .tv-card.next .tv-time { color:#1a1a2e; }
 .tv-count { text-align:center; margin-top:3vh; color:#fff; font-size:2vw; }
 .tv-count b { color:#ffd200; font-size:2.8vw; font-family:monospace; }
-.support-by-tv { position:fixed; bottom:6px; right:10px; font-size:11px; color:rgba(255,255,255,0.45); z-index:9998; }
+.support-by-tv { position:fixed; bottom:6px; left:10px; font-size:11px; color:rgba(255,255,255,0.45); z-index:9998; }
 .tv-slogan { text-align:center; margin-top:2vh; color:#ffffff; font-size:3.5vw; font-weight:800; letter-spacing:1px; line-height:1.6; text-shadow:0 2px 8px rgba(0,0,0,0.5); }
 </style>""", unsafe_allow_html=True)
     
