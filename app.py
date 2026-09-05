@@ -636,6 +636,38 @@ with col_kiri:
             html_jadwal += '</div></div>'
 
             st.markdown(html_jadwal, unsafe_allow_html=True)
+
+        from zoneinfo import ZoneInfo as _ZI
+        _tz = _ZI(data['data']['meta']['timezone'])
+        _tzn = data['data']['meta']['timezone']
+        if country.lower() == "indonesia" and ("Jakarta" in _tzn or "Pontianak" in _tzn):
+            _tzl = "WIB"
+        elif country.lower() == "indonesia" and "Makassar" in _tzn:
+            _tzl = "WITA"
+        elif country.lower() == "indonesia" and "Jayapura" in _tzn:
+            _tzl = "WIT"
+        else:
+            _tzl = _tzn.split("/")[-1].replace("_", " ")
+        _daftar5 = [("Subuh", timings["Fajr"][:5]), ("Dzuhur", timings["Dhuhr"][:5]), ("Ashar", timings["Asr"][:5]), ("Maghrib", timings["Maghrib"][:5]), ("Isya", timings["Isha"][:5])]
+
+        @st.fragment(run_every=1)
+        def dash_clock():
+            n = datetime.now(_tz)
+            nm_next = None
+            t_next = None
+            for nm, t in _daftar5:
+                jt = datetime.strptime(t, "%H:%M").replace(year=n.year, month=n.month, day=n.day, tzinfo=_tz)
+                if jt > n:
+                    nm_next, t_next = nm, jt
+                    break
+            if t_next:
+                total = int((t_next - n).total_seconds())
+                h, m, s = total // 3600, (total % 3600) // 60, total % 60
+                cd = f"⏳ Menuju waktu <b>{nm_next}</b> &nbsp;<b>{h:02d}:{m:02d}:{s:02d}</b>"
+            else:
+                cd = f"🌙 Menanti Subuh besok &nbsp;<b>{_daftar5[0][1]}</b>"
+            st.markdown(f"<div style='text-align:center;margin-top:14px;'><div style='font-size:2.2rem;font-weight:800;font-family:monospace;color:#1a1a2e;'>🕐 {n.strftime('%H:%M:%S')} <span style='font-size:1.1rem;color:#764ba2;'>({_tzl})</span></div><div style='font-size:1.15rem;color:#444;margin-top:4px;'>{cd}</div></div>", unsafe_allow_html=True)
+        dash_clock()
         else:
             st.subheader("🕌 Jadwal Sholat Hari Ini")
             st.error("❌ Kota tidak ditemukan di database API.")
