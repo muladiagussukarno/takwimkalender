@@ -255,7 +255,7 @@ body {
 .kal-table td.cuti { background: linear-gradient(135deg, #f7971e, #ffd200) !important; color: #1a1a2e !important; }
 .lib-name { font-size: 8px; line-height: 1.15; font-weight: 600; opacity: 0.95; }
 /* === SUPPORT BY (dashboard) === */
-.support-by-dash { position:fixed; top:56px; right:16px; font-size:11px; color:#555; background:rgba(255,255,255,0.85); padding:4px 12px; border-radius:20px; box-shadow:0 1px 4px rgba(0,0,0,0.15); z-index:99999; }
+.support-by-dash { position:fixed; top:16px; right:16px; font-size:11px; color:#555; background:rgba(255,255,255,0.85); padding:4px 12px; border-radius:20px; box-shadow:0 1px 4px rgba(0,0,0,0.15); z-index:99999; }
 .support-by-dash a { color:rgba(80,80,80,0.7); text-decoration:none; }
 .support-by-dash:hover { color:rgba(60,60,60,0.9); }
 
